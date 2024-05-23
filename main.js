@@ -4,22 +4,24 @@ const fs = require("fs"),
   port = 80,
   http = require("http"),
   httpStatus = require("http-status-codes"),
-  app = http.createServer((request, response) => {
-    console.log("Received an incoming request!");
-    response.writeHead(httpStatus.OK, {
-      "Content-Type": "text/html"
+  router = require("./router"),
+  plainTextContentType = {
+    "Content-Type":"text/plain"
+  },
+  htmlContentType = {
+    "Content-Type":"text/html"
+  },
+  customReadFile = (file, res) => {
+    fs.readFile(`./${file}`, (errors, data) => {
+          if (errors) {
+            console.log("Error reading the file...");
+          }
+          res.end(data);
     });
-    
-    fs.readFile("views/index.html", (error, data) => {
-      if (error) {
-        response.write("<h1>Sorry, something went wrong!</h1>");
-      } else {
-        response.write(data);
-      }
-      response.end();
-      console.log(`Sent a response`);
-    });
-  });
-
-app.listen(port);
+  };
+router.get("/", (req, res) => {
+    res.writeHead(httpStatus.OK, htmlContentType);
+    customReadFile("views/index.html", res);
+});
+http.createServer(router.handle).listen(port);
 console.log(`The server has started and is listening on port number: ${port}`);
