@@ -1,8 +1,4 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-DB_HOST="34.22.76.10"
-DB_USER="cc"
-DB_PW="password"
-DB_PORT=3306
-DB_NAME="recipe_db"
+.env
