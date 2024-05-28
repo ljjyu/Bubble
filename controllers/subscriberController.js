@@ -6,7 +6,7 @@ exports.getAllSubscribers = async (req, res) => {
     try {
         data = await Subscriber.findAll();
         console.log(data);
-        res.render("subscriber", {subscribers: data});
+        res.render("subscribers/getSubscriber", {subscribers: data});
     } catch (err) {
         res.status(500).send({
         message: err.message
@@ -25,7 +25,7 @@ exports.saveSubscriber = async (req, res) => {
             email: req.body.email,
             zipCode: req.body.zipCode
         });
-        res.render("thanks");
+        res.render("subscribers/subscribe");
     } catch (err) {
         res.status(500).send({
             message: err.message
