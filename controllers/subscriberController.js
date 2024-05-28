@@ -15,7 +15,7 @@ exports.getAllSubscribers = async (req, res) => {
 };
 // 폼 입력이 가능한 웹 페이지 렌더링
 exports.getSubscriptionPage = (req, res) => {
-    res.render("contact");
+    res.render("subscribers/subscriber");
 };
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveSubscriber = async (req, res) => {

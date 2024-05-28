@@ -6,7 +6,6 @@ const express = require("express"),
     homeController = require("./controllers/homeController"),
     errorController = require("./controllers/errorController"),
     subscriberController = require("./controllers/subscriberController"),
-    signupController = require("./controllers/signupController"),
     layouts = require("express-ejs-layouts"),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
@@ -62,8 +61,8 @@ app.use(
 app.use(express.json());
 
 // 라우트 등록
-app.get("/subscribers/signup", signupController.showSignUpPage);
-app.get("/subscribers", subscriberController.getAllSubscribers);
+app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage);
+app.get("/subscriber", subscriberController.getAllSubscribers);
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);
