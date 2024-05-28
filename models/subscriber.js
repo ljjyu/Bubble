@@ -12,6 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         }
     },
     {
+        tableName: "subscriber",
         timestamps: false
     });
     return subscriber;

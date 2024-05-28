@@ -61,9 +61,9 @@ app.use(
 app.use(express.json());
 
 // 라우트 등록
-app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage);
-app.get("/subscriber", subscriberController.getAllSubscribers);
-app.post("/subscribe", subscriberController.saveSubscriber);
+app.get("/getSubscriber", subscriberController.getAllSubscribers);
+app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
+app.post("/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);
