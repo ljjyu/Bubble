@@ -63,6 +63,7 @@ app.use(express.json());
 // 라우트 등록
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage);
 app.get("/subscriber", subscriberController.getAllSubscribers);
+app.post("/subscribe", subscribersController.saveSubscriber);
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);
