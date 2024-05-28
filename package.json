@@ -17,5 +17,14 @@
     "http-status-codes": "^2.3.0",
     "mysql2": "^3.0.0",
     "sequelize": "^6.37.3"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SSWU-ServerSystem/3team.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SSWU-ServerSystem/3team/issues"
+  },
+  "homepage": "https://github.com/SSWU-ServerSystem/3team#readme"
 }

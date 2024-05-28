@@ -59,6 +59,7 @@ app.use(
 app.use(express.json());
 
 // 라우트 등록
+app.get("/join", homeController.showJoinPage);
 app.get("/subscribers", subscriberController.getAllSubscribers);
 app.get("/", homeController.showIndex);
 
