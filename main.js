@@ -2,9 +2,11 @@
 
 const express = require("express"),
     app = express(),
+    path = require('path'),
     homeController = require("./controllers/homeController"),
     errorController = require("./controllers/errorController"),
     subscriberController = require("./controllers/subscriberController"),
+    signupController = require("./controllers/signupController"),
     layouts = require("express-ejs-layouts"),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
@@ -46,6 +48,7 @@ test();
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
+app.set('views', path.join(__dirname, 'views'));
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
@@ -59,7 +62,7 @@ app.use(
 app.use(express.json());
 
 // 라우트 등록
-app.get("/join", homeController.showJoinPage);
+app.get("/subscribers/signup", signupController.showSignUpPage);
 app.get("/subscribers", subscriberController.getAllSubscribers);
 app.get("/", homeController.showIndex);
 
