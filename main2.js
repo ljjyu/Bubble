@@ -19,14 +19,14 @@ const fs = require("fs"),
           res.end(data);
     });
   };
-router.get("/", (req, res) => {
+/*router.get("/", (req, res) => {
     res.writeHead(httpStatus.OK, htmlContentType);
     customReadFile("views/userHome.html", res);
-});
-/*router.get("/userMain", (req, res) => {
+});*/
+router.get("/userMain", (req, res) => {
   res.writeHead(httpStatus.OK, htmlContentType);
   customReadFile("views/userMain.html", res);
-});*/
+});
 
 http.createServer(router.handle).listen(port);
 console.log(`The server has started and is listening on port number: ${port}`);
