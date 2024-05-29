@@ -23,7 +23,7 @@ const fs = require("fs"),
     res.writeHead(httpStatus.OK, htmlContentType);
     customReadFile("views/userHome.html", res);
 });*/
-router.get("/userMain", (req, res) => {
+router.get("/", (req, res) => {
   res.writeHead(httpStatus.OK, htmlContentType);
   customReadFile("views/userMain.html", res);
 });
