@@ -27,6 +27,10 @@ router.get("/userMain", (req, res) => {
   res.writeHead(httpStatus.OK, htmlContentType);
   customReadFile("views/userMain.html", res);
 });
+router.get("/userReserve", (req, res) => {
+  res.writeHead(httpStatus.OK, htmlContentType);
+  customReadFile("views/userReserve.html", res);
+});
 /*>>>>>>> 8b9cb3bed2ac370d6e45393ac39de0ca9959ddca*/
 
 http.createServer(router.handle).listen(port);
