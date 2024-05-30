@@ -7,4 +7,5 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.subscriber = require("./subscriber.js")(sequelize, Sequelize);
+db.machine = require("./machine.js")(sequelize, Sequelize);
 module.exports = db;
