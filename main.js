@@ -25,7 +25,9 @@ app.use(
 app.use(express.json());
 
 // 라우트 등록
-app.get("/", homeController.showIndex);
+app.get("/userHome", homeController.showIndex);
+app.get("/userMain", homeController.showIndex1);
+app.get("/userReserve", homeController.showIndex2);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
