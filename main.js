@@ -23,14 +23,11 @@ router.get("/", (req, res) => {
     res.writeHead(httpStatus.OK, htmlContentType);
     customReadFile("views/userHome.html", res);
 });
-/*router.get("/userMain", (req, res) => {
+router.get("/userMain", (req, res) => {
   res.writeHead(httpStatus.OK, htmlContentType);
   customReadFile("views/userMain.html", res);
-<<<<<<< HEAD
 });
-=======
-});*/
+/*>>>>>>> 8b9cb3bed2ac370d6e45393ac39de0ca9959ddca*/
 
->>>>>>> 8b9cb3bed2ac370d6e45393ac39de0ca9959ddca
 http.createServer(router.handle).listen(port);
 console.log(`The server has started and is listening on port number: ${port}`);
