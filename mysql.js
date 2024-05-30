@@ -12,7 +12,7 @@ let test = async () => {
         waitForConnections: true,
         insecureAuth: true
     });
-    let sql = 'SELECT * FROM subscriber’;
+    let sql = 'SELECT * FROM machine’;
     let [rows, fields] = await db.query(sql);
     console.log(rows);
 };
