@@ -6,9 +6,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         state: {
             type: Sequelize.STRING
-        },
-        zipCode: {
-            type: Sequelize.INTEGER
         }
     },
     {

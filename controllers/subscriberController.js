@@ -23,7 +23,9 @@ exports.saveSubscriber = async (req, res) => {
         await Subscriber.create({
             name: req.body.name,
             email: req.body.email,
-            zipCode: req.body.zipCode
+            password: req.body.password,
+            phoneNumber: req.body.phoneNumber,
+            cardNumber: req.body.cardNumber
         });
         res.render("subscribers/subscribe");
     } catch (err) {
