@@ -7,13 +7,35 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             primaryKey: true
         },
-        zipCode: {
-            type: Sequelize.INTEGER
+        phoneNumber: {
+            type: Sequelize.STRING
+        },
+        cardNumber: {
+            type: Sequelize.STRING
         }
     },
     {
         tableName: "subscriber",
         timestamps: false
     });
-    return subscriber;
-}
+    const machine = sequelize.define("machine", { // 엔티티 생성
+            name: {
+                type: Sequelize.STRING,
+                primaryKey: true
+            },
+            state: {
+                type: Sequelize.STRING
+            },
+            zipCode: {
+                type: Sequelize.INTEGER
+            }
+        },
+        {
+            tableName: "machine",
+            timestamps: false
+        });
+    return {
+        Machine: machine,
+        Subscriber: subscriber
+    };
+};
