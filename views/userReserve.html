@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #d8cef6;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            margin-left: 250px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100%;
+            border: 1px solid #d3d3d3;
+        }
+        .sidebar a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            text-align: center;
+            color: black;
+            display: block;
+            border-bottom: 1px solid #d3d3d3;
+        }
+        .sidebar a:hover {
+            background-color: #d3d3d3;
+            color: black;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .reservation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .reservation-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .reservation-form input,
+        .reservation-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #d3d3d3;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .reservation-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #d8cef6;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .reservation-form button:hover {
+            background-color: #b4a7d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        예약 페이지
+    </div>
+    <div class="sidebar">
+        <a href="userMain.html">HOME</a>
+        <a href="userReserve.html">예약하기</a>
+        <a href="userHome.html">마이페이지</a>
+        <a href="notice.html">공지사항</a>
+        <a href="#">...</a>
+    </div>
+    <div class="main-content">
+        <h2>세탁기 / 건조기 예약</h2>
+        <div class="reservation-form">
+            <form>
+                <label for="machineType">기기 종류</label>
+                <select id="machineType">
+                    <option value="washer">세탁기</option>
+                    <option value="dryer">건조기</option>
+                </select>
+                
+                <label for="machineNumber">기기 번호</label>
+                <select id="machineNumber">
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                    <option value="4">04</option>
+                    <option value="5">05</option>
+                    <option value="6">06</option>
+                    <option value="7">07</option>
+                    <option value="8">08</option>
+                </select>
+                
+                <label for="reservationTime">예약 시간</label>
+                <input type="datetime-local" id="reservationTime">
+                
+                <button type="button" onclick="reserveMachine()">예약하기</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function reserveMachine() {
+            var machineType = document.getElementById('machineType').value;
+            var machineNumber = document.getElementById('machineNumber').value;
+            var reservationTime = document.getElementById('reservationTime').value;
+
+            alert(machineType + ' ' + machineNumber + '번이 ' + reservationTime + '에 예약되었습니다.');
+        }
+    </script>
+</body>
+</html>
