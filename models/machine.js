@@ -1,19 +1,19 @@
 module.exports = (sequelize, Sequelize) => {
-    const subscriber = sequelize.define("subscriber", { // 엔티티 생성
+    const machine = sequelize.define("machine", { // 엔티티 생성
         name: {
-            type: Sequelize.STRING
-        },
-        email: {
             type: Sequelize.STRING,
             primaryKey: true
+        },
+        state: {
+            type: Sequelize.STRING
         },
         zipCode: {
             type: Sequelize.INTEGER
         }
     },
     {
-        tableName: "subscriber",
+        tableName: "machine",
         timestamps: false
     });
-    return subscriber;
+    return machine;
 }
