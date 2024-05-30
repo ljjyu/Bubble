@@ -6,7 +6,7 @@ const express = require("express"),
     homeController = require("./controllers/homeController"),
     errorController = require("./controllers/errorController"),
     layouts = require("express-ejs-layouts"),
-    db = require("./models/index"),
+    //db = require("./models/index"),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
     app.set("port", process.env.PORT || 80);
