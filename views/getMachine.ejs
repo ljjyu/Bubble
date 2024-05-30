@@ -1,4 +1,125 @@
-<% machines.forEach(s => { %>
-    <p><%= s.name %></p>
-    <p><%= s.state %><p>
-<% }); %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #D8CEF6;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+	    margin-left: 250px;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100%;
+	    border: 1px solid #d3d3d3;
+        }
+        .sidebar a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;
+	    text-align: center;
+            color: black;
+            display: block;
+            border-bottom: 1px solid #d3d3d3;
+	}
+        .sidebar a:hover {
+            background-color: #d3d3d3;
+            color: black;
+        }
+	.main-content h2 {
+            margin-left: 30px;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .status-section {
+            display: flex;
+            justify-content: space-around;
+        }
+        .machine-section {
+            width: 45%;
+        }
+        .machine {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .machine.yellow {
+            background-color: #FAEC97;
+        }
+        .machine.purple {
+            background-color: #D8CEF6;
+        }
+        .machine span {
+            display: block;
+            margin: 10px 0;
+        }
+        .machine::after {
+            content: attr(data-id);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        관리자 페이지
+    </div>
+    <div class="sidebar">
+        <a href="#">HOME</a>
+        <a href="#">통계</a>
+        <a href="#">공지사항</a>
+        <a href="#">...</a>
+    </div>
+    <div class="main-content">
+        <h2>실시간 사용현황</h2>
+        <div class="status-section">
+    	    <div class="machine-section">
+                <h3>세탁기</h3>
+                <% machines.filter(machine => machine.name.includes('세탁기')).forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+                    <div class="machine <%= machine.state === '이용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+                        <span>이름: <%= machine.name %></span>
+                        <span>상태: <%= machine.state %></span>
+                    </div>
+	        <% }); %>
+            </div>
+
+            <div class="machine-section">
+                <h3>건조기</h3>
+                <% machines.filter(machine => machine.name.includes('건조기')).forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+		    <div class="machine <%= machine.state === '이용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+                        <span>이름: <%= machine.name %></span>
+                        <span>상태: <%= machine.state %></span>
+                    </div>
+                <% }); %>
+	    </div>
+	</div>
+    </div>
+</body>
+</html>
+
+
