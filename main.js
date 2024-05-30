@@ -7,8 +7,8 @@ const express = require("express"),
     errorController = require("./controllers/errorController"),
     layouts = require("express-ejs-layouts"),
     //db = require("./models/index"),
-    Sequelize = db.Sequelize,
-    Op = Sequelize.Op;
+    //Sequelize = db.Sequelize,
+    //Op = Sequelize.Op;
     app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
