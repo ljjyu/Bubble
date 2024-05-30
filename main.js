@@ -13,7 +13,7 @@ const express = require("express"),
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델 동기화
-const Subscriber = db.subscriber;
+//const Subscriber = db.subscriber;
 const Machine = db.machine;
 let test_create = async () => {
     try {
@@ -27,7 +27,7 @@ let test_create = async () => {
             }
         ]);
     } catch (err) {
-        console.error("Error creating subscribers:", err);
+        console.error("Error creating machines:", err);
     }
 };
 // SELECT
