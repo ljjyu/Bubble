@@ -7,6 +7,7 @@ const express = require("express"),
     errorController = require("./controllers/errorController"),
     subscriberController = require("./controllers/subscriberController"),
     machineController = require("./controllers/machineController"),
+    reservationController = require("./controllers/reservationController"),
     layouts = require("express-ejs-layouts"),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
@@ -15,6 +16,7 @@ const express = require("express"),
 db.sequelize.sync(); // 모델 동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
+const Reservation = db.reservation;
 /*let test_create = async () => {
     try {
         await Machine.bulkCreate([
@@ -67,6 +69,7 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
+app.get("/getReservation",reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);

@@ -8,4 +8,5 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.subscriber = require("./subscriber.js")(sequelize, Sequelize);
 db.machine = require("./machine.js")(sequelize, Sequelize);
+db.reservation = require("./reservation.js")(sequelize, Sequelize);
 module.exports = db;
