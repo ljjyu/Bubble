@@ -21,7 +21,7 @@ exports.respondInternalError = (error, req, res, next) => {
     res.status(errorCode);
     res.send(`${errorCode} | Sorry, our application is experiencing a problem!`);
 };
-// 앞에서 처리되지 못한 모든 요청 처리
+// 앞에서 처리되지 못한 모든요청 처리
 exports.pageNotFoundError = (req, res) => {
     let errorCode = httpStatus.NOT_FOUND;
     res.status(errorCode);
