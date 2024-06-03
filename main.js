@@ -71,6 +71,9 @@ app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // ë„˜ê
 app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
+app.get("/userMain", homeController.showIndex1);
+app.get("/userReserve", homeController.showIndex2);
+
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
