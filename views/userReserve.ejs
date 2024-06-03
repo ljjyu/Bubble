@@ -99,15 +99,15 @@
     <div class="main-content">
         <h2>세탁기 / 건조기 예약</h2>
         <div class="reservation-form">
-            <form>
+            <form id="reservationForm">
                 <label for="machineType">기기 종류</label>
-                <select id="machineType">
+                <select id="machineType" name="machineType">
                     <option value="washer">세탁기</option>
                     <option value="dryer">건조기</option>
                 </select>
                 
                 <label for="machineNumber">기기 번호</label>
-                <select id="machineNumber">
+                <select id="machineNumber" name="machineNumber">
                     <option value="1">01</option>
                     <option value="2">02</option>
                     <option value="3">03</option>
@@ -115,24 +115,42 @@
                 </select>
                 
                 <label for="reservationTime">예약 시간</label>
-                <input type="datetime-local" id="reservationTime">
+                <input type="datetime-local" id="reservationTime" name="reservationTime">
                 
                 <button type="button" onclick="reserveMachine()">예약하기</button>
             </form>
         </div>
     </div>
     <script>
-        function reserveMachine() {
-            var machineType = document.getElementById('machineType').value;
-            var machineNumber = document.getElementById('machineNumber').value;
-            var reservationTime = document.getElementById('reservationTime').value;
+        async function reserveMachine() {
+            const machineType = document.getElementById('machineType').value;
+            const machineNumber = document.getElementById('machineNumber').value;
+            const reservationTime = document.getElementById('reservationTime').value;
 
             if (!reservationTime) {
                 alert('날짜와 시간을 선택해 주세요.');
                 return;
             }
 
-            alert(machineType + ' ' + machineNumber + '번이 ' + reservationTime + '에 예약되었습니다.');
+            const response = await fetch('/reservations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    machineType,
+                    machineNumber,
+                    reservationTime
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`${result.machineType} ${result.machineNumber}번이 ${result.reservationTime}에 예약되었습니다.`);
+            } else {
+                const error = await response.json();
+                alert(`예약에 실패했습니다: ${error.message}`);
+            }
         }
     </script>
 </body>
