@@ -101,25 +101,17 @@
     <div class="main-content">
         <div id="reserv-status-container">
             <h2>예약 내역</h2>
-            <div class="machine-section">
-                <h3>세탁기</h3>
-                <div class="machine purple" data-id="01">
-                    <span>예약 번호</span>
-                    <span>예약 날짜</span>
-                    <span>예약 시간</span>
-                    <span>코스</span>
+            <% reservations.forEach(reservation => { %>
+                <div class="machine-section">
+                    <div class="machine purple" data-id="<%= reservation.reservationNumber %>">
+                        <span>예약 번호: <%= reservation.reservationNumber %></span>
+                        <span>예약 날짜: <%= reservation.reservationDate %></span>
+                        <span>예약 시간: <%= reservation.usageTime %></span>
+                        <span>위치: <%= reservation.Location %></span>
+                    </div>
                 </div>
-            </div>
-            <div class="machine-section">
-                <h3>건조기</h3>
-                <div class="machine yellow" data-id="01">
-                    <span>예약 번호</span>
-                    <span>예약 날짜</span>
-                    <span>예약 시간</span>
-                    <span>코스</span>
-                </div>
-        </div>
+            <% }) %>
         </div>
     </div>
 </body>
-</html>
+</html> 

@@ -39,7 +39,7 @@ exports.createReservation = async (req, res) => {
             reservationNumber,
             usageTime,
             reservationDate,
-            Location
+            Location,
         });
 
         res.status(201).send(newReservation);
@@ -92,3 +92,18 @@ exports.createReservation = async (req, res) => {
     }
 };
 
+
+exports.getUserReservations = async (req, res) => {
+    try {
+        const userId = req.user.id; // 로그인한 사용자 ID 가져오기
+        const reservations = await Reservation.findAll({
+            where: { userId: userId }
+        });
+        res.render("userHome", { reservations: reservations });
+    } catch (err) {
+        console.error("Error retrieving reservations:", err);
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
