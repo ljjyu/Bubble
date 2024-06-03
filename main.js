@@ -72,7 +72,7 @@ app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘�
 app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
 app.get("/reservations", reservationController.getUserReservations); // 예약 내역 페이지 라우트 추가
-//app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
+app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
 app.get("/userHome", reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
 app.get("/userMain", userController.showIndex1);
