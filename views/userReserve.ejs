@@ -126,27 +126,27 @@
             const machineType = document.getElementById('machineType').value;
             const machineNumber = document.getElementById('machineNumber').value;
             const reservationTime = document.getElementById('reservationTime').value;
-    
+
             if (!reservationTime) {
                 alert('날짜와 시간을 선택해 주세요.');
                 return;
             }
-    
-            const response = await fetch('/createReservation', {
+
+            const response = await fetch('/reservations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    usageTime: reservationTime, // 변경: 서버에서 필요한 필드 이름으로 변경
-                    reservationDate: new Date().toISOString(), // 변경: 예약 생성 시 서버에서 현재 시간으로 저장하도록 변경
-                    Location: machineType + " " + machineNumber // 변경: 기기 종류와 번호를 Location 필드로 합쳐서 전송
+                    machineType,
+                    machineNumber,
+                    reservationTime
                 })
             });
-    
+
             if (response.ok) {
                 const result = await response.json();
-                alert(`${result.Location}이 ${result.reservationDate}에 예약되었습니다.`); // 변경: 서버에서 반환하는 필드 이름으로 변경
+                alert(`${result.machineType} ${result.machineNumber}번이 ${result.reservationTime}에 예약되었습니다.`);
             } else {
                 const error = await response.json();
                 alert(`예약에 실패했습니다: ${error.message}`);
