@@ -10,7 +10,7 @@ exports.login = async (req, res) => {
         const user = await Subscriber.findOne({ where: { email } });
 
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
-        if (user && await bcrypt.compare(password, user.password)) {
+        if (user && user.password === req.body.password) {
             // 인증 성공 시 세션에 사용자 정보 저장
             req.session.user = {
                 id: user.id,
