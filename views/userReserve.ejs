@@ -112,10 +112,6 @@
                     <option value="2">02</option>
                     <option value="3">03</option>
                     <option value="4">04</option>
-                    <option value="5">05</option>
-                    <option value="6">06</option>
-                    <option value="7">07</option>
-                    <option value="8">08</option>
                 </select>
                 
                 <label for="reservationTime">예약 시간</label>
@@ -130,6 +126,11 @@
             var machineType = document.getElementById('machineType').value;
             var machineNumber = document.getElementById('machineNumber').value;
             var reservationTime = document.getElementById('reservationTime').value;
+
+            if (!reservationTime) {
+                alert('날짜와 시간을 선택해 주세요.');
+                return;
+            }
 
             alert(machineType + ' ' + machineNumber + '번이 ' + reservationTime + '에 예약되었습니다.');
         }
