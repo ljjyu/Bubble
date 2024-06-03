@@ -4,7 +4,6 @@ const db = require("../models/index"),
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         // 이메일로 사용자 조회
         const user = await Subscriber.findOne({ where: { email } });

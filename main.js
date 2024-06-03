@@ -71,7 +71,7 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/", homeController.showIndex);
-app.post("/login", usersController.login);
+app.post("/", usersController.login);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
