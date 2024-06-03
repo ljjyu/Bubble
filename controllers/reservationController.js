@@ -99,7 +99,7 @@ exports.getUserReservations = async (req, res) => {
         const reservations = await Reservation.findAll({
             where: { userId: userId }
         });
-        res.render("getReservation", { reservations: reservations });
+        res.render("userHome", { reservations: reservations });
     } catch (err) {
         console.error("Error retrieving reservations:", err);
         res.status(500).send({
