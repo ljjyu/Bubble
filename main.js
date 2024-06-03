@@ -72,7 +72,6 @@ app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
 
-
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
