@@ -19,7 +19,7 @@ const express = require("express"),
 
 db.sequelize.sync(); // 모델 동기화
 const Subscriber = db.subscriber;
-let test_create = async () => {
+/*let test_create = async () => {
     try {
         await Subscriber.bulkCreate([
             {
@@ -49,7 +49,7 @@ let test = async () => {
     await test_create();
     await test_find();
 }
-test();
+test();*/
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
