@@ -5,11 +5,19 @@ const express = require("express"),
     path = require('path'),
     homeController = require("./controllers/homeController"),
     errorController = require("./controllers/errorController"),
-    layouts = require("express-ejs-layouts"),
-    //db = require("./models/index"),
-    //Sequelize = db.Sequelize,
-    //Op = Sequelize.Op;
-    app.set("port", process.env.PORT || 80);
+    userController = require("./controllers/userController"),
+    //machineController = require("./controllers/machineController"),
+    //reservationController = require("./controllers/reservationController"),
+    //layouts = require("express-ejs-layouts"),
+    db = require("./models/index"),
+    Sequelize = db.Sequelize,
+    Op = Sequelize.Op;
+
+/*db.sequelize.sync(); // 모델 동기화
+const Subscriber = db.subscriber;
+const Machine = db.machine;
+const Reservation = db.reservation;*/
+app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
 // 정적 뷰 제공
