@@ -16,7 +16,7 @@ module.exports = {
              res.locals.redirect = "/";
              next();
         });
-    }
+    },
     authenticate: async (req, res, next) => {
         try {
             let user = await Subscriber.findOne({ where: { email: req.body.email } });
