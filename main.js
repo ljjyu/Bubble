@@ -69,7 +69,7 @@ app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); //
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/", homeController.showIndex);
 app.post("/", homeController.authenticate, homeController.redirectView);
-app.get("/", homeController.logout, homeController.redirectView);
+//app.get("/", homeController.logout, homeController.redirectView);
 
 //app.get("/:id/edit", homeController.edit);
 //app.post("/:id/update", homeController.update, homeController.redirectView);

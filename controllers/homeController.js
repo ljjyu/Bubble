@@ -13,7 +13,7 @@ authenticate: async (req, res, next) => {
         next();
         } else {
             req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
-            res.locals.redirect = "";
+            res.locals.redirect = "/";
             next();
         }
     } catch(err) {
