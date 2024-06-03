@@ -76,7 +76,6 @@ app.get("/userHome", userController.showIndex);
 app.get("/userMain", userController.showIndex1);
 app.get("/userReserve", userController.showIndex2);
 
-
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
