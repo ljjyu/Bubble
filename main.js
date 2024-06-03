@@ -68,10 +68,10 @@ app.get("/", homeController.showIndex);
 app.post("/", homeController.authenticate, homeController.redirectView);
 app.get("/", homeController.logout, homeController.redirectView);
 
-app.get("/:id/edit", homeController.edit);
-app.post("/:id/update", homeController.update, homeController.redirectView);
-app.get("/:id", homeController.show, homeController.showView);
-app.post("/:id/delete", homeController.delete, homeController.redirectView);
+//app.get("/:id/edit", homeController.edit);
+//app.post("/:id/update", homeController.update, homeController.redirectView);
+//app.get("/:id", homeController.show, homeController.showView);
+//app.post("/:id/delete", homeController.delete, homeController.redirectView);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
