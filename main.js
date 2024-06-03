@@ -77,7 +77,7 @@ app.get("/userHome", reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
 app.get("/userMain", userController.showIndex1);
 app.get("/userReserve", userController.showIndex2);
-app.get("/userHome", userController.showIndex);
+//app.get("/userHome", userController.showIndex);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
