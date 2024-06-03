@@ -8,6 +8,7 @@ const express = require("express"),
     subscriberController = require("./controllers/subscriberController"),
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
+    userController = require("./controllers/userController"),
     layouts = require("express-ejs-layouts"),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
@@ -71,6 +72,9 @@ app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // ë„˜ê
 app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
+app.get("/userHome", userController.showIndex);
+app.get("/userMain", userController.showIndex1);
+app.get("/userReserve", userController.showIndex2);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
