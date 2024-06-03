@@ -1,7 +1,7 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
     Op = db.Sequelize.Op,
-    const bcrypt = require('bcrypt');
+    bcrypt = require('bcrypt');
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
