@@ -96,7 +96,21 @@
 	        <p>로그인하여 예약하거나 회원가입하세요.</p>
         </div>
         <div class="right-side">
-            <form action="login_process.php" method="post">
+        <form class="form-signin" action="/" method="POST">
+        <div>
+            <input type="radio" id="roleUser" name="role" value="user" required>
+            <label for="roleUser">User</label>
+            <input type="radio" id="roleAdmin" name="role" value="admin" required>
+            <label for="roleAdmin">Admin</label>
+         </div>
+        <h2 class="form-signin-heading">Login:</h2>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="text" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus required>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+            <!--<form action="login_process.php" method="post">
                 <h2>로그인</h2>
 		<div class="usertype-label">
 		    <label>
@@ -117,7 +131,7 @@
             <input type="password" id="password" name="password" required>
 		</div>
 		<input type="submit" value="로그인">
-            </form>
+            </form>-->
             <div class="signup-btn">
                 <p>계정이 없으신가요? <a href="subscribers/subscriber">회원가입</a></p>
             </div>
