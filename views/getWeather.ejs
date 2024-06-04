@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>날씨</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #D8CEF6;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            margin-left: 250px;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100%;
+            border: 1px solid #d3d3d3;
+        }
+        .sidebar a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;           
+	    text-align: center;
+            color: black;
+            display: block;
+            border-bottom: 1px solid #d3d3d3;
+        }
+        .sidebar a:hover {
+            background-color: #d3d3d3;
+            color: black;
+        }
+        .main-content h2 {
+            margin-left: 30px;
+        }
+        .main-content h3 {
+            margin-left: 30px;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .weather-card {
+            margin-left: 30px;
+	    margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 300px;
+            text-align: center;           
+	    margin-top: 20px;
+            background: #f5f5f5;
+        }
+        .weather-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .weather-card .location {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .weather-card .temp {
+            font-size: 24px;
+            margin-top: 10px;
+	    margin-bottom: 40px;
+        }
+	.weekly-weather {
+            margin-top: 70px;
+        }
+	.cta-message {
+            margin-top: -120px;
+	    text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        관리자 페이지
+    </div>
+    <div class="sidebar">
+        <a href="#">HOME</a>
+        <a href="#">통계</a>
+        <a href="#">공지사항</a>
+        <a href="#">날씨</a>
+        <a href="#">...</a>   
+    </div>
+    <div class="main-content">
+        <h2>현재 날씨</h2>
+        <% if (weatherData) { %>
+            <div class="weather-card">
+                <div class="location"><%= weatherData.name %> / <%= weatherData.sys.country %></div>
+                <div class="temp"><%= weatherData.main.temp %> ℃</div>
+                <p><%= weatherData.weather[0].description %></p>
+            </div>
+        <% } else if (error) { %>
+            <p><%= error %></p>
+        <% } else { %>
+            <p>날씨 정보를 가져오는 중...</p>
+        <% } %>
+
+        <div class="weekly-weather">
+            <h2>일주일 날씨</h2>
+	    <div id="id952023c65f289" a='{"t":"r","v":"1.2","lang":"ko","locs":[873],"ssot":"c","sics":"ds","cbkg":"#FFFFFF","cfnt":"#000000","codd":"#FFFFFF","cont":"#000000d4","etp":"bool"}' style="width: 1100px; height: 305px;">날씨 데이터 소스: <a href="https://sharpweather.com/weather_seoul/30_days/">weather 30 days Seoul</a></div>
+	    <script async src="https://static1.sharpweather.com/widgetjs/?id=id952023c65f289"></script>
+	</div>
+    	
+	<div class="cta-message">
+            <h3>날씨를 확인하고 세탁하세요!</h3>
+        </div>
+    </div>
+</body>
+</html>
