@@ -1,6 +1,8 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
-    Op = db.Sequelize.Op;
+    Op = db.Sequelize.Op,
+    bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
@@ -26,10 +28,11 @@ exports.saveSubscriber = async (req, res) => {
                 message: "이미 등록된 이메일 주소입니다."
             });
         } else {
+            const hashedPassword = await bcrypt.hash(req.body.password, saltRounds); // 비밀번호 해싱
             await Subscriber.create({
                 name: req.body.name,
                 email: req.body.email,
-                zipCode: req.body.zipCode
+                password: hashedPassword
             });
             res.render("subscribers/subscribe");
         }
