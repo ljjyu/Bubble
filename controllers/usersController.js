@@ -10,7 +10,7 @@ exports.authenticate = async (req, res, next) => {
 
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
         if (user && await bcrypt.compare(password, user.password)) {
-            req.flash("logged in successfully!");
+            req.flash("success","logged in successfully!");
             res.locals.user = user;
              res.locals.redirect = '/userMain'; // 사용자 메인 페이지로 리다이렉트
         } else {
