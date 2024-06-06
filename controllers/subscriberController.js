@@ -34,7 +34,7 @@ exports.saveSubscriber = async (req, res) => {
                 email: req.body.email,
                 password: hashedPassword
             });
-            res.render("subscribers/subscribe");
+            res.render("/");
         }
     } catch (err) {
         res.status(500).send({
