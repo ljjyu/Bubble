@@ -17,7 +17,7 @@ const express = require("express"),
 db.sequelize.sync(); // 모델 동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
-const Reservation = db.reservation; //왜 선언만 되고 해당 값이 읽히지는 않는지 물어보기
+const Reservation = db.reservation;
 /*let test_create = async () => {
     try {
         await Machine.bulkCreate([
@@ -71,13 +71,11 @@ app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); //
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
-app.get("/reservations", reservationController.getUserReservations); // 예약 내역 페이지 라우트 추가
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
-app.get("/userHome", reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
+app.get("/userHome", userController.showIndex);
 app.get("/userMain", userController.showIndex1);
 app.get("/userReserve", userController.showIndex2);
-//app.get("/userHome", userController.showIndex);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
