@@ -4,13 +4,13 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             primaryKey: true
         },
-        usageTime: {
+        machineType: {
             type: Sequelize.STRING,
         },
         reservationDate: {
             type: Sequelize.DATE
         },
-        Location: {
+        machineNum: {
              type: Sequelize.STRING
         }
     },
