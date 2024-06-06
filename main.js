@@ -70,12 +70,11 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
-app.get("/getReservation",reservationController.getAllReservations);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
 app.get("/", homeController.showIndex);
-app.get("/userHome", userController.showIndex);
-app.get("/userMain", userController.showIndex1);
-app.get("/userReserve", userController.showIndex2);
+app.get("/user/userHome", userController.showIndex);
+app.get("/user/userMain", userController.showIndex1);
+app.get("/user/userReserve", userController.showIndex2);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);

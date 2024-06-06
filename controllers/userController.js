@@ -1,11 +1,11 @@
 "use strict";
 
 exports.showIndex = (req, res) => {
-    res.render("userHome");
+    res.render("user/userHome");
 };
 exports.showIndex1 = (req, res) => {
-    res.render("userMain");
+    res.render("user/userMain");
 };
 exports.showIndex2 = (req, res) => {
-    res.render("userReserve");
+    res.render("user/userReserve");
 };
