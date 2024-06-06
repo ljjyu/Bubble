@@ -28,12 +28,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static("public"));
 // 레이아웃 설정
 //app.use(layouts);
+
+app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.messages = req.flash();
+    next();
+});
 // 데이터 파싱
-app.use(
-    express.urlencoded({
-        extended:false
-    })
-);
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 // 라우트 등록
@@ -41,7 +44,7 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/", homeController.showIndex);
-app.post("/", usersController.authenticate);
+app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
 
 app.use(errorController.logErrors);
