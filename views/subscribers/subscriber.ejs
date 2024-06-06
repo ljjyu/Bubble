@@ -56,6 +56,12 @@
     <div class="signup-form">
         <h2>회원가입</h2>
         <form class="subscription-form" action="subscribe" method="post">
+            <div>
+            <input type="radio" id="roleUser" name="role" value="user" required>
+            <label for="roleUser">User</label>
+            <input type="radio" id="roleAdmin" name="role" value="admin" required>
+            <label for="roleAdmin">Admin</label>
+            </div>
             <input type="text" name="name" placeholder="Name">
             <input type="text" name="email" placeholder="Email">
             <input type="text" name="password" placeholder="Password">

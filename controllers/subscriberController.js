@@ -1,8 +1,8 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
     Op = db.Sequelize.Op,
-    bcrypt = require('bcrypt');
-const saltRounds = 10;
+    bcrypt = require('bcrypt'),
+    saltRounds = 10;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
@@ -32,7 +32,8 @@ exports.saveSubscriber = async (req, res) => {
             await Subscriber.create({
                 name: req.body.name,
                 email: req.body.email,
-                password: hashedPassword
+                password: hashedPassword,
+                role: req.body.role
             });
             res.redirect("/");
         }
