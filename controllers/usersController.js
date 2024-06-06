@@ -1,6 +1,5 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
-    Op = db.Sequelize.Op,
     bcrypt = require('bcrypt');
 
 exports.authenticate = async (req, res) => {
@@ -21,5 +20,13 @@ exports.authenticate = async (req, res) => {
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).send('Internal Server Error');
+    }
+};
+exports.redirectView = (req, res) => {
+    const redirectPath = res.locals.redirect;
+    if (redirectPath) {
+        res.redirect(redirectPath);
+    } else {
+        res.status(500).send('No redirect path set');
     }
 };
