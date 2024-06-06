@@ -46,6 +46,7 @@ app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // ë„˜ê
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
+app.get("/adminMain", homeController.showIndex3);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
