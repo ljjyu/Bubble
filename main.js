@@ -18,37 +18,6 @@ db.sequelize.sync(); // 모델 동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
 const Reservation = db.reservation;
-/*let test_create = async () => {
-    try {
-        await Machine.bulkCreate([
-            {
-                name: "Jon",
-                state: "ok"
-            }, {
-                name: "Min",
-                state: "no"
-            }
-        ]);
-    } catch (err) {
-        console.error("Error creating machines:", err);
-    }
-};
-// SELECT
-let test_find = async () => {
-    try {
-        let myQuery = await Machine.findAll({
-            where: { name: "Jon", state: {[Op.like]: "%no%"}}
-        });
-        console.log(myQuery);
-    } catch (err) {
-        console.error("Error finding machines:", err);
-    }
-}
-let test = async () => {
-    await test_create();
-    await test_find();
-}
-test();*/
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
