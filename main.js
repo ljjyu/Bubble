@@ -29,15 +29,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static("public"));
 // 레이아웃 설정
 //app.use(layouts);
+// 데이터 파싱
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.messages = req.flash();
     next();
 });
-// 데이터 파싱
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
