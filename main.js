@@ -17,7 +17,7 @@ const express = require("express"),
 db.sequelize.sync(); // 모델 동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
-const Reservation = db.reservation;
+const Reservation = db.reservation; //왜 선언만 되고 해당 값이 읽히지는 않는지 물어보기
 /*let test_create = async () => {
     try {
         await Machine.bulkCreate([
