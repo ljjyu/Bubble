@@ -21,9 +21,9 @@ exports.createReservation = async (req, res) => {
 
         const newReservation = await Reservation.create({
             reservationNumber,
-            machineType: machineType,
+            machineType,
             reservationDate: reservationTime, // Store reservationTime as reservationDate
-            machineNum: machineNumber // Store machineNumber as Location
+            machineNumber // Store machineNumber as Location
         });
 
         res.status(201).send(newReservation);
