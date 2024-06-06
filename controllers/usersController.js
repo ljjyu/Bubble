@@ -17,6 +17,7 @@ exports.authenticate = async (req, res) => {
             req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
             res.locals.redirect = '/';
         }
+        next(); // 다음 미들웨어로 이동
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).send('Internal Server Error');
