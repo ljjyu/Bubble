@@ -2,7 +2,7 @@ const db = require("../models/index"),
     Subscriber = db.subscriber,
     bcrypt = require('bcrypt');
 
-exports.authenticate = async (req, res) => {
+exports.authenticate = async (req, res, next) => {
     const { email, password } = req.body;
     try {
         // 이메일로 사용자 조회
