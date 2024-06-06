@@ -132,6 +132,23 @@
         return;
     }
 
+    // 현재 날짜
+    const currentDate = new Date();
+    // 선택한 예약 날짜
+    const selectedDate = new Date(reservationTime);
+    const currentMonth = currentDate.getMonth();
+    const selectedMonth = selectedDate.getMonth();
+
+    if (selectedMonth < currentMonth) {
+        alert('지난 달입니다.');
+        return;
+    }
+
+    if (selectedMonth > currentMonth) {
+        alert('해당 월은 아직 오픈되지 않았습니다.');
+        return;
+    }
+
     const response = await fetch('/reservations', {
         method: 'POST',
         headers: {
