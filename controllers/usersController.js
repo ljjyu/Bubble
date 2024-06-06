@@ -12,10 +12,10 @@ exports.authenticate = async (req, res) => {
         if (user && await bcrypt.compare(password, user.password)) {
             req.flash("logged in successfully!");
             res.locals.user = user;
-            res.redirect('/userMain'); // 사용자 메인 페이지로 리다이렉트
+             res.locals.redirect = '/userMain'; // 사용자 메인 페이지로 리다이렉트
         } else {
             req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
-            res.redirect('/');
+            res.locals.redirect = '/';
         }
     } catch (error) {
         console.error('Error logging in:', error);
