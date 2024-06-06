@@ -8,7 +8,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         password: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(255),
+            allowNull: false
         },
         phoneNumber: {
              type: Sequelize.STRING
