@@ -9,6 +9,7 @@ const express = require("express"),
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
     weatherController = require("./controllers/weatherController"),
+    statisticController = require("./controllers/statisticController"),
     layouts = require("express-ejs-layouts"),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
@@ -41,6 +42,7 @@ app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // ë„˜ê
 app.get("/getMachine",machineController.getAllMachines);
 app.get("/getReservation",reservationController.getAllReservations);
 app.use("/getWeather", weatherController);
+app.get("/getStatistic", statisticController.getAllStatistics);
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);
