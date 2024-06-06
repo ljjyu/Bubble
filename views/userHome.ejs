@@ -17,44 +17,40 @@
             text-align: center;
             font-size: 20px;
             color: black;
-	    margin-left: 250px;
+            margin-left: 250px;
         }
         .sidebar {
             width: 250px;
             background-color: #FFFFFF;
             position: fixed;
             height: 100%;
-	    border: 1px solid #d3d3d3;
+            border: 1px solid #d3d3d3;
         }
         .sidebar a {
             padding-top: 15px;
             padding-bottom: 15px;
             text-decoration: none;
             font-size: 18px;
-	    text-align: center;
+            text-align: center;
             color: black;
             display: block;
             border-bottom: 1px solid #d3d3d3;
-	}
+        }
         .sidebar a:hover {
             background-color: #d3d3d3;
             color: black;
         }
-	.main-content h2 {
+        .main-content h2 {
             margin-left: 30px;
         }
         .main-content {
             margin-left: 270px;
             padding: 20px;
         }
-        .status-section {
-            display: flex;
-            justify-content: space-around;
-        }
         .machine-section {
             width: 45%;
-            float:inline-start;
-            padding:10px;
+            float: inline-start;
+            padding: 10px;
         }
         .machine {
             background-color: #f0f0f0;
@@ -62,13 +58,7 @@
             padding: 10px;
             margin-bottom: 20px;
             text-align: center;
-            position:relative
-        }
-        .machine.yellow {
-            background-color: #FAEC97;
-        }
-        .machine.purple {
-            background-color: #D8CEF6;
+            position: relative;
         }
         .machine span {
             display: block;
@@ -83,7 +73,6 @@
             border-radius: 50%;
             padding: 5px 10px;
         }
-        
     </style>
 </head>
 <body>
@@ -101,24 +90,16 @@
     <div class="main-content">
         <div id="reserv-status-container">
             <h2>예약 내역</h2>
-            <div class="machine-section">
-                <h3>세탁기</h3>
-                <div class="machine purple" data-id="01">
-                    <span>예약 번호</span>
-                    <span>예약 날짜</span>
-                    <span>예약 시간</span>
-                    <span>코스</span>
+            <% reservations.forEach(function(reservation) { %>
+                <div class="machine-section">
+                    <div class="machine" data-id="<%= reservation.reservationNumber %>">
+                        <span>예약 번호: <%= reservation.reservationNumber %></span>
+                        <span>예약 날짜: <%= reservation.reservationDate.toISOString().slice(0, 10) %></span>
+                        <span>예약 시간: <%= reservation.usageTime %></span>
+                        <span>위치: <%= reservation.Location %></span>
+                    </div>
                 </div>
-            </div>
-            <div class="machine-section">
-                <h3>건조기</h3>
-                <div class="machine yellow" data-id="01">
-                    <span>예약 번호</span>
-                    <span>예약 날짜</span>
-                    <span>예약 시간</span>
-                    <span>코스</span>
-                </div>
-        </div>
+            <% }); %>
         </div>
     </div>
 </body>
