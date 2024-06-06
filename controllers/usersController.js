@@ -32,3 +32,11 @@ exports.redirectView = (req, res) => {
         res.status(500).send('No redirect path set');
     }
 };
+exports.logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Failed to log out');
+        }
+        res.redirect('/');
+    });
+};

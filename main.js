@@ -47,6 +47,7 @@ app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
 app.get("/adminMain", homeController.showIndex3);
+app.post("/userMain", usersController.logout);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
