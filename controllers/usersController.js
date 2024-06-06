@@ -10,7 +10,7 @@ exports.authenticate = async (req, res) => {
         const user = await Subscriber.findOne({ where: { email:req.body.email } });
 
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
-        if ((user && user.password === req.body.password) {
+        if (user && user.password === req.body.password) {
             req.flash("logged in successfully!");
             res.locals.redirect('/userMain'); // 사용자 메인 페이지로 리다이렉트
             res.locals.user = user;
