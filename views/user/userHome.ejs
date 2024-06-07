@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이 페이지</title>
+    <title>나의 예약 내역</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,26 +91,25 @@
         마이 페이지
     </div>
     <div class="sidebar">
-        <a href="/user/userMain">HOME</a>
-        <a href="/user/userHome">나의 예약 내역</a>
-        <a href="#">리뷰</a>
-        <a href="#">문의</a>
-        <a href="#">설정</a>
+        <a href="userMain">HOME</a>
+        <a href="userReserve">예약하기</a>
+        <a href="userHome">나의 예약 내역</a>
+        <a href="#">공지사항</a>
         <a href="#">...</a>
     </div>
     <div class="main-content">
         <div id="reserv-status-container">
             <h2>예약 내역</h2>
             <div class="machine-section">
-                <h3>세탁기</h3>
+                <h3>예약 번호</h3>
                 <div class="machine purple" data-id="01">
-                    <span>예약 번호</span>
+                    <span>기계 종류</span>
+                    <span>기계 번호</span>
                     <span>예약 날짜</span>
                     <span>예약 시간</span>
-                    <span>코스</span>
                 </div>
             </div>
-            <div class="machine-section">
+           /* <div class="machine-section">
                 <h3>건조기</h3>
                 <div class="machine yellow" data-id="01">
                     <span>예약 번호</span>
@@ -118,7 +117,7 @@
                     <span>예약 시간</span>
                     <span>코스</span>
                 </div>
-        </div>
+        </div>*/
         </div>
     </div>
 </body>
