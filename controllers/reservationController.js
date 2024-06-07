@@ -1,12 +1,14 @@
 const db = require("../models/index");
 const Reservation = db.reservation;
+//Op =db.Sequelize.Op;
 const { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
 
 exports.getAllReservations = async (req, res) => {
     try {
         const data = await Reservation.findAll();
         console.log(data);
-        res.render("getReservation", { reservations: data });
+        //res.render("getReservation", { reservations: data });
+        res.render("user/userReserve", { reservations: data });
     } catch (err) {
         res.status(500).send({
             message: err.message

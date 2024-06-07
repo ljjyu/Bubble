@@ -40,9 +40,9 @@ app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); //
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
-app.get("/user/userHome", userController.showIndex);
+app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userMain", userController.showIndex1);
-app.get("/user/userReserve", userController.showIndex2);
+app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/", homeController.showIndex);
 
 app.use(errorController.logErrors);
