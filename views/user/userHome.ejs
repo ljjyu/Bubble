@@ -103,7 +103,7 @@
         <div id="reserv-status-container">
             <h2>예약 내역</h2>
             <% reservations.forEach((reservation, index) => { %>
-                <div class="machine purple" data-id="<%= index + 1 %>">
+                <div class="machine <%= reservation.machineType === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
                     <span class="left-align">예약 번호 <%= reservation.reservationNumber %> </span>
                     <span class="left-align">기계 종류 <%= reservation.machineType %> </span>
                     <span class="left-align">기계 번호 <%= reservation.machineNum %> </span>
@@ -113,5 +113,6 @@
             <% }); %>
         </div>
     </div>
+    
 </body>
 </html>
