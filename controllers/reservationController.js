@@ -6,7 +6,7 @@ exports.getAllReservations = async (req, res) => {
     try {
         const data = await Reservation.findAll();
         console.log(data);
-        res.render("/user/userHome", { reservations: data });
+        res.render("user/userHome", { reservations: data });
     } catch (err) {
         res.status(500).send({
             message: err.message
@@ -25,7 +25,7 @@ exports.createReservation = async (req, res) => {
             reservationDate: reservationTime, // Store reservationTime as reservationDate
             machineNum: machineNumber // Store machineNumber as Location
         });
-        res.render("/user/userHome",{reservation: data});
+        res.render("user/userHome",{reservation: data});
         res.status(201).send(newReservation);
     } catch (err) {
         res.status(500).send({
