@@ -104,12 +104,12 @@
         <div id="reserv-status-container">
             <h2>예약 내역</h2>
             <div class="machine-section">
-                <h3>예약 번호</h3>
+                <h3>예약 번호: <%= reservation.reservationNumber %> </h3>
                 <div class="machine purple" data-id="01">
-                    <span class="left-align">기계 종류</span>
-                    <span class="left-align">기계 번호</span>
-                    <span class="left-align">예약 날짜</span>
-                    <span class="left-align">예약 시간</span>
+                    <span class="left-align">기계 종류 <%= reservation.machineType %> </span>
+                    <span class="left-align">기계 번호 <%= reservation.machineNum %> </span>
+                    <span class="left-align">예약 날짜 <%= reservation.reservationDate %> </span>
+                    <span class="left-align">예약 시간 </span>
                 </div>
             </div>
         </div>

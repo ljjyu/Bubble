@@ -25,7 +25,7 @@ exports.createReservation = async (req, res) => {
             reservationDate: reservationTime, // Store reservationTime as reservationDate
             machineNum: machineNumber // Store machineNumber as Location
         });
-
+        res.render("userHome",{reservation: data});
         res.status(201).send(newReservation);
     } catch (err) {
         res.status(500).send({
