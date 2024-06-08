@@ -7,6 +7,7 @@ const express = require("express"),
     errorController = require("./controllers/errorController"),
     subscriberController = require("./controllers/subscriberController"),
     usersController = require("./controllers/usersController"),
+    reviewsController = require("./controllers/reviewsController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -48,6 +49,9 @@ app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
 app.get("/adminMain", homeController.showIndex3);
 app.post("/userMain", usersController.logout);
+app.get("/reviews/getReviews", reviewsController.getAllReviews);
+app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
+app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);

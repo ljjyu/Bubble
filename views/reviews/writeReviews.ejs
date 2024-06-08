@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 작성</title>
+</head>
+<body>
+    <h1>리뷰 작성</h1>
+    <form action="/reviews/writeReviews" method="POST">
+        <div>
+            <label for="name">이름:</label>
+            <input type="text" id="username" name="name" required>
+        </div>
+        <div>
+            <label for="review">리뷰 내용:</label>
+            <textarea id="review" name="review" rows="4" required></textarea>
+        </div>
+        <div>
+            <label for="rating">평점:</label>
+            <select id="rating" name="rating" required>
+                <option value="1">1점</option>
+                <option value="2">2점</option>
+                <option value="3">3점</option>
+                <option value="4">4점</option>
+                <option value="5">5점</option>
+            </select>
+        </div>
+        <button type="submit">작성하기</button>
+    </form>
+</body>
+</html>

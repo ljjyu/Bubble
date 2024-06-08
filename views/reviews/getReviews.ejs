@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 목록</title>
+</head>
+<body>
+    <h1>리뷰 목록</h1>
+    <ul>
+        <% reviews.forEach(function(review) { %>
+            <li>
+                <strong><%= review.username %></strong> - <%= review.rating %>점<br>
+                <p><%= review.review %></p>
+		<small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
+            </li>
+        <% }); %>
+    </ul>
+    <a href="/reviews/writeReviews">리뷰 작성하기</a>
+</body>
+</html>
