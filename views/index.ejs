@@ -33,7 +33,7 @@
             line-height: 1.6;
             margin-bottom: 30px;
         }
-        form {
+	form {
             background-color: #fff;
             padding: 30px;
             border-radius: 5px;
@@ -82,10 +82,10 @@
 	    display: flex;
 	    align-items: center;
         margin-bottom: 20px;
-    }
-    .usertype-label label {
-        margin-right: 10px;
-    }
+        }
+        .usertype-label label {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -96,28 +96,14 @@
 	        <p>로그인하여 예약하거나 회원가입하세요.</p>
         </div>
         <div class="right-side">
-            <form action="login_process.php" method="post">
-                <h2>로그인</h2>
-		<div class="usertype-label">
-		    <label>
-                <input type="checkbox" name="usertype" value="일반회원">
-                일반회원
-		    </label>
-		    <label>
-                <input type="checkbox" name="usertype" value="관리자">
-                관리자
-		    </label>
-		</div>
-		<div>
-            <label for="username">아이디</label>
-            <input type="text" id="username" name="username" required>
-		</div>
-		<div>
-		    <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" required>
-		</div>
-		<input type="submit" value="로그인">
-            </form>
+        <form class="form-signin" action="/" method="POST">
+        <h2 class="form-signin-heading">Login:</h2>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="text" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus required>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
             <div class="signup-btn">
                 <p>계정이 없으신가요? <a href="subscribers/subscriber">회원가입</a></p>
             </div>

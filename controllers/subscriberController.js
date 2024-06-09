@@ -1,6 +1,8 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
-    Op = db.Sequelize.Op;
+    Op = db.Sequelize.Op,
+    bcrypt = require('bcrypt'),
+    saltRounds = 10;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
@@ -20,14 +22,21 @@ exports.getSubscriptionPage = (req, res) => {
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveSubscriber = async (req, res) => {
     try {
-        await Subscriber.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            phoneNumber: req.body.phoneNumber,
-            cardNumber: req.body.cardNumber
-        });
-        res.render("subscribers/subscribe");
+        const existingSubscriber = await Subscriber.findOne({where: { email: req.body.email }});
+        if (existingSubscriber) {
+            res.status(400).send({
+                message: "이미 등록된 이메일 주소입니다."
+            });
+        } else {
+            const hashedPassword = await bcrypt.hash(req.body.password, saltRounds); // 비밀번호 해싱
+            await Subscriber.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: hashedPassword,
+                role: req.body.role
+            });
+            res.redirect("/");
+        }
     } catch (err) {
         res.status(500).send({
             message: err.message

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+	.container {
+	    width: 80%;
+	    margin: 0 auto;
+	    padding: 20px;
+	    max-width: 1000px;
+	}
+	.review-list {
+  	    list-style: none;
+    	    padding: 0;
+	}
+
+	.review-item {
+    	    background-color: #fff;
+    	    border: 1px solid #ddd;
+    	    border-radius: 5px;
+    	    margin: 10px auto;
+    	    padding: 20px;
+    	    max-width: 1000px; 
+   	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}		
+
+	.review-item strong {
+    	    font-size: 1.2em;
+	}	
+
+	.review-item p {
+            margin: 10px 0;
+	    font-size: 1em;
+	}
+
+	.review-item small {
+	    color: #888;
+	}
+
+	.button-container {
+ 	   text-align: right;
+	    margin-bottom: 20px;
+	}
+	</style>
+</head>
+<body>
+    <header id="header">
+        <%- include("../navbar.ejs") %>
+    </header>
+    <div class="container">
+	<h2 class-"page-title">전체 리뷰</h2>
+        <div class="button-container">
+            <a href="/reviews/writeReviews" class="btn">리뷰 작성하기</a>
+        </div>    
+        <ul class="review-list">
+            <% reviews.forEach(function(review) { %>
+                <li class="review-item">
+                    <strong><%= review.name %></strong> - <%= '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) %><br>
+                    <p><%= review.review %></p>
+                    <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>
