@@ -18,19 +18,19 @@ router.get('/', async (req, res) => {
             });
             apiRes.on('end', () => {
                 const weatherData = JSON.parse(data);
-                res.render('../views/manager/getWeather', { weatherData });
+                res.render('manager/getWeather', { weatherData });
             });
         });
 
         request.on('error', (error) => {
             console.error('Error:', error);
-            res.render('../views/manager/getWeather', { error: 'Error fetching weather data' });
+            res.render('manager/getWeather', { error: 'Error fetching weather data' });
         });
 
         request.end();
     } catch (error) {
         console.error('Error fetching weather:', error);
-        res.render('../views/manager/getWeather', { error: 'Error fetching weather data' });
+        res.render('manager/getWeather', { error: 'Error fetching weather data' });
     }
 });
 
