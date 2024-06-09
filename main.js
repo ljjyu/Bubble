@@ -14,6 +14,7 @@ const express = require("express"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"),
+    userController = require("./controllers/userController"),
     reviewsController = require("./controllers/reviewsController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
@@ -54,6 +55,7 @@ app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); //
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
+
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
