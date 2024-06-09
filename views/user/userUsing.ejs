@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사용 중인 예약</title>
+    <!-- 필요한 CSS 스타일 시트 링크 추가 -->
+</head>
+<body>
+    <h1>사용 중인 예약</h1>
+    <div id="reservation-details">
+        <p>예약 번호: <span id="reservation-number"></span></p>
+        <p>기기 종류: <span id="machine-type"></span></p>
+        <p>기기 번호: <span id="machine-number"></span></p>
+        <p>예약 날짜: <span id="reservation-date"></span></p>
+        <p>잔여 시간: <span id="remaining-time"></span></p>
+    </div>
+
+    <!-- 필요한 JavaScript 스크립트 링크 추가 -->
+    <script>
+        window.onload = function() {
+            // 페이지 로드 시 서버로부터 예약 정보 및 잔여 시간을 가져오는 함수 호출
+            getReservationDetails();
+        };
+
+        function getReservationDetails() {
+            const reservationId = '<%= reservationId %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
+            fetch(`/user/userUsing/${reservationId}/getRemainingTime`)
+                .then(response => response.json())
+                .then(data => {
+                    // 예약 정보를 업데이트합니다.
+                    document.getElementById('reservation-number').innerText = data.reservationNumber;
+                    document.getElementById('machine-type').innerText = data.machineType;
+                    document.getElementById('machine-number').innerText = data.machineNumber;
+                    document.getElementById('reservation-date').innerText = data.reservationDate;
+                    // 잔여 시간을 업데이트합니다.
+                    const remainingTime = data.remainingTime / (1000 * 60); // 밀리초를 분으로 변환합니다.
+                    document.getElementById('remaining-time').innerText = remainingTime.toFixed(2) + ' 분';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
