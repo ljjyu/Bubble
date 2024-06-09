@@ -36,31 +36,4 @@ exports.createReservation = async (req, res) => {
         });
     }
 };
-
-//여기서부터 잔여시간 수정한 부분! 
-exports.getUserUsingPage = async (req, res) => {
-    try {
-        const userId = req.user.id; // 사용자 ID를 가져옴
-
-        const reservations = await Reservation.findAll({
-            where: {
-                userId: userId
-            }
-        });
-
-        const userReservations = reservations.map(reservation => {
-            const { machineType, machineNum, reservationDate, remainingTime } = reservation;
-            return {
-                id: `${machineType}${machineNum}`,
-                remainingTime: remainingTime ? moment(remainingTime, 'HH:mm:ss').format('HH:mm:ss') : null
-            };
-        });
-
-        res.render('userUsing', { reservations: userReservations });
-    } catch (err) {
-        res.status(500).send({
-            message: '사용자 예약 정보를 불러오는 중 오류가 발생했습니다.'
-        });
-    }
-};
 // 수정 금지 !!!!!!
