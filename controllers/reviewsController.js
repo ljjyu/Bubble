@@ -23,7 +23,7 @@ exports.saveReviews = async (req, res) => {
             // 입력값 유효성 검사
              if (!name || !review || !rating) {
                 req.flash('error', 'All fields are required.');
-                return res.redirect('/reviews/writeReviews');
+                return res.redirect('reviews/writeReviews');
              }
             await Review.create({
                 name,

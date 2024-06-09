@@ -3,9 +3,9 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    homeController = require("./controllers/homeController"),
-    errorController = require("./controllers/errorController"),
-    subscriberController = require("./controllers/subscriberController"),
+    homeController = require("./controllers/homeController"), // 메인 로그인
+    errorController = require("./controllers/errorController"), // 에러 관련
+    subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
     userHomeController = require("./controllers/userHomeController"),
@@ -13,8 +13,8 @@ const express = require("express"),
     statisticController = require("./controllers/statisticController"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
-    userController=require("./controllers/userController"),
-    usersController = require("./controllers/usersController"),
+    usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
+    userController = require("./controllers/userController"),
     reviewsController = require("./controllers/reviewsController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
@@ -52,9 +52,10 @@ app.use((req, res, next) => {
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
-app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
+app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get("/getMachine",machineController.getAllMachines);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
+
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
@@ -69,8 +70,6 @@ app.get('manager/showNotice', showNoticeController.getAllNotices);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
-app.get("/userMain", homeController.showIndex2);
-app.post("/userMain", usersController.logout);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
