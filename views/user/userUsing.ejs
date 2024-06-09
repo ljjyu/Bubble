@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #d8cef6;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            margin-left: 250px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100%;
+            border: 1px solid #d3d3d3;
+        }
+        .sidebar a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            text-align: center;
+            color: black;
+            display: block;
+            border-bottom: 1px solid #d3d3d3;
+        }
+        .sidebar a:hover {
+            background-color: #d3d3d3;
+            color: black;
+        }
+        .main-content h2 {
+            margin-left: 30px;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .status-section {
+            display: flex;
+            justify-content: space-around;
+        }
+        .machine-section {
+            width: 45%;
+        }
+        .machine {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            width: 150px;
+        }
+        .machine.active {
+            background-color: #faec97;
+            color: #000;
+        }
+        .machine.active .icon {
+            background-color: #ffc107;
+        }
+        .machine span {
+            display: block;
+            margin: 10px 0;
+        }
+        .machine::after {
+            content: attr(data-id);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        #laundry-status-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .machines-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .machine-section h3 {
+            text-align: left;
+            margin-left: 20px;
+        }
+        .machine-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+        .machine .icon {
+            background-color: #dcdcdc;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+        .machine .course,
+        .machine .time {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .divider {
+            width: 0.5px;
+            background-color: #000;
+            margin: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        사용자 페이지
+    </div>
+    <div class="sidebar">
+        <a href="/user/userMain">HOME</a>
+        <a href="/user/userReserve">예약하기</a>
+        <a href="/user/userHome">나의 예약 내역</a>
+        <a href="/user/userUsing">나의 사용중 기기</a>
+        <a href="#section4">공지사항</a>
+        <a href="#section5">...</a>
+    </div>
+    <div class="main-content">
+        <div id="laundry-status-container">
+            <h2>실시간 사용현황</h2>
+            <div class="machines-container">
+                <div class="machine-section">
+                    <h3>세탁기</h3>
+                    <div class="machine-grid" id="washer-container">
+                        <!-- 세탁기 정보는 JavaScript로 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="machine-section">
+                    <h3>건조기</h3>
+                    <div class="machine-grid" id="dryer-container">
+                        <!-- 건조기 정보는 JavaScript로 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 사용자가 예약한 기기 정보
+        const userReservations = [
+            // 예약한 기기 정보를 받아와서 배열로 저장합니다.
+            // 예시: { id: 'washer2', remainingTime: '00:06:32' }
+            // 사용자가 예약한 기기 정보가 없다면 빈 배열로 초기화합니다.
+        ];
+        // 각 세탁/건조기의 UI를 생성하고 업데이트하는 함수
+        function updateMachineUI(containerId, machineId, remainingTime) {
+            const container = document.getElementById(containerId);
+            const machineElement = document.createElement('div');
+            machineElement.classList.add('machine');
+            machineElement.id = machineId;
+            if (remainingTime) {
+                machineElement.classList.add('active');
+                machineElement.innerHTML = `
+                    <div class="icon">${machineId.substring(6)}</div>
+                    <span class="course">코스 -</span>
+                    <span class="time">잔여시간 ${remainingTime}</span>
+                `;
+            } else {
+                machineElement.innerHTML = `
+                    <div class="icon">${machineId.substring(6)}</div>
+                    <span class="course">아직 사용 전입니다.</span>
+                `;
+                machineElement.style.backgroundColor = '#d3d3d3'; // 회색으로 설정
+            }
+            container.appendChild(machineElement);
+        }
+
+        // 사용자가 예약한 기기가 있는지 확인하고 UI를 업데이트하는 함수
+        function updateUserUsingStatus() {
+            const washerContainer = document.getElementById('washer-container');
+            const dryerContainer = document.getElementById('dryer-container');
+            
+            if (userReservations.length === 0) {
+                // 사용자가 예약한 기기가 없을 경우
+                alert('예약한 기기가 없습니다.');
+                return;
+            }
+
+            // 사용자가 예약한 각 기기의 정보를 반복하여 UI를 업데이트합니다.
+            userReservations.forEach(reservation => {
+                const { id, remainingTime } = reservation;
+                if (id.startsWith('washer')) {
+                    updateMachineUI('washer-container', id, remainingTime);
+                } else if (id.startsWith('dryer')) {
+                    updateMachineUI('dryer-container', id, remainingTime);
+                }
+            });
+        }
+
+        // 페이지 로드 시 사용자가 예약한 기기 정보를 확인하고 UI를 업데이트합니다.
+        window.onload = updateUserUsingStatus;
+    </script>
+</body>
+</html>
