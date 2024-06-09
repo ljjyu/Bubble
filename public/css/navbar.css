@@ -1,8 +1,3 @@
-body{
-    margin: 0;
-    font-family: 'montserrat';
-}
-
 a{
     text-decoration: none;
     color: var(--text-color);
@@ -13,6 +8,7 @@ a{
     align-items: center;
     background-color: #D8CEF6;
     padding: 8px 12px;
+    font-family: 'montserrat';
 }
 
 .navbar__logo{
@@ -58,7 +54,6 @@ a{
     font-size: 24px;
     color: white;
 }
-
 
 @media screen and (max-width: 768px){
     .navbar{

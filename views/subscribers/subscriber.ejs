@@ -6,6 +6,16 @@
     <title>회원가입 페이지</title>
     <link rel="stylesheet" href="/css/styles.css">
     <style>
+	.signup-form{
+	    max-width: 1000px;
+	    padding: 20px;
+            margin: auto;
+	}
+	.subscription-form{
+	    padding: 20px;
+	    max-width: 1000px;
+	}
+
         .radio-group {
             display: flex;
             justify-content: start;
@@ -38,9 +48,9 @@
             <input type="radio" id="roleAdmin" name="role" value="admin" required>
             <label for="roleAdmin">Admin</label>
             </div>
-            <input type="text" name="name" placeholder="Name">
-            <input type="text" name="email" placeholder="Email">
-            <input type="text" name="password" placeholder="Password">
+            <input type="text" name="이름" placeholder="Name">
+            <input type="text" name="이메일" placeholder="Email">
+            <input type="text" name="비밀번호" placeholder="Password">
             <input type="submit" name="submit">
         </form>
     </div>
