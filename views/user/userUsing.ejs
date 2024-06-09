@@ -7,24 +7,30 @@
 </head>
 <body>
     <h1>사용 중인 예약</h1>
-    <div id="reservation-details">
-        <p>예약 번호: <span id="reservation-number"></span></p>
-        <p>기기 종류: <span id="machine-type"></span></p>
-        <p>기기 번호: <span id="machine-number"></span></p>
-        <p>예약 날짜: <span id="reservation-date"></span></p>
-        <p>잔여 시간: <span id="remaining-time"></span></p>
-    </div>
+    <% reservations.forEach((reservation, index) => { %>
+        <div class="machine <%= reservation.machineType === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
+            <span class="left-align">예약 번호 <%= reservation.reservationNumber %> </span>
+            <span class="left-align">기계 종류 <%= reservation.machineType %> </span>
+            <span class="left-align">기계 번호 <%= reservation.machineNum %> </span>
+            <span class="left-align">예약 날짜 <%= new Date(reservation.reservationDate).toLocaleString('ko-KR') %> </span> 
+            <span class="left-align">잔여 시간: <span id="remaining-time"></span> 분</span>  
+            
+
+            <!--수정 0610-->
+            <!-- 예약 시간 정보는 데이터베이스에 없으므로, 해당 필드는 추가하거나 데이터베이스에서 가져와야 합니다. -->
+        </div>
+    <% }); %>
 
     <!-- 필요한 JavaScript 스크립트 링크 추가 -->
     <script>
         window.onload = function() {
             // 페이지 로드 시 서버로부터 예약 정보 및 잔여 시간을 가져오는 함수 호출
-            getReservationDetails();
+            getRemaingTime();
         };
 
-        function getReservationDetails() {
-            const reservationId = '<%= reservationId %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
-            fetch(`/user/userUsing/${reservationId}/getRemainingTime`)
+        function getRemainingTime() {
+            const reservationNumber = '<%= reservationNumber %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
+            fetch(`/user/userUsing/${reservationNumber}/getRemainingTime`)
                 .then(response => response.json())
                 .then(data => {
                     // 예약 정보를 업데이트합니다.
