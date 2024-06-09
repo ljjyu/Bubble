@@ -11,7 +11,7 @@ exports.authenticate = async (req, res, next) => {
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
         if (user && await bcrypt.compare(password, user.password)) {
             req.flash("success","logged in successfully!");
-            const redirectPath = user.role == 'admin'? 'manager/getMachine':'userMain';
+            const redirectPath = user.role == 'admin'? 'manager/getMachine':'user/userMain';
             res.locals.user = user;
             res.locals.redirect = redirectPath;
         } else {

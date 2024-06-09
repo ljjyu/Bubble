@@ -70,8 +70,6 @@ app.get('manager/showNotice', showNoticeController.getAllNotices);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
-app.get("/userMain", homeController.showIndex2);
-app.post("/userMain", usersController.logout);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
