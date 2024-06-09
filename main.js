@@ -53,17 +53,18 @@ app.use((req, res, next) => {
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscribe", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
-app.get("/getMachine",machineController.getAllMachines);
-app.get("/getReservation",reservationController.getAllReservations);
-app.use("/getWeather", weatherController);
-app.get("/getStatistic", statisticController.getAllStatistics);
-app.get('/getNotice', noticeController.getNoticePage);
-app.post('/getNotice', noticeController.createNotice);
-app.get('/showNotice', showNoticeController.getAllNotices);
+
+app.get("manager/getMachine",machineController.getAllMachines);
+app.get("manager/getReservation",reservationController.getAllReservations);
+app.use("manager/getWeather", weatherController);
+app.get("manager/getStatistic", statisticController.getAllStatistics);
+app.get('manager/getNotice', noticeController.getNoticePage);
+app.post('manager/getNotice', noticeController.createNotice);
+app.get('manager/showNotice', showNoticeController.getAllNotices);
+
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
-app.get("/adminMain", homeController.showIndex3);
 app.post("/userMain", usersController.logout);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
