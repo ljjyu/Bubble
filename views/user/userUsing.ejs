@@ -91,5 +91,14 @@
                 <% reservations.forEach((reservation) => { %>
                     <div class="machine <%= reservation.remainingTime ? '' : 'inactive' %>" data-id="<%= reservation.id %>">
                         <span class="course">기계 종류: <%= reservation.machineType %></span>
-                        <span class="time">
-                            <% if (reservation.remainingTime) { %>
+                        <% if (reservation.remainingTime) { %>
+                            <span class="time">잔여 시간: <%= reservation.remainingTime %> 분</span>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
+
