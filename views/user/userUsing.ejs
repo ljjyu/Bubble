@@ -72,6 +72,30 @@
             padding: 5px 10px;
         }
     </style>
+    <script>
+        // 예약 정보를 업데이트하는 함수
+        function updateReservationInfo() {
+            // 서버로 예약 정보 요청
+            fetch('/user/userUsing')
+                .then(response => response.json())
+                .then(data => {
+                    // 받은 데이터를 이용하여 페이지 업데이트
+                    // 여기에 예약 정보를 처리하는 코드 작성
+                })
+                .catch(error => {
+                    console.error('예약 정보를 불러오는 동안 오류가 발생했습니다.', error);
+                });
+        }
+
+        // 페이지 로드 후 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            // 초기화 작업
+            updateReservationInfo();
+
+            // 일정 시간마다 예약 정보 업데이트
+            setInterval(updateReservationInfo, 60000); // 1분마다 업데이트
+        });
+    </script>
 </head>
 <body>
     <div class="header">사용 중인 기기</div>
