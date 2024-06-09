@@ -12,7 +12,15 @@ const express = require("express"),
     statisticController = require("./controllers/statisticController"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
+    usersController = require("./controllers/usersController"),
+    reviewsController = require("./controllers/reviewsController"),
     layouts = require("express-ejs-layouts"),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    flash = require('connect-flash'),
+    cookieParser = require("cookie-parser"),
+    passport = require("passport"),
+    bcrypt = require('bcrypt'),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
@@ -30,13 +38,16 @@ app.set('views', path.join(__dirname, 'views'));
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
-app.use(layouts);// 데이터 파싱
-app.use(
-    express.urlencoded({
-        extended:false
-    })
-);
+//app.use(layouts);
+// 데이터 파싱
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.messages = req.flash();
+    next();
+});
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
@@ -50,6 +61,13 @@ app.get('/getNotice', noticeController.getNoticePage);
 app.post('/getNotice', noticeController.createNotice);
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.get("/", homeController.showIndex);
+app.post("/", usersController.authenticate, usersController.redirectView);
+app.get("/userMain", homeController.showIndex2);
+app.get("/adminMain", homeController.showIndex3);
+app.post("/userMain", usersController.logout);
+app.get("/reviews/getReviews", reviewsController.getAllReviews);
+app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
+app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);

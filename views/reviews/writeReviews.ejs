@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+	.container {
+	    width: 80%;
+	    margin: 0 auto;
+	    padding: 20px;
+	}
+	.form-group {
+	    margin-bottom: 15px;
+	    text-align: left;
+	}
+
+	.form-control {
+	    width: 100%;
+	    padding: 10px;
+	    border: 1px solid #ddd;
+	    border-radius: 5px;
+	    box-sizing: border-box;
+	}
+	#username {
+    	    background-color: white;
+	    border: 1px solid #ccc;
+	}	
+	</style>
+</head>
+<body>
+    <header id="header">
+        <%- include("../navbar.ejs") %>
+    </header>
+    <div class="container">
+        <h2>리뷰 작성</h2>
+        <form action="/reviews/writeReviews" method="POST">
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="username" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="review">리뷰 내용</label>
+                <textarea id="review" name="review" rows="4" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating">평점</label>
+                <select id="rating" name="rating" class="form-control" required>
+                    <option value="1">1점</option>
+                    <option value="2">2점</option>
+                    <option value="3">3점</option>
+                    <option value="4">4점</option>
+                    <option value="5">5점</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">작성 완료</button>
+        </form>
+    </div>
+</body>
+</html>
