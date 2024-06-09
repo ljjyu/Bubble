@@ -35,33 +35,31 @@ exports.createReservation = async (req, res) => {
             message: err.message
         });
     }
-
-    //여기서부터 잔여시간 수정한 부분! 
 };
-exports.getRemainingTime = async (req, res) => {
+
+//여기서부터 잔여시간 수정한 부분! 
+exports.getUserUsingPage = async (req, res) => {
     try {
-        const { reservationNumber } = req.params;
-        const reservation = await Reservation.findByPk(reservationNumber);
+        const userId = req.user.id; // 사용자 ID를 가져옴
 
-        if (!reservation) {
-            return res.status(404).send({
-                message: "Reservation not found"
-            });
-        }
-
-        const currentTime = new Date();
-        const reservationTime = new Date(reservation.reservationDate);
-        const fifteenMinutes = 15 * 60 * 1000; // 15 minutes in milliseconds
-        const elapsedTime = currentTime - reservationTime;
-        const remainingTime = fifteenMinutes - elapsedTime;
-
-        res.status(200).send({
-            remainingTime: remainingTime > 0 ? remainingTime : 0 // Return remaining time or 0 if negative
+        const reservations = await Reservation.findAll({
+            where: {
+                userId: userId
+            }
         });
-        res.render("user/userUsing", { reservations: data });
+
+        const userReservations = reservations.map(reservation => {
+            const { machineType, machineNum, reservationDate, remainingTime } = reservation;
+            return {
+                id: `${machineType}${machineNum}`,
+                remainingTime: remainingTime ? moment(remainingTime, 'HH:mm:ss').format('HH:mm:ss') : null
+            };
+        });
+
+        res.render('userUsing', { reservations: userReservations });
     } catch (err) {
         res.status(500).send({
-            message: err.message
+            message: '사용자 예약 정보를 불러오는 중 오류가 발생했습니다.'
         });
     }
 };

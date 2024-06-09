@@ -155,15 +155,27 @@
             <div class="machines-container">
                 <div class="machine-section">
                     <h3>세탁기</h3>
-                    <div class="machine-grid" id="washer-container">
-                        <!-- 세탁기 정보는 JavaScript로 동적으로 추가됩니다 -->
+                    <div class="machine-grid">
+                        <% reservations.filter(reservation => reservation.id.startsWith('washer')).forEach(reservation => { %>
+                            <div class="machine <%= reservation.remainingTime ? 'active' : '' %>" id="<%= reservation.id %>">
+                                <div class="icon"><%= reservation.id.substring(6) %></div>
+                                <span class="course"><%= reservation.remainingTime ? '잔여시간' : '아직 사용 전입니다.' %></span>
+                                <span class="time"><%= reservation.remainingTime ? reservation.remainingTime : '' %></span>
+                            </div>
+                        <% }); %>
                     </div>
                 </div>
                 <div class="divider"></div>
                 <div class="machine-section">
                     <h3>건조기</h3>
-                    <div class="machine-grid" id="dryer-container">
-                        <!-- 건조기 정보는 JavaScript로 동적으로 추가됩니다 -->
+                    <div class="machine-grid">
+                        <% reservations.filter(reservation => reservation.id.startsWith('dryer')).forEach(reservation => { %>
+                            <div class="machine <%= reservation.remainingTime ? 'active' : '' %>" id="<%= reservation.id %>">
+                                <div class="icon"><%= reservation.id.substring(6) %></div>
+                                <span class="course"><%= reservation.remainingTime ? '잔여시간' : '아직 사용 전입니다.' %></span>
+                                <span class="time"><%= reservation.remainingTime ? reservation.remainingTime : '' %></span>
+                            </div>
+                        <% }); %>
                     </div>
                 </div>
             </div>
