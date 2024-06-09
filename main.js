@@ -59,7 +59,7 @@ app.post("/reservations", reservationController.createReservation); //안 되면
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
-app.get("/user/userUsing/:reservationNumber/getRemaingTime",reservationController.getRemainingTime); //잔여시간 라우터추가
+app.get("/user/userUsing",reservationController.getRemainingTime); //잔여시간 라우터추가
 
 app.get("manager/getMachine",machineController.getAllMachines);
 app.get("manager/getReservation",reservationController.getAllReservations);
