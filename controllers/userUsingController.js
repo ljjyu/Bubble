@@ -31,7 +31,7 @@ exports.getUserUsingPage = async (req, res) => {
             };
         });
 
-        res.render('userUsing', { reservations: userReservations });
+        res.render('user/userUsing', { reservations: userReservations });
     } catch (err) {
         console.error(err); // 오류 로그 출력
         res.status(500).send({
