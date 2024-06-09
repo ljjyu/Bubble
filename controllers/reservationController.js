@@ -9,7 +9,7 @@ exports.getAllReservations = async (req, res) => {
         console.log(data);
         //res.render("getReservation", { reservations: data });
         res.render("user/userReserve", { reservations: data });
-        res.render("reviews/getReservation", {reservations: data});
+        //res.render("reviews/getReservation", {reservations: data});
     } catch (err) {
         res.status(500).send({
             message: err.message
