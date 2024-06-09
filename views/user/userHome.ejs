@@ -107,7 +107,7 @@
                     <span class="left-align">예약 번호 <%= reservation.reservationNumber %> </span>
                     <span class="left-align">기계 종류 <%= reservation.machineType %> </span>
                     <span class="left-align">기계 번호 <%= reservation.machineNum %> </span>
-                    <span class="left-align">예약 날짜 <%= new Date(reservation.reservationDate).toLocaleString('ko-KR') %> </span> 
+                    <span class="left-align">예약 날짜 <%= new Date(reservation.reservationDate).toLocaleString('ko-KR', { second: '2-digit' }) %> </span>
                     <!--수정 0610-->
                     <!-- 예약 시간 정보는 데이터베이스에 없으므로, 해당 필드는 추가하거나 데이터베이스에서 가져와야 합니다. -->
                 </div>
