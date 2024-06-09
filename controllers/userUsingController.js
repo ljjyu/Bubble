@@ -1,18 +1,12 @@
-const db = require("../models/index");
-const Reservation = db.reservation;
 const moment = require('moment-timezone');
+const db = require("../models/index"),
+    Reservation = db.reservation,
+    Op = db.Sequelize.Op;
 
-exports.getUserUsingPage = async (req, res) => {
+exports.getUserUsingPage = (req, res) => {
     try {
-        // 현재 로그인한 사용자의 ID 가져오기
-        const userId = req.user.id;
-
-        // 사용자의 예약 정보 가져오기
-        const reservations = await Reservation.findAll({
-            where: {
-                userId: userId
-            }
-        });
+        // 세션에서 예약 정보를 가져옴
+        const reservations = req.session.reservations || [];
 
         // 예약 정보가 없을 경우 빈 배열 반환
         if (!reservations.length) {
@@ -31,9 +25,10 @@ exports.getUserUsingPage = async (req, res) => {
             };
         });
 
+        // 렌더링할 페이지와 데이터
         res.render('user/userUsing', { reservations: userReservations });
     } catch (err) {
-        console.error(err); // 오류 로그 출력
+        console.error(err);
         res.status(500).send({
             message: '사용자 예약 정보를 불러오는 중 오류가 발생했습니다.'
         });
