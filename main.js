@@ -56,10 +56,18 @@ app.post("/reservations", reservationController.createReservation); //안 되면
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
+
+app.get("manager/getMachine",machineController.getAllMachines);
+app.get("manager/getReservation",reservationController.getAllReservations);
+app.use("manager/getWeather", weatherController);
+app.get("manager/getStatistic", statisticController.getAllStatistics);
+app.get('manager/getNotice', noticeController.getNoticePage);
+app.post('manager/getNotice', noticeController.createNotice);
+app.get('manager/showNotice', showNoticeController.getAllNotices);
+
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
-app.get("/adminMain", homeController.showIndex3);
 app.post("/userMain", usersController.logout);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);

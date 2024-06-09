@@ -31,9 +31,9 @@ exports.saveReviews = async (req, res) => {
                 rating,
                 created_at: new Date()
             });
-            res.redirect("/reviews/getReviews");
+            res.redirect("reviews/getReviews");
         } catch (err) {
             req.flash('error', 'An error occurred while saving the review.');
-            res.redirect('/reviews/writeReviews');
+            res.redirect('reviews/writeReviews');
         }
 };
