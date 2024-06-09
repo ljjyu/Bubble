@@ -162,7 +162,7 @@
 
         function getReservationDetails() {
             const reservationId = '<%= reservationId %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
-            fetch(`/user/userUsing/${reservationId}/getRemainingTime`)f
+            fetch(`/user/userUsing/${reservationId}/getRemainingTime`);
                 .then(response => response.json())
                 .then(data => {
                     // 예약 정보를 업데이트합니다.
