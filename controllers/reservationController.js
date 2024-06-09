@@ -21,7 +21,7 @@ exports.createReservation = async (req, res) => {
     try {
         const { machineType, machineNumber, reservationTime } = req.body; // Update to match the correct keys
         const reservationNumber = uuidv4(); // Generate a unique reservation number
-
+        const reservationDate=new Date(reservationDate); //안 되면 지움 0610
         const newReservation = await Reservation.create({
             reservationNumber,
             machineType: machineType,
