@@ -41,16 +41,16 @@
     </header>
     <div class="signup-form">
         <h2>회원가입</h2>
-        <form class="subscription-form" action="subscriber" method="post">
+        <form class="subscription-form" action="/subscribers/subscriber" method="post">
             <div class="radio-group">
             <input type="radio" id="roleUser" name="role" value="user" required>
             <label for="roleUser">User</label>
             <input type="radio" id="roleAdmin" name="role" value="admin" required>
             <label for="roleAdmin">Admin</label>
             </div>
-            <input type="text" name="이름" placeholder="Name">
-            <input type="text" name="이메일" placeholder="Email">
-            <input type="text" name="비밀번호" placeholder="Password">
+            <input type="text" name="name" placeholder="Name">
+            <input type="text" name="email" placeholder="Email">
+            <input type="text" name="password" placeholder="Password">
             <input type="submit" name="submit">
         </form>
     </div>
