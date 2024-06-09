@@ -4,6 +4,7 @@ const db = require("../models/index"),
 
 exports.getUserUsingPage = async (req, res) => {
     try {
+        data = await Reservation.findAll();
         const reservations = await Reservation.findAll();
 
         if (!reservations.length) {
