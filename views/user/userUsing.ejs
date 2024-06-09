@@ -1,9 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>사용 중인 예약</title>
-    <!-- 필요한 CSS 스타일 시트 링크 추가 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header {
+            background-color: #d8cef6;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            margin-left: 250px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100%;
+            border: 1px solid #d3d3d3;
+        }
+        .sidebar a {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            text-align: center;
+            color: black;
+            display: block;
+            border-bottom: 1px solid #d3d3d3;
+        }
+        .sidebar a:hover {
+            background-color: #d3d3d3;
+            color: black;
+        }
+        .main-content h2 {
+            margin-left: 30px;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .status-section {
+            display: flex;
+            justify-content: space-around;
+        }
+        .machine-section {
+            width: 45%;
+        }
+        .machine {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            width: 150px;
+        }
+        .machine.active {
+            background-color: #faec97;
+            color: #000;
+        }
+        .machine.active .icon {
+            background-color: #ffc107;
+        }
+        .machine span {
+            display: block;
+            margin: 10px 0;
+        }
+        .machine::after {
+            content: attr(data-id);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        #laundry-status-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .machines-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .machine-section h3 {
+            text-align: left;
+            margin-left: 20px;
+        }
+        .machine-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+        .machine .icon {
+            background-color: #dcdcdc;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+        .machine .course,
+        .machine .time {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .divider {
+            width: 0.5px;
+            background-color: #000;
+            margin: 0 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>사용 중인 예약</h1>
@@ -25,12 +157,12 @@
     <script>
         window.onload = function() {
             // 페이지 로드 시 서버로부터 예약 정보 및 잔여 시간을 가져오는 함수 호출
-            getRemaingTime();
+            getReservationDetails();
         };
 
-        function getRemainingTime() {
-            const reservationNumber = '<%= reservationNumber %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
-            fetch(`/user/userUsing/${reservationNumber}/getRemainingTime`)
+        function getReservationDetails() {
+            const reservationId = '<%= reservationId %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
+            fetch(`/user/userUsing/${reservationId}/getRemainingTime`)f
                 .then(response => response.json())
                 .then(data => {
                     // 예약 정보를 업데이트합니다.
@@ -44,6 +176,9 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        // 페이지 로드 시 사용자가 예약한 기기 정보를 확인하고 UI를 업데이트합니다.
+        window.onload = updateUserUsingStatus;
     </script>
 </body>
 </html>
