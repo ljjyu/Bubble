@@ -67,7 +67,6 @@ app.get('manager/getNotice', noticeController.getNoticePage);
 app.post('manager/getNotice', noticeController.createNotice);
 app.get('manager/showNotice', showNoticeController.getAllNotices);
 
-app.get("/user/userReserve", userController.showIndex2);
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 app.get("/userMain", homeController.showIndex2);
