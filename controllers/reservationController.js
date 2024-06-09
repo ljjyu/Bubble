@@ -37,10 +37,11 @@ exports.createReservation = async (req, res) => {
     }
 
     //여기서부터 잔여시간 수정한 부분! 
-};exports.getRemainingTime = async (req, res) => {
+};
+exports.getRemainingTime = async (req, res) => {
     try {
-        const { reservationId } = req.params;
-        const reservation = await Reservation.findByPk(reservationId);
+        const { reservationNumber } = req.params;
+        const reservation = await Reservation.findByPk(reservationNumber);
 
         if (!reservation) {
             return res.status(404).send({
@@ -57,6 +58,7 @@ exports.createReservation = async (req, res) => {
         res.status(200).send({
             remainingTime: remainingTime > 0 ? remainingTime : 0 // Return remaining time or 0 if negative
         });
+        res.render("user/userUsing", { reservations: data });
     } catch (err) {
         res.status(500).send({
             message: err.message

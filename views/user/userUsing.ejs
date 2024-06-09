@@ -138,87 +138,43 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        사용자 페이지
-    </div>
-    <div class="sidebar">
-        <a href="/user/userMain">HOME</a>
-        <a href="/user/userReserve">예약하기</a>
-        <a href="/user/userHome">나의 예약 내역</a>
-        <a href="/user/userUsing">나의 사용중 기기</a>
-        <a href="#section4">공지사항</a>
-        <a href="#section5">...</a>
-    </div>
-    <div class="main-content">
-        <div id="laundry-status-container">
-            <h2>실시간 사용현황</h2>
-            <div class="machines-container">
-                <div class="machine-section">
-                    <h3>세탁기</h3>
-                    <div class="machine-grid" id="washer-container">
-                        <!-- 세탁기 정보는 JavaScript로 동적으로 추가됩니다 -->
-                    </div>
-                </div>
-                <div class="divider"></div>
-                <div class="machine-section">
-                    <h3>건조기</h3>
-                    <div class="machine-grid" id="dryer-container">
-                        <!-- 건조기 정보는 JavaScript로 동적으로 추가됩니다 -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // 사용자가 예약한 기기 정보
-        const userReservations = [
-            // 예약한 기기 정보를 받아와서 배열로 저장합니다.
-            // 예시: { id: 'washer2', remainingTime: '00:06:32' }
-            // 사용자가 예약한 기기 정보가 없다면 빈 배열로 초기화합니다.
-        ];
-        // 각 세탁/건조기의 UI를 생성하고 업데이트하는 함수
-        function updateMachineUI(containerId, machineId, remainingTime) {
-            const container = document.getElementById(containerId);
-            const machineElement = document.createElement('div');
-            machineElement.classList.add('machine');
-            machineElement.id = machineId;
-            if (remainingTime) {
-                machineElement.classList.add('active');
-                machineElement.innerHTML = `
-                    <div class="icon">${machineId.substring(6)}</div>
-                    <span class="course">코스 -</span>
-                    <span class="time">잔여시간 ${remainingTime}</span>
-                `;
-            } else {
-                machineElement.innerHTML = `
-                    <div class="icon">${machineId.substring(6)}</div>
-                    <span class="course">아직 사용 전입니다.</span>
-                `;
-                machineElement.style.backgroundColor = '#d3d3d3'; // 회색으로 설정
-            }
-            container.appendChild(machineElement);
-        }
-
-        // 사용자가 예약한 기기가 있는지 확인하고 UI를 업데이트하는 함수
-        function updateUserUsingStatus() {
-            const washerContainer = document.getElementById('washer-container');
-            const dryerContainer = document.getElementById('dryer-container');
+    <h1>사용 중인 예약</h1>
+    <% reservations.forEach((reservation, index) => { %>
+        <div class="machine <%= reservation.machineType === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
+            <span class="left-align">예약 번호 <%= reservation.reservationNumber %> </span>
+            <span class="left-align">기계 종류 <%= reservation.machineType %> </span>
+            <span class="left-align">기계 번호 <%= reservation.machineNum %> </span>
+            <span class="left-align">예약 날짜 <%= new Date(reservation.reservationDate).toLocaleString('ko-KR') %> </span> 
+            <span class="left-align">잔여 시간: <span id="remaining-time"></span> 분</span>  
             
-            if (userReservations.length === 0) {
-                // 사용자가 예약한 기기가 없을 경우
-                alert('예약한 기기가 없습니다.');
-                return;
-            }
 
-            // 사용자가 예약한 각 기기의 정보를 반복하여 UI를 업데이트합니다.
-            userReservations.forEach(reservation => {
-                const { id, remainingTime } = reservation;
-                if (id.startsWith('washer')) {
-                    updateMachineUI('washer-container', id, remainingTime);
-                } else if (id.startsWith('dryer')) {
-                    updateMachineUI('dryer-container', id, remainingTime);
-                }
-            });
+            <!--수정 0610-->
+            <!-- 예약 시간 정보는 데이터베이스에 없으므로, 해당 필드는 추가하거나 데이터베이스에서 가져와야 합니다. -->
+        </div>
+    <% }); %>
+
+    <!-- 필요한 JavaScript 스크립트 링크 추가 -->
+    <script>
+        window.onload = function() {
+            // 페이지 로드 시 서버로부터 예약 정보 및 잔여 시간을 가져오는 함수 호출
+            getReservationDetails();
+        };
+
+        function getReservationDetails() {
+            const reservationId = '<%= reservationId %>'; // 예약 ID를 서버에서 동적으로 받아옵니다.
+            fetch(`/user/userUsing/${reservationId}/getRemainingTime`)f
+                .then(response => response.json())
+                .then(data => {
+                    // 예약 정보를 업데이트합니다.
+                    document.getElementById('reservation-number').innerText = data.reservationNumber;
+                    document.getElementById('machine-type').innerText = data.machineType;
+                    document.getElementById('machine-number').innerText = data.machineNumber;
+                    document.getElementById('reservation-date').innerText = data.reservationDate;
+                    // 잔여 시간을 업데이트합니다.
+                    const remainingTime = data.remainingTime / (1000 * 60); // 밀리초를 분으로 변환합니다.
+                    document.getElementById('remaining-time').innerText = remainingTime.toFixed(2) + ' 분';
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         // 페이지 로드 시 사용자가 예약한 기기 정보를 확인하고 UI를 업데이트합니다.
