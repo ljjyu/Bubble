@@ -16,7 +16,7 @@ exports.getUserUsingPage = async (req, res) => {
 
         // 예약 정보가 없을 경우 빈 배열 반환
         if (!reservations.length) {
-            return res.render('userUsing', { reservations: [] });
+            return res.render('user/userUsing', { reservations: [] });
         }
 
         // 예약 정보를 형식에 맞게 변환
