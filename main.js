@@ -39,7 +39,7 @@ app.set('views', path.join(__dirname, 'views'));
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
-//app.use(layouts);
+app.use(layouts);
 // 데이터 파싱
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -62,13 +62,13 @@ app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing 페이지 라우트 추가
 
-app.get("manager/getMachine",machineController.getAllMachines);
-app.get("manager/getReservation",reservationController.getAllReservations);
-app.use("manager/getWeather", weatherController);
-app.get("manager/getStatistic", statisticController.getAllStatistics);
-app.get('manager/getNotice', noticeController.getNoticePage);
-app.post('manager/getNotice', noticeController.createNotice);
-app.get('manager/showNotice', showNoticeController.getAllNotices);
+app.get("/manager/getMachine",machineController.getAllMachines);
+app.get("/manager/getReservation",reservationController.getAllReservations);
+app.use("/manager/getWeather", weatherController);
+app.get("/manager/getStatistic", statisticController.getAllStatistics);
+app.get('/manager/getNotice', noticeController.getNoticePage);
+app.post('/manager/getNotice', noticeController.createNotice);
+app.get('/manager/showNotice', showNoticeController.getAllNotices);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);

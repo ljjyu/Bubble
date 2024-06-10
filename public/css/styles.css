@@ -58,3 +58,26 @@ input[type="submit"]:hover {
 .btn:hover {
 	background-color: #4d4d4d;
 }
+
+/*sidebar for manager and user page*/
+.sidebar {
+    width: 250px;
+    background-color: #FFFFFF;
+    position: fixed;
+    height: 100%;
+    border: 1px solid #d3d3d3;
+}
+.sidebar a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    text-align: center;
+    color: black;
+    display: block;
+    border-bottom: 1px solid #d3d3d3;
+}
+.sidebar a:hover {
+    background-color: #d3d3d3;
+    color: black;
+}

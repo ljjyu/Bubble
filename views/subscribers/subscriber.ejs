@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 페이지</title>
-    <link rel="stylesheet" href="/css/styles.css">
     <style>
 	.signup-form{
 	    max-width: 1000px;
@@ -36,9 +31,6 @@
 	</style>
 </head>
 <body>
-    <header id="header">
-	<%- include("../navbar.ejs") %>
-    </header>
     <div class="signup-form">
         <h2>회원가입</h2>
         <form class="subscription-form" action="/subscribers/subscriber" method="post">
@@ -55,4 +47,3 @@
         </form>
     </div>
 </body>
-</html>

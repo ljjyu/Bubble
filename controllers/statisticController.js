@@ -12,7 +12,7 @@ exports.getAllStatistics = async (req, res) => {
             Subscriber.findAll()
             ]);
             console.log({ machines, reservations, subscribers });
-            res.render("manager/getStatistic", { machines, reservations, subscribers });
+            res.render("manager/getStatistic", { machines, reservations, subscribers,  layout: 'managerLayout' });
     } catch (err) {
             res.status(500).send({
             message: err.message

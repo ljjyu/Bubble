@@ -10,7 +10,13 @@
     <header>
         <%- include('navbar.ejs') %>
     </header>
-        <%- body %>
-    <div id="footer">FOOTER</div>
+    <div class="sidebar">
+        <a href="/manager/getMachine">사용현황</a>
+        <a href="/manager/getStatistic">통계</a>
+        <a href="/manager/showNotice">공지사항</a>
+	<!-- <a href="/manager/getReservation">예약</a> -->
+        <a href="/manager/getWeather">날씨</a>
+    </div>
+    <%- body %>
 </body>
 </html>
