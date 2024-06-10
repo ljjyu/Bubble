@@ -1,11 +1,19 @@
+@font-face {
+    font-family: 'NEXON Lv1 Gothic OTF';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'NEXON Lv1 Gothic OTF';
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
 }
 
 form {
+    font-family: 'NEXON Lv1 Gothic OTF';
     background-color: #fff;
     margin: 30px;
     padding: 30px;
@@ -46,6 +54,7 @@ input[type="submit"]:hover {
 .btn {
     display: inline-block;
     padding: 10px 20px;
+    font-family: 'NEXON Lv1 Gothic OTF';
     font-size: 16px;
     color: white;
     background-color: #666666;

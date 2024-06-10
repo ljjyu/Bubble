@@ -8,7 +8,7 @@ exports.getAllReservations = async (req, res) => {
         const data = await Reservation.findAll();
         console.log(data);
         //res.render("getReservation", { reservations: data });
-        res.render("user/userReserve", { reservations: data,  layout: 'managerLayout'});
+        res.render("user/userReserve", { reservations: data,  layout: 'userLayout'});
         //res.render("reviews/getReservation", {reservations: data});
     } catch (err) {
         res.status(500).send({

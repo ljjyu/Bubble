@@ -6,7 +6,7 @@ exports.getUserReservations = async (req, res) => {
     try {
         data = await Reservation.findAll();
         console.log(data);
-        res.render("user/userHome", {reservations: data});
+        res.render("user/userHome", {reservations: data, layout: 'userLayout' });
     } catch (err) {
         res.status(500).send({
         message: err.message

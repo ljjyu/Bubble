@@ -64,11 +64,12 @@ app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing í
 
 app.get("/manager/getMachine",machineController.getAllMachines);
 app.get("/manager/getReservation",reservationController.getAllReservations);
-app.use("/manager/getWeather", weatherController);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);
-app.get('/manager/showNotice', showNoticeController.getAllNotices);
+
+app.get('/showNotice', showNoticeController.getAllNotices);
+app.use("/getWeather", weatherController);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);

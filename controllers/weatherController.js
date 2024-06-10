@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
             });
             apiRes.on('end', () => {
                 const weatherData = JSON.parse(data);
-                res.render('manager/getWeather', { weatherData,  layout: 'managerLayout' });
+                res.render('getWeather', { weatherData });
             });
         });
 

@@ -10,7 +10,7 @@ exports.getUserUsingPage = async (req, res) => {
 
         // 예약 정보가 없을 경우 빈 배열 반환
         if (!reservations.length) {
-            return res.render('user/userUsing', { reservations: [] });
+            return res.render('user/userUsing', { reservations: [], layout: 'userLayout' });
         }
         // 현재 시간
         const currentTime = moment().tz('Asia/Seoul');
@@ -37,7 +37,7 @@ exports.getUserUsingPage = async (req, res) => {
         }));
 
         // 렌더링할 페이지와 데이터
-        res.render('user/userUsing', { reservations: userReservations });
+        res.render('user/userUsing', { reservations: userReservations, layout: 'userLayout' });
     } catch (err) {
         console.error(err);
         res.status(500).send({

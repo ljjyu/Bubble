@@ -8,7 +8,7 @@ exports.getAllNotices = async (req, res) => {
         //res.render('showNotice', { notices });
         data = await Notice.findAll();
         console.log(data);
-        res.render("manager/showNotice", { notices: data,  layout: 'managerLayout' });
+        res.render("showNotice", { notices: data });
     } catch (err) {
 	console.error('Error fetching notices:', err); //오류 확인차
         res.status(500).send({
