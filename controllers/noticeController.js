@@ -21,9 +21,7 @@ exports.createNotice = async (req, res) => {
             contents: contents
         });
 
-        // 성공 응답
-	//res.status(200).json({ message: '공지사항이 성공적으로 작성되었습니다.' });
-	res.redirect('manager/getNotice');
+	res.redirect('/manager/getNotice');
     } catch (error) {
         res.status(500).json({ message: '공지사항을 저장하는 중 오류가 발생했습니다.', error: error.message });
     }
