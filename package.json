@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "### Convention #### Branch Strategy ``` main ├─hotfix └─ develop (default)     └─ DOMAIN/이슈번호 ```",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,7 +23,6 @@
     "passport": "^0.7.0",
     "sequelize": "^6.37.3"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SSWU-ServerSystem/3team.git"
@@ -31,5 +30,6 @@
   "bugs": {
     "url": "https://github.com/SSWU-ServerSystem/3team/issues"
   },
-  "homepage": "https://github.com/SSWU-ServerSystem/3team#readme"
+  "homepage": "https://github.com/SSWU-ServerSystem/3team#readme",
+  "devDependencies": {}
 }
