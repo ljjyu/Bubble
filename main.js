@@ -14,7 +14,7 @@ const express = require("express"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
-    userController = require("./controllers/userController"),
+    //userController = require("./controllers/userController"),
     reviewsController = require("./controllers/reviewsController"),
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련 
     layouts = require("express-ejs-layouts"),
@@ -58,7 +58,7 @@ app.get("/getMachine",machineController.getAllMachines);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
 
 app.get("/user/userHome", userHomeController.getUserReservations);
-app.get("/user/userMain", userController.showIndex1);
+//app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing 페이지 라우트 추가
 
