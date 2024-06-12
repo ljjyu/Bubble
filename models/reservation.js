@@ -12,6 +12,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         machineNum: {
              type: Sequelize.STRING
+        },
+        createdAt: {
+             type: DataTypes.DATE,
+             allowNull: false,
+             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
         }
     },
     {
