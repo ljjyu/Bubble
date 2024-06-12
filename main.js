@@ -48,7 +48,7 @@ app.use(session({
     secret: 'yourSecretKey',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }  // 세션 유지 시간 설정 (밀리초 단위)
+    cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
  }));
 app.use(flash());
 app.use((req, res, next) => {
@@ -81,14 +81,15 @@ app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);
 
+app.get("/reviews/getReviews", reviewsController.getAllReviews);
+app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
+app.post("/reviews/writeReviews", reviewsController.saveReviews);
+
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
-app.get("/reviews/getReviews", reviewsController.getAllReviews);
-app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
-app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
