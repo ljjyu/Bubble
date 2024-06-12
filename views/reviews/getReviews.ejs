@@ -31,7 +31,7 @@
 
 	.button-container {
  	   text-align: right;
-	    margin-bottom: 20px;
+	   margin-bottom: 20px;
 	}
 	</style>
 </head>
@@ -50,10 +50,10 @@
                     <p><%= review.review %></p>
                     <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
                     <% if (user && user.role === 'admin') { %>
-                        <a href="/reviews/deleteReview/<%= review.id %>" class="btn btn-danger">삭제</a>
+                        <a href="/reviews/deleteReview/<%= review.id %>" >삭제</a>
                     <% } %>
                     <% if (user && user.role === 'user') { %>
-                        <a href="/reviews/reportReview/<%= review.id %>" class="btn">신고</a>
+                        <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
                     <% } %>
                 </li>
             <% }); %>

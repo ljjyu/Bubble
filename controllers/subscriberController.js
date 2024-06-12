@@ -22,7 +22,7 @@ exports.getSubscriptionPage = (req, res) => {
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveSubscriber = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, phoneNumber, cardNumber } = req.body;
         const existingSubscriber = await Subscriber.findOne({where: { email: req.body.email }});
         if (existingSubscriber) {
             res.status(400).send({
@@ -34,7 +34,9 @@ exports.saveSubscriber = async (req, res) => {
                 name: name,
                 email: email,
                 password: hashedPassword,
-                role: role
+                role: role,
+		phoneNumber: phoneNumber,
+                cardNumber: cardNumber
             });
             res.redirect("/");
         }

@@ -33,6 +33,7 @@
 <body>
     <div class="signup-form">
         <h1>회원가입</h1>
+	<h>이름, 이메일, 비밀번호는 필수입니다.</h>
         <form class="subscription-form" action="/subscribers/subscriber" method="post">
             <div class="radio-group">
             <input type="radio" id="roleUser" name="role" value="user" required>
@@ -40,10 +41,12 @@
             <input type="radio" id="roleAdmin" name="role" value="admin" required>
             <label for="roleAdmin">Admin</label>
             </div>
-            <input type="text" name="name" placeholder="Name">
-            <input type="text" name="email" placeholder="Email">
-            <input type="text" name="password" placeholder="Password">
-            <input type="submit" name="submit">
+            <input type="text" name="name" placeholder="이름" required>
+            <input type="text" name="email" placeholder="이메일" required>
+            <input type="text" name="password" placeholder="비밀번호" required>
+	    <input type="text" name="phoneNumber" placeholder="전화번호">
+            <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)">
+            <input type="submit" name="join">
         </form>
     </div>
 </body>
