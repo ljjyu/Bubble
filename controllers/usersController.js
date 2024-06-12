@@ -11,8 +11,14 @@ exports.authenticate = async (req, res, next) => {
         // 사용자가 존재하고 비밀번호가 일치하는지 확인
         if (user && await bcrypt.compare(password, user.password)) {
             req.flash("success","logged in successfully!");
+            req.session.user = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            };
             const redirectPath = user.role == 'admin'? 'manager/getMachine':'user/userMachine';
-            res.locals.user = user;
+            res.locals.user = req.session.user;
             res.locals.redirect = redirectPath;
         } else {
             req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
