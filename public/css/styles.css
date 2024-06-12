@@ -13,14 +13,14 @@ body {
 }
 .main-content {
     padding: 20px;
-    text-align: center;
     max-width: 1000px;
     margin: auto;
 }
 
-h1 {
+.main-content h1, h2, h3 {
     margin-bottom: 20px;
-    font-size: 16px;
+    font-size: 28px;
+    text-align: center;
 }
 
 form {
@@ -79,25 +79,3 @@ input[type="submit"]:hover {
 	background-color: #4d4d4d;
 }
 
-/*sidebar for manager and user page*/
-.sidebar {
-    width: 250px;
-    background-color: #FFFFFF;
-    position: fixed;
-    height: 100%;
-    border: 1px solid #d3d3d3;
-}
-.sidebar a {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-decoration: none;
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    display: block;
-    border-bottom: 1px solid #d3d3d3;
-}
-.sidebar a:hover {
-    background-color: #d3d3d3;
-    color: black;
-}

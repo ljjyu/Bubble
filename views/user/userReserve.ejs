@@ -39,8 +39,8 @@
 </head>
 <body>
     <div class="main-content">
-        <div class="reservation-form">
-            <form id="reservationForm">
+        <h1>예약하기</h1>
+            <form class="reservation-form">
                 <label for="machineType">기기 종류</label>
                 <select id="machineType" name="machineType">
                     <option value="washer">세탁기</option>
@@ -60,7 +60,6 @@
                 
                 <button type="button" onclick="reserveMachine()">예약하기</button>
             </form>
-        </div>
     </div>
     <script>
     async function reserveMachine() {

@@ -7,7 +7,7 @@ exports.getUserReservations = async (req, res) => {
         // createdAt을 기준으로 내림차순 정렬
         data = await Reservation.findAll({order: [['created_at', 'DESC']]});
         console.log(data);
-        res.render("user/userHome", {reservations: data, layout: 'userLayout' });
+        res.render("user/userHome", {reservations: data});
     } catch (err) {
         res.status(500).send({
         message: err.message

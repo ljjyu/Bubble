@@ -3,7 +3,7 @@ const Notice = db.notice; // Notice 모델
 
 // 공지사항 작성 페이지 렌더링 함수
 exports.getNoticePage = (req, res) => {
-    res.render('manager/getNotice', { layout: 'managerLayout' }); // getNotice.ejs 렌더링
+    res.render('manager/getNotice'); // getNotice.ejs 렌더링
 };
 
 // 공지사항 작성 함수

@@ -1,12 +1,6 @@
 <head>
     <title>리뷰</title>
     <style>
-	.container {
-	    width: 80%;
-	    margin: 0 auto;
-	    padding: 20px;
-	    max-width: 1000px;
-	}
 	.review-list {
   	    list-style: none;
     	    padding: 0;
@@ -42,8 +36,8 @@
 	</style>
 </head>
 <body>
-    <div class="container">
-	<h2 class-"page-title">전체 리뷰</h2>
+    <div class="main-content">
+	<h1>전체 리뷰</h1>
         <div class="button-container">
              <% if (user && user.role === 'user') { %>
                  <a href="/reviews/writeReviews" class="btn">리뷰 작성하기</a>
