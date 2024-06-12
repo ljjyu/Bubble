@@ -12,7 +12,7 @@ exports.getAllReviews = async (req, res) => {
 };
 // 폼 입력이 가능한 웹 페이지 렌더링
 exports.getReviewsPage = (req, res) => {
-    res.render("/reviews/writeReviews");
+    res.render("reviews/writeReviews");
 };
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveReviews = async (req, res) => {
