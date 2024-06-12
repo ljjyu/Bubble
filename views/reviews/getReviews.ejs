@@ -55,11 +55,12 @@
                     <strong><%= review.name %></strong> - <%= '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) %><br>
                     <p><%= review.review %></p>
                     <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
-		                <% if (user && user.role === 'admin') { %>
-                        <form action="/reviews/delete/<%= review.id %>" method="POST" style="display: inline;">
-                            <button type="submit" class="btn-delete">삭제</button>
-                        </form>
-                        <% } %>
+                    <% if (user && user.role === 'admin') { %>
+                        <a href="/reviews/deleteReview/<%= review.id %>" class="btn btn-danger">삭제</a>
+                    <% } %>
+                    <% if (user && user.role === 'user') { %>
+                        <a href="/reviews/reportReview/<%= review.id %>" class="btn">신고</a>
+                    <% } %>
                 </li>
             <% }); %>
         </ul>
