@@ -53,7 +53,7 @@
                     <% if (user && (user.role === 'admin') { %>
                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
                     <% } %>
-		    <% if (user && user.role === 'user') { %>
+		            <% if (user && user.role === 'user') { %>
                         <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
                     <% } %>
                 </li>
