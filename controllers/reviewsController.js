@@ -23,7 +23,7 @@ exports.saveReviews = async (req, res) => {
             // 입력값 유효성 검사
              if (!name || !review || !rating) {
                 req.flash('error', 'All fields are required.');
-                return res.redirect('reviews/writeReviews');
+                return res.redirect('/reviews/writeReviews');
              }
             await Review.create({
                 name,
@@ -31,9 +31,9 @@ exports.saveReviews = async (req, res) => {
                 rating,
                 created_at: new Date()
             });
-            res.redirect("reviews/getReviews");
+            res.redirect("/reviews/getReviews");
         } catch (err) {
             req.flash('error', 'An error occurred while saving the review.');
-            res.redirect('reviews/writeReviews');
+            res.redirect('/reviews/writeReviews');
         }
 };
