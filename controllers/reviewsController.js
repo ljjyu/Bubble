@@ -1,12 +1,10 @@
 const db = require("../models/index"),
     Review = db.Review,
-    Op = db.Sequelize.Op,
-    bcrypt = require('bcrypt'),
-    saltRounds = 10;
+    Op = db.Sequelize.Op;
 
 exports.getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.findAll();
+        const reviews = await Review.findAll({order: [['created_at', 'DESC']]});
         res.render("reviews/getReviews", {reviews});
     } catch (err) {
         res.status(500).send({message: err.message});

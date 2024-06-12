@@ -13,6 +13,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         contents: {
             type: Sequelize.STRING
+        },
+        created_at: {
+            type: Sequelize.DATE,
+            allowNull: false,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
         }
     },
     {
