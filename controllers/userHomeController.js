@@ -4,7 +4,8 @@ const db = require("../models/index"),
 
 exports.getUserReservations = async (req, res) => {
     try {
-        data = await Reservation.findAll();
+        // createdAt을 기준으로 내림차순 정렬
+        data = await Reservation.findAll({order: [['createdAt', 'DESC']]});
         console.log(data);
         res.render("user/userHome", {reservations: data, layout: 'userLayout' });
     } catch (err) {
