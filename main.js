@@ -44,7 +44,12 @@ app.use(layouts);
 // 데이터 파싱
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
+app.use(session({
+    secret: 'yourSecretKey',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }  // 세션 유지 시간 설정 (밀리초 단위)
+ }));
 app.use(flash());
 app.use((req, res, next) => {
     if (req.session.user) {
