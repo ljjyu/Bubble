@@ -20,23 +20,15 @@
             </div>
 
             <ul class="navbar__menu">
-            <% if (user) { %>
-                <% if (user.role === 'admin') { %>
-                    <li><a href="/manager/getMachine">machine</a></li>
-                    <li><a href="/manager/getStatistic">statistic</a></li>
-                <% } %>
-                <% if (user.role === 'user') { %>
-                    <li><a href="/user/userReserve">reservation</a></li>
-                    <li><a href="/user/userHome">myReservation</a></li>
-                    <li><a href="/user/userUsing">runnig</a></li>
-                    <li><a href="/reviews/getReviews">review</a></li>
-                <% } %>
+                <li><a href="/manager/getMachine">machine</a></li>
+                <li><a href="/manager/getStatistic">statistic</a></li>
+                <li><a href="/user/userReserve">reservation</a></li>
+                <li><a href="/user/userHome">myReservation</a></li>
+                <li><a href="/user/userUsing">runnig</a></li>
+                <li><a href="/reviews/getReviews">review</a></li>
                 <li><a href="/showNotice">notice</a></li>
                 <li><a href="/getWeather">weather</a></li>
                 <li><a href="/logout" id="logoutBtn">logout</a></li>
-            <% } else { %>
-                <li><a href="/">login</a></li>
-            <% } %>
             </ul>
 
             <ul class="navbar__icons">
