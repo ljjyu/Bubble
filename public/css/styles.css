@@ -11,6 +11,17 @@ body {
     margin: 0;
     padding: 0;
 }
+.main-content {
+    padding: 20px;
+    text-align: center;
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
 
 form {
     font-family: 'NEXON Lv1 Gothic OTF';

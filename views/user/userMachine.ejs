@@ -1,16 +1,6 @@
 <head>
     <title>사용자 페이지</title>
     <style>
-	.main-content h2 {
-            margin-left: 30px;
-        }
-        .main-content {
-            padding: 20px;
-            align-items: center;
-            max-width: 1000px;
-            margin: auto;
-
-        }
         .status-section {
             display: flex;
             justify-content: space-around;
@@ -49,10 +39,10 @@
 </head>
 <body>
     <div class="main-content">
-        <h2>실시간 사용현황</h2>
+        <h1>실시간 사용현황</h1>
         <div class="status-section">
     	    <div class="machine-section">
-                <h3>세탁기</h3>
+                <h2>세탁기</h2>
                 <% machines.filter(machine => machine.name.includes('세탁기')).forEach((machine, index) => { %>
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
                     <div class="machine <%= machine.state === '사용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">

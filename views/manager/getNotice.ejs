@@ -1,15 +1,6 @@
 <head>
     <title>관리자 페이지</title>
     <style>
-        .main-content {
-            padding: 20px;
-            align-items: center;
-            max-width: 1000px;
-            margin: auto;
-        }
-	    .main-content h2 {
-            margin-left: 30px;
-        }
         #announcement-form {
             margin-left: 30px;
             margin-top: 60px;
@@ -57,7 +48,7 @@
 </head>
 <body>
     <div class="main-content">
-        <h2>공지사항 작성</h2>
+        <h1>공지사항 작성</h1>
 	<form id="announcement-form" action="/manager/getNotice" method="POST">
 	    <label for="subject">제목</label>
 	    <input type="text" id="subject" size="60" placeholder="제목을 입력하세요" name="subject"><br><br>

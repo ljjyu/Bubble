@@ -1,13 +1,6 @@
 <head>
     <title>나의 예약 내역</title>
     <style>
-        .main-content h2 {
-            margin-left: 30px;
-        }
-        .main-content {
-            margin-left: 270px;
-            padding: 20px;
-        }
         .status-section {
             display: flex;
             justify-content: space-around;
@@ -50,12 +43,9 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        나의 예약 내역
-    </div>
     <div class="main-content">
         <div id="reserv-status-container">
-            <h2>예약 내역</h2>
+            <h1>예약 내역</h1>
             <% reservations.forEach((reservation, index) => { %>
                 <div class="machine <%= reservation.machineType === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
                     <span class="left-align">예약 번호 : <%= reservation.reservationNumber %> </span>
