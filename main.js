@@ -9,6 +9,7 @@ const express = require("express"),
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
     userHomeController = require("./controllers/userHomeController"),
+    userMachineController = require("./controllers/userMachineController"),
     weatherController = require("./controllers/weatherController"),
     statisticController = require("./controllers/statisticController"),
     noticeController = require("./controllers/noticeController"),
@@ -62,6 +63,7 @@ app.get("/user/userHome", userHomeController.getUserReservations);
 //app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing 페이지 라우트 추가
+app.get("user/userMachine",userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
 app.get("/manager/getReservation",reservationController.getAllReservations);
