@@ -45,7 +45,7 @@ app.use(layouts);
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(session({
-    secret: 'yourSecretKey',
+    secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
