@@ -47,6 +47,11 @@ app.use(express.json());
 app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
 app.use(flash());
 app.use((req, res, next) => {
+    if (req.session.user) {
+        res.locals.user = req.session.user;
+    } else {
+        res.locals.user = null;
+    }
     res.locals.messages = req.flash();
     next();
 });
