@@ -6,7 +6,7 @@ exports.getUserMachines = async (req, res) => {
     try {
         data = await Machine.findAll();
         console.log(data);
-        res.render("user/userMachine", {user: req.session.user, machines: data, layout: 'managerLayout'});
+        res.render("user/userMachine", {user: req.session.user, machines: data, layout: 'userLayout'});
     } catch (err) {
         res.status(500).send({
         message: err.message
