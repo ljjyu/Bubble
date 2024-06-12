@@ -55,7 +55,7 @@ app.use(flash());
 app.use((req, res, next) => {
     req.user = {
         email: 'user@example.com',
-        role: 'user' // or 'admin' for testing
+        role: 'user'
     };
     next();
 });

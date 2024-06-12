@@ -5,7 +5,7 @@ const db = require("../models/index"),
 exports.getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll({order: [['created_at', 'DESC']]});
-        res.render("/reviews/getReviews", {reviews});
+        res.render("reviews/getReviews", {reviews});
     } catch (err) {
         res.status(500).send({message: err.message});
     }
