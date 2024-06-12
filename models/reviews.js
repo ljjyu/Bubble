@@ -17,10 +17,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-	userEmail: {
+	    /*userEmail: {
             type: Sequelize.STRING,
             allowNull: false
-        },
+        },*/
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW,

@@ -17,12 +17,12 @@ exports.getReviewsPage = (req, res) => {
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveReviews = async (req, res) => {
     const { name, review, rating } = req.body;
-    if (!req.user || !req.user.email) {
+    /*if (!req.user || !req.user.email) {
         req.flash('error', 'User not authenticated.');
         return res.redirect('/reviews/writeReviews');
     }
     
-	const userEmail = req.user.email;
+	const userEmail = req.user.email;*/
 
 	try {
             // 입력값 유효성 검사
@@ -34,7 +34,7 @@ exports.saveReviews = async (req, res) => {
                 name,
                 review,
                 rating,
-		userEmail,
+		        //userEmail,
                 created_at: new Date()
             });
             res.redirect("/reviews/getReviews");
@@ -44,7 +44,7 @@ exports.saveReviews = async (req, res) => {
         }
 };
 //삭제
-exports.deleteReview = async (req, res) => {
+/*exports.deleteReview = async (req, res) => {
     const reviewId = req.params.id;
     try {
         const review = await Review.findByPk(reviewId);
@@ -66,4 +66,4 @@ exports.deleteReview = async (req, res) => {
         req.flash('error', 'An error occurred while deleting the review.');
         res.redirect('/reviews/getReviews');
     }
-};
+};*/

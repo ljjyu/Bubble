@@ -52,13 +52,13 @@ app.use(session({
  }));
 app.use(flash());
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     req.user = {
         email: 'user@example.com',
         role: 'user'
     };
     next();
-});
+});*/
 
 app.use((req, res, next) => {
     if (req.session.user) {
@@ -93,7 +93,7 @@ app.post('/manager/getNotice', noticeController.createNotice);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
-app.get("/reviews/deleteReview/:id", reviewsController.deleteReview);
+//app.get("/reviews/deleteReview/:id", reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
