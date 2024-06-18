@@ -1,7 +1,7 @@
 const db = require("../models/index"),
     Reservation = db.reservation,
     Subscriber = db.subscriber,
-    const { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
+    { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
 
 exports.getAllReservations = async (req, res) => {
     try {
@@ -36,7 +36,7 @@ exports.createReservation = async (req, res) => {
             reservationNumber,
             machineType: machineType,
             reservationDate: reservationTime, // Store reservationTime as reservationDate
-            machineNum: machineNumber // Store machineNumber as Location
+            machineNum: machineNumber, // Store machineNumber as Location
             subscriberName: userName // 사용자의 이름 저장
         });
 
