@@ -28,6 +28,10 @@ exports.saveSubscriber = async (req, res) => {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
             });
+        } else if (password.length<8) {
+            res.status(400).send({
+                 message: "비밀번호는 8자리 이상이어야 합니다."
+            });
         } else {
             const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
             await Subscriber.create({
