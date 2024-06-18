@@ -15,7 +15,6 @@ const express = require("express"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
-    //userController = require("./controllers/userController"),
     reviewsController = require("./controllers/reviewsController"),
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련 
     layouts = require("express-ejs-layouts"),
@@ -52,14 +51,6 @@ app.use(session({
  }));
 app.use(flash());
 
-/*app.use((req, res, next) => {
-    req.user = {
-        email: 'user@example.com',
-        role: 'user'
-    };
-    next();
-});*/
-
 app.use((req, res, next) => {
     if (req.session.user) {
         res.locals.user = req.session.user;
@@ -79,7 +70,6 @@ app.get('/logout', usersController.logout);
 app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
 
 app.get("/user/userHome", userHomeController.getUserReservations);
-//app.get("/user/userMain", userController.showIndex1);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing 페이지 라우트 추가
 app.get("/user/userMachine",userMachineController.getUserMachines);
@@ -93,7 +83,6 @@ app.post('/manager/getNotice', noticeController.createNotice);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
-//app.get("/reviews/deleteReview/:id", reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);

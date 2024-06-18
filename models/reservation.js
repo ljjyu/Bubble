@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         machineNum: {
              type: Sequelize.STRING
         },
+        subscriberName: {
+             type: Sequelize.STRING
+        },
         created_at: {
              type: Sequelize.DATE,
              allowNull: false,

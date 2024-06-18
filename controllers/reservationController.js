@@ -1,6 +1,7 @@
-const db = require("../models/index");
-const Reservation = db.reservation;
-const { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
+const db = require("../models/index"),
+    Reservation = db.reservation,
+    Subscriber = db.subscriber,
+    const { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
 
 exports.getAllReservations = async (req, res) => {
     try {
@@ -27,12 +28,16 @@ exports.createReservation = async (req, res) => {
                     message: "예약 시간은 현재 시간보다 이후여야 합니다."
               });
          }
+        // 로그인된 사용자의 정보를 가져옵니다.
+        const user = req.session.user;
+        const userName = user ? user.name : 'Unknown User';
 
         const newReservation = await Reservation.create({
             reservationNumber,
             machineType: machineType,
             reservationDate: reservationTime, // Store reservationTime as reservationDate
             machineNum: machineNumber // Store machineNumber as Location
+            subscriberName: userName // 사용자의 이름 저장
         });
 
         res.status(201).send(newReservation);
