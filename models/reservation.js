@@ -25,4 +25,3 @@ module.exports = (sequelize, Sequelize) => {
     });
     return reservation;
 }
-// 수정 금지 !!
