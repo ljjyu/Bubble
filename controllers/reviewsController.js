@@ -16,27 +16,23 @@ exports.getReviewsPage = (req, res) => {
 };
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveReviews = async (req, res) => {
-    const { name, review, rating } = req.body;
-    /*if (!req.user || !req.user.email) {
-        req.flash('error', 'User not authenticated.');
-        return res.redirect('/reviews/writeReviews');
-    }
-    
-	const userEmail = req.user.email;*/
-
 	try {
-            // 입력값 유효성 검사
-             if (!name || !review || !rating) {
-                req.flash('error', 'All fields are required.');
-                return res.redirect('/reviews/writeReviews');
-             }
-            await Review.create({
-                name,
-                review,
-                rating,
-		        //userEmail,
-                created_at: new Date()
-            });
+	    const { name, review, rating } = req.body;
+        // 로그인된 사용자의 정보를 가져옵니다.
+        const user = req.session.user;
+        const subscriberName = user ? user.name : 'Unknown User';
+        // 입력값 유효성 검사
+        if (!name || !review || !rating) {
+            req.flash('error', 'All fields are required.');
+            return res.redirect('/reviews/writeReviews');
+        }
+        await Review.create({
+            name,
+            review,
+            rating,
+            subscriberName,
+            created_at: new Date()
+        });
             res.redirect("/reviews/getReviews");
         } catch (err) {
             req.flash('error', 'An error occurred while saving the review.');
