@@ -5,7 +5,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         state: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
         }
     },
     {

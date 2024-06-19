@@ -6,15 +6,19 @@ module.exports = (sequelize, Sequelize) => {
         },
         machineType: {
             type: Sequelize.STRING,
+            allowNull: false
         },
         reservationDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            allowNull: false
         },
         machineNum: {
-             type: Sequelize.STRING
+             type: Sequelize.STRING,
+             allowNull: false
         },
         subscriberName: {
-             type: Sequelize.STRING
+             type: Sequelize.STRING,
+             allowNull: false
         },
         created_at: {
              type: Sequelize.DATE,

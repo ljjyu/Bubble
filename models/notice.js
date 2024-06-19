@@ -4,15 +4,18 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
-	},
-	title: {
-            type: Sequelize.STRING
+	    },
+	    title: {
+            type: Sequelize.STRING,
+            allowNull: false
         },
         writeDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            allowNull: false
         },
         contents: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false
         },
         created_at: {
             type: Sequelize.DATE,
