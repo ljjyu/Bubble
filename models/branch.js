@@ -15,7 +15,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         manager: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'subscriber',
+                key: 'name'
+            }
         }
     },
     {

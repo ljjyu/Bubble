@@ -21,6 +21,14 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: false,
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+        },
+        subscriberName: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            references: {
+                model: 'subscriber',
+                key: 'name'
+            }
         }
     },
     {

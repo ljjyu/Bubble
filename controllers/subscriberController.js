@@ -1,5 +1,6 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
+    Branch = db.branch,
     Op = db.Sequelize.Op,
     bcrypt = require('bcrypt'),
     saltRounds = 10;
@@ -22,8 +23,8 @@ exports.getSubscriptionPage = (req, res) => {
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveSubscriber = async (req, res) => {
     try {
-        const { name, email, password, role, phoneNumber, cardNumber } = req.body;
-        const existingSubscriber = await Subscriber.findOne({where: { email: req.body.email }});
+        const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
+        const existingSubscriber = await Subscriber.findOne({where: { email: email }});
         if (existingSubscriber) {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
@@ -39,9 +40,17 @@ exports.saveSubscriber = async (req, res) => {
                 email: email,
                 password: hashedPassword,
                 role: role,
-		phoneNumber: phoneNumber,
+		        phoneNumber: phoneNumber,
                 cardNumber: cardNumber
             });
+            // 새로운 지점 생성
+            if (role === 'admin') {
+                await Branch.create({
+                    branchName: branchName,
+                    address: address,
+                    manager: email
+                });
+            }
             res.redirect("/");
         }
     } catch (err) {

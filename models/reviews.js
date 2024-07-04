@@ -17,13 +17,18 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-	    subscriberName: {
-            type: Sequelize.STRING
-        },
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW,
 	    field: 'created_at' // 데이터베이스 필드 이름
+        },
+        subscriberName: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            references: {
+                model: 'subscriber',
+                key: 'name'
+            }
         }
     },
     {

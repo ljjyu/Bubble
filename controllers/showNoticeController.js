@@ -4,13 +4,13 @@ const db = require("../models/index"),
 
 exports.getAllNotices = async (req, res) => {
     try {
-	//const [notices] = await db.query('SELECT noticeNumber, title, writeDate, contents FROM notice');
+	    //const [notices] = await db.query('SELECT noticeNumber, title, writeDate, contents FROM notice');
         //res.render('showNotice', { notices });
         data = await Notice.findAll({order: [['created_at', 'DESC']]});
         console.log(data);
         res.render("showNotice", { notices: data });
     } catch (err) {
-	console.error('Error fetching notices:', err); //오류 확인차
+	    console.error('Error fetching notices:', err); //오류 확인차
         res.status(500).send({
             message: err.message
         });

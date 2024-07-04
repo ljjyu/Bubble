@@ -1,12 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
     const machine = sequelize.define("machine", { // 엔티티 생성
-        name: {
-            type: Sequelize.STRING,
+        machineID: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true,
             primaryKey: true
         },
         state: {
-            type: Sequelize.STRING,
-            allowNull: false
+            type: Sequelize.ENUM('available', 'in_use', 'needs_repair'),
+            allowNull: false,
+            defaultValue: 'available’
+        },
+        branchID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'branch',
+                key: 'branchID'
+            }
         }
     },
     {
