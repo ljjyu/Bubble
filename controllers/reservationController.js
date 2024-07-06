@@ -32,8 +32,8 @@ exports.createReservation = async (req, res) => {
               });
          }
          // 지점 ID 확인
-         const branchID = await Branch.findOne({ where: { branchName: branchName } });
-         if (!branchID) {
+         const branch = await Branch.findOne({ where: { branchName: branchName } });
+         if (!branch) {
             return res.status(400).send({
                 message: "존재하지 않는 지점입니다."
             });
