@@ -1,5 +1,5 @@
 const db = require('../models'),
-    Branch = db.Branch;
+    Branch = db.branch;
 
 exports.getBranches = async (req, res) => {
     try {
