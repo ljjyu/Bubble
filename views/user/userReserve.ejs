@@ -60,7 +60,7 @@
     <script>
         async function loadBranches() {
             try {
-                const response = await fetch('/user/userReserve');
+                const response = await fetch('/user/getBranches');
                 const branches = await response.json();
                 const branchSelect = document.getElementById('branchName');
                 branches.forEach(branch => {

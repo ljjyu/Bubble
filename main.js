@@ -88,7 +88,7 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 
-app.get('/all', branchController.getBranches);
+app.get('/user/userReserve', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
 app.get("/", homeController.showIndex);
