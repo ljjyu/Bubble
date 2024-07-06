@@ -16,7 +16,8 @@ const express = require("express"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
     reviewsController = require("./controllers/reviewsController"),
-    userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련 
+    userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
+    branchController = require("./controllers/branchController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -86,6 +87,9 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
+
+app.get('/all', branchController.getBranches);
+app.post('/user/userReserve', reservationController.createReservation);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);

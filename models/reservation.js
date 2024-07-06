@@ -2,7 +2,8 @@ module.exports = (sequelize, Sequelize) => {
     const reservation = sequelize.define("reservation", {
         reservationNumber: {
             type: Sequelize.STRING,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         reservationDate: {
             type: Sequelize.DATE,

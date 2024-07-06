@@ -5,6 +5,10 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true
         },
+        type: {
+            type: Sequelize.ENUM('washer', 'dryer'),
+            allowNull: false
+        },
         state: {
             type: Sequelize.ENUM('available', 'in_use', 'needs_repair'),
             allowNull: false,
