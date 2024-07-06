@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         state: {
             type: Sequelize.ENUM('available', 'in_use', 'needs_repair'),
             allowNull: false,
-            defaultValue: 'available’
+            defaultValue: 'available'
         },
         branchID: {
             type: Sequelize.INTEGER,
