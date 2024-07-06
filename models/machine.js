@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "machine",
         timestamps: false
     });
-    machine.hasMany(sequelize.models.reservation, {
+    machine.hasMany(Sequelize.models.reservation, {
         as: 'reservation',
         foreignKey: 'machineID'
     });

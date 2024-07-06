@@ -36,13 +36,13 @@ module.exports = (sequelize, Sequelize) => {
         timestamps: false
     });
     // Machine 모델과의 관계 설정
-    reservation.belongsTo(sequelize.models.machine, {
+    reservation.belongsTo(Sequelize.models.machine, {
         foreignKey: 'machineID',
         as: 'machine'
     });
 
     // Subscriber 모델과의 관계 설정
-    reservation.belongsTo(sequelize.models.subscriber, {
+    reservation.belongsTo(Sequelize.models.subscriber, {
         foreignKey: 'subscriberName',
         as: 'subscriber'
     });

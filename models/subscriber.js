@@ -35,7 +35,7 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "subscriber",
         timestamps: false
     });
-    subscriber.hasMany(sequelize.models.reservation, {
+    subscriber.hasMany(Sequelize.models.reservation, {
         as: 'reservation',
         foreignKey: 'subscriberName'
     });
