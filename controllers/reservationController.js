@@ -1,8 +1,8 @@
 const db = require("../models/index"),
-    Machine = db.Machine,
+    Machine = db.machine,
     Reservation = db.reservation,
     Subscriber = db.subscriber,
-    Branch = db.Branch,
+    Branch = db.branch,
     { Op } = require('sequelize'),
     { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
 
@@ -32,8 +32,8 @@ exports.createReservation = async (req, res) => {
               });
          }
          // 지점 ID 확인
-         const branch = await Branch.findOne({ where: { branchName: branchName } });
-         if (!branch) {
+         const branchID = await Branch.findOne({ where: { branchName: branchName } });
+         if (!branchID) {
             return res.status(400).send({
                 message: "존재하지 않는 지점입니다."
             });
