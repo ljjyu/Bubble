@@ -37,12 +37,14 @@ module.exports = (sequelize, Sequelize) => {
     });
     // Machine 모델과의 관계 설정
     reservation.belongsTo(sequelize.models.machine, {
-        foreignKey: 'machineID'
+        foreignKey: 'machineID',
+        as: 'machine'
     });
 
     // Subscriber 모델과의 관계 설정
     reservation.belongsTo(sequelize.models.subscriber, {
-        foreignKey: 'subscriberName'
+        foreignKey: 'subscriberName',
+        as: 'subscriber'
     });
     return reservation;
 }

@@ -9,7 +9,10 @@ const db = require("../models/index"),
 exports.getAllReservations = async (req, res) => {
     try {
         const data = await Reservation.findAll({
-              include: Machine // Machine 모델을 include하여 관계를 설정합니다.
+            include: {
+                model: db.machine,
+                as: 'Machine' // Machine 모델을 include
+            }
         });
         res.render("user/userHome", { reservations: data });
     } catch (err) {
