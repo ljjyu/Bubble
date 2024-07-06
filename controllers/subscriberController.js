@@ -36,23 +36,15 @@ exports.saveSubscriber = async (req, res) => {
             });
         } else {
             const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
-            await Subscriber.create({
-                name: name,
-                email: email,
-                password: hashedPassword,
-                role: role,
-		        phoneNumber: phoneNumber,
-                cardNumber: cardNumber
-            });
+            // 새로운 지점 생성
+            let newBranch;
             // 새로운 지점 생성
             if (role === 'admin') {
-                await Branch.create({
+                 newBranch = await Branch.create({
                     branchName: branchName,
                     address: address,
                     manager: email
                 });
-            }
-            if (role === 'admin') {
                 // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
                 const machines = [];
                 for (let i = 1; i <= 4; i++) {
@@ -61,6 +53,18 @@ exports.saveSubscriber = async (req, res) => {
                 }
                 await Machine.bulkCreate(machines);
             }
+
+            await Subscriber.create({
+                name: name,
+                email: email,
+                password: hashedPassword,
+                role: role,
+		        phoneNumber: phoneNumber,
+                cardNumber: cardNumber,
+                branchName: branchName,
+                address: address
+            });
+
             res.redirect("/");
         }
     } catch (err) {
