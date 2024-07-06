@@ -43,10 +43,9 @@
         <div class="status-section">
     	    <div class="machine-section">
                 <h2>세탁기</h2>
-                <% machines.filter(machine => machine.name.includes('세탁기')).forEach((machine, index) => { %>
+                <% machines.filter(machine => machine.type === 'washer').forEach((machine, index) => { %>
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
-                    <div class="machine <%= machine.state === '사용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
-                        <span>이름: <%= machine.name %></span>
+                    <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
                     </div>
 	        <% }); %>
@@ -54,14 +53,13 @@
 
             <div class="machine-section">
                 <h2>건조기</h2>
-                <% machines.filter(machine => machine.name.includes('건조기')).forEach((machine, index) => { %>
+                <% machines.filter(machine => machine.type === 'dryer').forEach((machine, index) => { %>
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
-		    <div class="machine <%= machine.state === '사용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
-                        <span>이름: <%= machine.name %></span>
+		            <div class="machine <%= machine.state === '사용 가능' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
                     </div>
                 <% }); %>
+	        </div>
 	    </div>
-	</div>
     </div>
 </body>
