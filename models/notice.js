@@ -9,10 +9,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        writeDate: {
-            type: Sequelize.DATE,
-            allowNull: false
-        },
         contents: {
             type: Sequelize.STRING,
             allowNull: false
