@@ -51,7 +51,8 @@ exports.saveSubscriber = async (req, res) => {
                     address: address,
                     manager: email
                 });
-
+            }
+            if (role === 'admin') {
                 // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
                 const machines = [];
                 for (let i = 1; i <= 4; i++) {
