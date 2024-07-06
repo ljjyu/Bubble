@@ -29,7 +29,7 @@ const express = require("express"),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
-db.sequelize.sync(); // 모델 동기화
+db.sequelize.sync(); // 모델동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
 const Reservation = db.reservation;
