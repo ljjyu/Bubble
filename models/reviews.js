@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
         createdAt: {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW,
-	    field: 'created_at' // 데이터베이스 필드 이름
+	        field: 'created_at' // 데이터베이스 필드 이름
         },
         subscriberName: {
             type: Sequelize.STRING,

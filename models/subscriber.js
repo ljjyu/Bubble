@@ -23,6 +23,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         cardNumber: {
              type: Sequelize.STRING
+        },
+        branchName: {
+            type: Sequelize.STRING
+        },
+        address: {
+            type: Sequelize.STRING
         }
     },
     {
