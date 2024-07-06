@@ -35,25 +35,6 @@
         .reservation-form button:hover {
             background-color: #b4a7d6;
         }
-        <script>
-            async function loadBranches() {
-                try {
-                    const response = await fetch('/branches/all');
-                    const branches = await response.json();
-                    const branchSelect = document.getElementById('branchName');
-
-                    branches.forEach(branch => {
-                        const option = document.createElement('option');
-                        option.value = branch.branchName;
-                        option.text = branch.branchName;
-                        branchSelect.appendChild(option);
-                    });
-                } catch (error) {
-                    console.error('Error loading branches:', error);
-                }
-            }
-            document.addEventListener('DOMContentLoaded', loadBranches);
-        </script>
     </style>
 </head>
 <body>
@@ -77,61 +58,78 @@
             </form>
     </div>
     <script>
-    async function reserveMachine() {
-        const branchName = document.getElementById('branchName').value;
-        const machineType = document.getElementById('machineType').value;
-        const reservationTime = document.getElementById('reservationTime').value;
+        async function loadBranches() {
+            try {
+                const response = await fetch('/branches/all');
+                const branches = await response.json();
+                const branchSelect = document.getElementById('branchName');
 
-        if (!reservationTime) {
-            alert('날짜와 시간을 선택해 주세요.');
-            return;
+                branches.forEach(branch => {
+                    const option = document.createElement('option');
+                    option.value = branch.branchName;
+                    option.text = branch.branchName;
+                    branchSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading branches:', error);
+            }
         }
+        async function reserveMachine() {
+            const branchName = document.getElementById('branchName').value;
+            const machineType = document.getElementById('machineType').value;
+            const reservationTime = document.getElementById('reservationTime').value;
 
-        // 현재 날짜
-        const currentDate = new Date();
-        // 선택한 예약 날짜
-        const selectedDate = new Date(reservationTime);
-        const currentMonth = currentDate.getMonth();
-        const selectedMonth = selectedDate.getMonth();
+            if (!reservationTime) {
+                alert('날짜와 시간을 선택해 주세요.');
+                return;
+            }
 
-        if (selectedMonth < currentMonth) {
-            alert('지난 달입니다.');
-            return;
-        }
+            // 현재 날짜
+            const currentDate = new Date();
+            // 선택한 예약 날짜
+            const selectedDate = new Date(reservationTime);
+            const currentMonth = currentDate.getMonth();
+            const selectedMonth = selectedDate.getMonth();
 
-        if (selectedMonth > currentMonth) {
-            alert('해당 월은 아직 오픈되지 않았습니다.');
-            return;
-        }
+            if (selectedMonth < currentMonth) {
+                alert('지난 달입니다.');
+                return;
+            }
 
-        const response = await fetch('/reservations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                branchName,
-                machineType,
-                reservationTime: reservationTime //안 되면 지울 내용 :이후의 내용 0610
-            })
-        });
+            if (selectedMonth > currentMonth) {
+                alert('해당 월은 아직 오픈되지 않았습니다.');
+                return;
+            }
 
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result);  // result 객체를 확인합니다.
-
-            // 예약 시간을 포맷팅합니다.
-            const formattedTime = new Date(reservationTime).toLocaleString('ko-KR', {
-                dateStyle: 'short',
-                timeStyle: 'short',
-                hour12: false
+            const response = await fetch('/reservations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    branchName,
+                    machineType,
+                    reservationTime: reservationTime //안 되면 지울 내용 :이후의 내용 0610
+                })
             });
 
-            alert(`${machineType} ${machineNumber}번이 ${formattedTime}에 예약되었습니다.`);
-        } else {
-            const error = await response.json();
-            alert(`예약에 실패했습니다: ${error.message}`);
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result);  // result 객체를 확인합니다.
+
+                // 예약 시간을 포맷팅합니다.
+                const formattedTime = new Date(reservationTime).toLocaleString('ko-KR', {
+                    dateStyle: 'short',
+                    timeStyle: 'short',
+                    hour12: false
+                });
+
+                alert(`${machineType} ${machineNumber}번이 ${formattedTime}에 예약되었습니다.`);
+            } else {
+                const error = await response.json();
+                alert(`예약에 실패했습니다: ${error.message}`);
+            }
         }
-    }
+        document.addEventListener('DOMContentLoaded', loadBranches);
     </script>
 </body>

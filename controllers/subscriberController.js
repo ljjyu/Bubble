@@ -1,6 +1,7 @@
 const db = require("../models/index"),
     Subscriber = db.subscriber,
     Branch = db.branch,
+    Machine = db.machine,
     Op = db.Sequelize.Op,
     bcrypt = require('bcrypt'),
     saltRounds = 10;
@@ -50,6 +51,14 @@ exports.saveSubscriber = async (req, res) => {
                     address: address,
                     manager: email
                 });
+
+                // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
+                const machines = [];
+                for (let i = 1; i <= 4; i++) {
+                    machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
+                    machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
+                }
+                await Machine.bulkCreate(machines);
             }
             res.redirect("/");
         }
