@@ -11,7 +11,7 @@ exports.getAllReservations = async (req, res) => {
         const data = await Reservation.findAll({
             include: {
                 model: db.machine,
-                as: 'Machine' // Machine 모델을 include
+                as: 'machine' // Machine 모델을 include
             }
         });
         res.render("user/userHome", { reservations: data });
