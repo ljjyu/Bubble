@@ -60,10 +60,9 @@
     <script>
         async function loadBranches() {
             try {
-                const response = await fetch('/branches/all');
+                const response = await fetch('/user/getBranches'); // /user/getBranches 엔드포인트로 변경
                 const branches = await response.json();
                 const branchSelect = document.getElementById('branchName');
-
                 branches.forEach(branch => {
                     const option = document.createElement('option');
                     option.value = branch.branchName;
