@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const reservation = sequelize.define("reservation", {
         reservationNumber: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
