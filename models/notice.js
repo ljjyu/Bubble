@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             references: {
                 model: 'subscriber',
-                key: 'name'
+                key: 'branchName'
             }
         }
     },
