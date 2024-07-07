@@ -28,6 +28,7 @@
                     <th>제목</th>
                     <th>작성일</th>
                     <th>내용</th>
+                    <th>지점명</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +38,7 @@
                         <td><%= notice.title %></td>
                         <td><%= notice.created_at %></td>
                         <td><%= notice.contents %></td>
+                        <td><%= notice.subscriberName %></td>
                     </tr>
                 <% }) %>
             </tbody>
