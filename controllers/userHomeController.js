@@ -1,5 +1,7 @@
 const db = require("../models/index"),
     Reservation = db.reservation,
+    Machine = db.machine,
+    Branch = db.branch,
     Op = db.Sequelize.Op;
 
 exports.getUserReservations = async (req, res) => {
