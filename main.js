@@ -16,9 +16,9 @@ const express = require("express"),
     noticeController = require("./controllers/noticeController"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
-    reviewsController = require("./controllers/reviewsController"),
+    reviewsController = require("./controllers/reviewsController"), // 리뷰
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
-    branchController = require("./controllers/branchController"),
+    branchController = require("./controllers/branchController"), // 빨래방 지점
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -70,11 +70,11 @@ app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); //
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 app.get('/logout', usersController.logout);
 
-app.post("/reservations", reservationController.createReservation); //안 되면 지울 거
+app.post("/reservations", reservationController.createReservation);
 
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
-app.get("/user/userUsing", userUsingController.getUserUsingPage); // userUsing 페이지 라우트 추가
+app.get("/user/userUsing", userUsingController.getUserUsingPage);
 app.get("/user/userMachine",userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
