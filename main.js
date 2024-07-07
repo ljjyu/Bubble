@@ -3,6 +3,7 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
+    moment = require('moment'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -51,6 +52,7 @@ app.use(session({
     cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
  }));
 app.use(flash());
+app.locals.moment = moment;
 
 app.use((req, res, next) => {
     if (req.session.user) {
