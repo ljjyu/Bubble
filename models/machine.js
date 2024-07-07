@@ -27,11 +27,5 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "machine",
         timestamps: false
     });
-    machine.associate = (models) => {
-        machine.belongsTo(models.branch, {
-            foreignKey: 'branchID',
-            as: 'branch'
-        });
-    };
     return machine;
 }
