@@ -41,6 +41,14 @@
     <div class="main-content">
         <h1>실시간 사용현황</h1>
         <div class="status-section">
+            <div class="branch-selection">
+                <label for="branchSelect">지점</label>
+                <select id="branchSelect" name="branchSelect" onchange="filterMachines()">
+                    <% branches.forEach(branch => { %>
+                        <option value="<%= branch.branchID %>"><%= branch.branchName %></option>
+                    <% }); %>
+                </select>
+            </div>
     	    <div class="machine-section">
                 <h2>세탁기</h2>
                 <% machines.filter(machine => machine.type === 'washer').forEach((machine, index) => { %>
@@ -48,9 +56,8 @@
                     <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
                     </div>
-	        <% }); %>
+	            <% }); %>
             </div>
-
             <div class="machine-section">
                 <h2>건조기</h2>
                 <% machines.filter(machine => machine.type === 'dryer').forEach((machine, index) => { %>
@@ -62,4 +69,10 @@
 	        </div>
 	    </div>
     </div>
+    <script>
+        function filterMachines() {
+            const branchID = document.getElementById('branchSelect').value;
+            window.location.href = `/manager/getMachine?branchID=${branchID}`;
+        }
+    </script>
 </body>

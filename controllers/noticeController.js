@@ -13,13 +13,13 @@ exports.createNotice = async (req, res) => {
 
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
-        const subscriberName = user ? user.name : 'Unknown User';
+        const branchName = user ? user.branchName : 'Unknown User';
 
 	    // 공지사항 저장
         const newNotice = await Notice.create({
 	        title: subject,
             contents: contents,
-            subscriberName
+            subscriberName: branchName,
         });
 
 	res.redirect('/manager/getNotice');

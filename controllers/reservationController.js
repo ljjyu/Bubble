@@ -14,7 +14,7 @@ exports.getAllReservations = async (req, res) => {
                 as: 'machine' // Machine 모델을 include
             }
         });
-        res.render("user/userHome", { reservations: data });
+        res.render("user/userReserve", { reservations: data });
     } catch (err) {
         res.status(500).send({
             message: err.message
