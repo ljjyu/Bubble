@@ -15,7 +15,8 @@ exports.authenticate = async (req, res, next) => {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                branchName: user.branchName
             };
             const redirectPath = user.role == 'admin'? 'manager/getMachine':'user/userMachine';
             res.locals.user = req.session.user;

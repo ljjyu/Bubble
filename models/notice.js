@@ -21,7 +21,6 @@ module.exports = (sequelize, Sequelize) => {
         subscriberName: {
             type: Sequelize.STRING,
             allowNull: false,
-            defaultValue: 'Unknown User',
             references: {
                 model: 'subscriber',
                 key: 'branchName'
