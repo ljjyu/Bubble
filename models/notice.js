@@ -15,7 +15,8 @@ module.exports = (sequelize, Sequelize) => {
         },
         created_at: {
             type: Sequelize.DATE,
-            allowNull: false
+            allowNull: false,
+            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
         },
         subscriberName: {
             type: Sequelize.STRING,

@@ -11,9 +11,6 @@ exports.createNotice = async (req, res) => {
     try {
         const { subject, contents } = req.body;
 
-        // 현재 날짜와 시간을 구함
-        const writeDate = new Date();
-
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
         const branchName = user ? user.branchName : 'Unknown User';
@@ -23,7 +20,6 @@ exports.createNotice = async (req, res) => {
 	        title: subject,
             contents: contents,
             subscriberName: branchName,
-            created_at: writeDate
         });
 
 	res.redirect('/manager/getNotice');
