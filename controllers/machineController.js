@@ -1,5 +1,6 @@
 const db = require("../models/index"),
     Machine = db.machine,
+    Branch = db.branch,
     Op = db.Sequelize.Op;
 
 exports.getAllMachines = async (req, res) => {
@@ -17,7 +18,7 @@ exports.getAllMachines = async (req, res) => {
             user: req.session.user,
             machines: machines,
             branches: branches,
-             selectedBranch: branchID
+            selectedBranch: branchID
         });
     } catch (err) {
         res.status(500).send({
