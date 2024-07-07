@@ -35,5 +35,10 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "reservation",
         timestamps: false
     });
+    // Machine 모델과의 관계 설정
+    reservation.belongsTo(sequelize.models.machine, {
+        foreignKey: 'machineID',
+        as: 'machine'
+    });
     return reservation;
 }
