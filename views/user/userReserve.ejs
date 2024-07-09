@@ -123,7 +123,7 @@
                     hour12: false
                 });
 
-                alert(`${machineType} ${machineNumber}번이 ${formattedTime}에 예약되었습니다.`);
+                alert(`${branchName}지점의 ${machineType}가 ${formattedTime}에 예약되었습니다.`);
             } else {
                 const error = await response.json();
                 alert(`예약에 실패했습니다: ${error.message}`);
