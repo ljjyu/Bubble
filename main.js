@@ -19,6 +19,7 @@ const express = require("express"),
     reviewsController = require("./controllers/reviewsController"), // 리뷰
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
+    newsController = require("./controllers/newsController"), //news
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -28,6 +29,8 @@ const express = require("express"),
     bcrypt = require('bcrypt'),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
+    axios = require('axios'), //news
+    cheerio = require('cheerio'), //news
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델동기화
@@ -89,6 +92,7 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
+app.use("/getNews", newsController); //news
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);

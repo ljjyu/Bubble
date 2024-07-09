@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>뉴스</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .centered-text {
+      text-align: center;
+    }
+    .news-item {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: center;
+      align-items: flex-start;
+      width: 80%;
+      margin-left: 130px;
+    }
+    .news-item img {
+      width: 100px;
+      height: auto; 
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+    .news-item .content {
+      flex-grow: 1;
+    }    
+    .news-item h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+    .news-item h2 {
+      font-size: 18px;
+    }
+    .news-item p {
+      margin: 5px 0;
+      color: #555;
+    }
+    .news-item a {
+      color: #1a0dab;
+      text-decoration: none;
+    }
+    .news-item a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h3 class="centered-text">Naver news - Coin Laundry</h3>
+  <h4 class="centered-text">12시간마다 갱신됩니다</h4>
+  <% newsItems.forEach(item => { %>
+    <div class="news-item">
+      <% if (item.image !== '이미지 없음') { %>
+        <img src="<%= item.image %>" alt="News Image">
+      <% } %>
+      <div class="content">
+        <h2><a href="<%= item.link %>"><%= item.title %></a></h2>
+        <p><%= item.excerpt %></p>
+      </div>
+    </div>
+  <% }); %>
+</body>
+</html>
