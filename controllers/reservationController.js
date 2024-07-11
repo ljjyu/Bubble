@@ -75,7 +75,7 @@ exports.createReservation = async (req, res) => {
             }
         );
 
-        // 예약 시간이 5분이 지나면 해당 기기의 상태를 'available'로 업데이트
+        // 예약 시간이 5분이 지나면 해당 machineID의 state 속성를 'available'로 업데이트
         const delay = reservationDateTime.getTime() - currentTime.getTime() + 300000; // 현재 시간에서 5분 후
         setTimeout(async () => {
             try {
