@@ -9,7 +9,6 @@ const db = require("../models/index"),
 exports.getAllSubscribers = async (req, res) => {
     try {
         data = await Subscriber.findAll();
-        console.log(data);
         res.render("subscribers/getSubscriber", {subscribers: data});
     } catch (err) {
         res.status(500).send({
