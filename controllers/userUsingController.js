@@ -1,13 +1,13 @@
 const db = require("../models/index"),
-    moment = require('moment'),
     Machine = db.machine,
     Reservation = db.reservation,
     Op = db.Sequelize.Op;
 
 exports.getUserUsingPage = async (req, res) => {
     try {
-        const currentTime = moment();
-        const oneHourAgo = currentTime.subtract(1, 'hours').toDate();
+        // 1시간 전 시간을 계산합니다.
+        const oneHourAgo = new Date();
+        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
         const reservations = await Reservation.findAll({
             where: {
@@ -15,8 +15,11 @@ exports.getUserUsingPage = async (req, res) => {
                     [Op.lt]: oneHourAgo
                 }
             },
-                include: [Machine]
-            });
+            include: {
+            model: Machine,
+            as: 'machine'
+            }
+        });
 
         // 렌더링할 페이지와 데이터
         res.render('user/userUsing', { reservations: userReservations });
