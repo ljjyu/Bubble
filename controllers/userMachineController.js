@@ -10,15 +10,15 @@ exports.getUserMachines = async (req, res) => {
         let machines;
         if (branchID > 0) {
             machines = await Machine.findAll({ where: { branchID: branchID } });
-    } else {
-        machines = await Machine.findAll();
-    }
-    console.log(machines);
-    res.render("user/userMachine", {
-        user: req.session.user,
-        machines: machines,
-        branches: branches,
-        selectedBranch: branchID
+        } else {
+            machines = await Machine.findAll();
+        }
+        console.log(machines);
+        res.render("user/userMachine", {
+            user: req.session.user,
+            machines: machines,
+            branches: branches,
+            selectedBranch: branchID
         });
     } catch (err) {
         res.status(500).send({
