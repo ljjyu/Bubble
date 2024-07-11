@@ -33,6 +33,10 @@ exports.saveSubscriber = async (req, res) => {
             res.status(400).send({
                  message: "비밀번호는 8자리 이상이어야 합니다."
             });
+        } else if (role === 'admin' && (!branchName || !address)) {
+            res.status(400).send({
+                message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요."
+            });
         } else {
             const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
             // 새로운 지점 생성
