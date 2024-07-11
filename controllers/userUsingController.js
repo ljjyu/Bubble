@@ -12,7 +12,7 @@ exports.getUserUsingPage = async (req, res) => {
         const reservations = await Reservation.findAll({
             where: {
                 reservationDate: {
-                    [Op.lt]: oneHourAgo
+                    [Op.gt]: oneHourAgo
                 }
             },
             include: {

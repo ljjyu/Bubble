@@ -1,4 +1,5 @@
 const db = require("../models/index"),
+    cron = require('node-cron'),
     Machine = db.machine,
     Reservation = db.reservation,
     Subscriber = db.subscriber,
@@ -21,7 +22,41 @@ exports.getAllReservations = async (req, res) => {
         });
     }
 };
+// CRON Job 설정: 매 분마다 실행
+cron.schedule('* * * * *', async () => {
+    try {
+        const currentTime = new Date();
 
+        // 1시간 전 시간을 계산합니다.
+        const oneHourAgo = new Date();
+        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+
+        // 예약 시간이 지난 예약들을 조회합니다.
+        const overdueReservations = await Reservation.findAll({
+            where: {
+                reservationDate: {
+                    [Op.lt]: oneHourAgo
+                }
+            },
+            include: {
+                model: Machine,
+                as: 'machine'
+            }
+        });
+
+        // 예약 시간이 지난 경우 해당 기기의 상태를 'available'로 업데이트합니다.
+        for (const reservation of overdueReservations) {
+            await Machine.update(
+                { state: 'available' },
+                { where: { machineID: reservation.machine.machineID } }
+            );
+        }
+
+        console.log('CRON Job 실행: 예약 시간이 지난 기기 상태를 업데이트했습니다.');
+    } catch (error) {
+        console.error('CRON Job 오류:', error);
+    }
+});
 exports.createReservation = async (req, res) => {
     try {
         const { machineType, branchName, reservationTime } = req.body; // Update to match the correct keys
@@ -75,19 +110,6 @@ exports.createReservation = async (req, res) => {
             }
         );
 
-        // 예약 시간이 5분이 지나면 해당 machineID의 state 속성를 'available'로 업데이트
-        const delay = reservationDateTime.getTime() - currentTime.getTime() + 300000; // 현재 시간에서 5분 후
-        setTimeout(async () => {
-            try {
-                // 예약 시간이 지나면 기기 상태를 'available'로 변경
-                await Machine.update(
-                    { state: 'available' },
-                    { where: { machineID: randomMachine.machineID } }
-                );
-            } catch (updateError) {
-                console.error(`Error updating machine ${randomMachine.machineID} to available:`, updateError);
-            }
-        }, delay);
         res.status(201).send(newReservation);
     } catch (err) {
         res.status(500).send({
