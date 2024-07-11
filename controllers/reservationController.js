@@ -74,6 +74,20 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
+
+        // 예약 시간이 5분이 지나면 해당 기기의 상태를 'available'로 업데이트
+        const delay = reservationDateTime.getTime() - currentTime.getTime() + 300000; // 현재 시간에서 5분 후
+        setTimeout(async () => {
+            try {
+                // 예약 시간이 지나면 기기 상태를 'available'로 변경
+                await Machine.update(
+                    { state: 'available' },
+                    { where: { machineID: randomMachine.machineID } }
+                );
+            } catch (updateError) {
+                console.error(`Error updating machine ${randomMachine.machineID} to available:`, updateError);
+            }
+        }, delay);
         res.status(201).send(newReservation);
     } catch (err) {
         res.status(500).send({
