@@ -28,14 +28,17 @@ cron.schedule('* * * * *', async () => {
         const currentTime = new Date();
 
         // 1시간 전 시간을 계산합니다.
-        const oneHourAgo = new Date();
-        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+        //const oneHourAgo = new Date();
+        //oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+         // 3분 전 시간을 계산합니다.
+        const threeMinutesAgo = new Date();
+        threeMinutesAgo.setMinutes(threeMinutesAgo.getMinutes() - 3);
 
         // 예약 시간이 지난 예약들을 조회합니다.
         const overdueReservations = await Reservation.findAll({
             where: {
                 reservationDate: {
-                    [Op.lt]: oneHourAgo
+                    [Op.lt]: threeMinutesAgo
                 }
             },
             include: {

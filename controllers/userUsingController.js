@@ -16,9 +16,10 @@ exports.getUserUsingPage = async (req, res) => {
                 }
             },
             include: {
-            model: Machine,
-            as: 'machine'
-            }
+                model: Machine,
+                as: 'machine'
+            },
+            order: [['created_at', 'DESC']]
         });
 
         // 렌더링할 페이지와 데이터
