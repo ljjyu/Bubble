@@ -24,11 +24,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         subscriberName: {
             type: Sequelize.STRING,
-            allowNull: false,
-            references: {
-                model: 'subscriber',
-                key: 'name'
-            }
+            allowNull: false
         },
         branchID: {
             type: Sequelize.INTEGER,
