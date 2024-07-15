@@ -6,8 +6,12 @@ const db = require("../models/index"),
 
 exports.getUserReservations = async (req, res) => {
     try {
+        const currentUser = req.user.name;
         // createdAt을 기준으로 내림차순 정렬
         const data = await Reservation.findAll({
+            where: {
+                subscriberName: currentUser
+            },
             order: [['created_at', 'DESC']],
             include: {
                 model: db.machine,
