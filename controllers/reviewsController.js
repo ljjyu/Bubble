@@ -27,7 +27,7 @@ exports.getAllReviews = async (req, res) => {
 exports.getReviewsPage = async (req, res) => {
     try {
         const branches = await Branch.findAll();
-        const user = req.session.user; // 세션에서 사용자 정보 가져오기
+        const user = req.session.user;
         res.render("reviews/writeReviews", {
             branches,
             user // 사용자 정보를 템플릿으로 전달
