@@ -24,7 +24,7 @@ exports.getAllReviews = async (req, res) => {
     }
 };
 // 폼 입력이 가능한 웹 페이지 렌더링
-exports.getReviewsPage = (req, res) => {
+exports.getReviewsPage = async (req, res) => {
     try {
         const branches = await Branch.findAll();
         const user = req.session.user; // 세션에서 사용자 정보 가져오기
