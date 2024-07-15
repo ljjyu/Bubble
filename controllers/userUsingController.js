@@ -21,11 +21,14 @@ exports.getUserUsingPage = async (req, res) => {
                 subscriberName: subscriberName
             },
             order: [['created_at', 'DESC']],
-            include: {
-                model: Machine,
-                as: 'machine'
-            },
-            order: [['created_at', 'DESC']]
+            include: [{
+                model: db.machine,
+                as: 'machine',
+                include: {
+                     model: db.branch,
+                    as: 'branch3'
+                }
+            }]
         });
 
         // 렌더링할 페이지와 데이터
