@@ -21,17 +21,17 @@ db.machine.hasMany(db.reservation, { foreignKey: 'machineID', as: 'reservation'}
 db.reservation.belongsTo(db.machine, { foreignKey: 'machineID', as: 'machine' });
 
 db.branch.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
-db.subscriber.belongsTo(db.branch, { foreignKey: 'name', as: 'branch' });
+db.subscriber.belongsTo(db.branch, { foreignKey: 'name', as: 'branch2' });
 
-db.machine.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch' });
-db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine' });
+db.machine.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch3' });
+db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine2' });
 
-db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
-db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation' });
+db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber2' });
+db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation2' });
 
-db.Review.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
-db.subscriber.hasMany(db.Review, { foreignKey: 'subscriberName', as: 'reviews' });
+db.Review.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber3' });
+db.subscriber.hasMany(db.Review, { foreignKey: 'subscriberName', as: 'reviews1' });
 
-db.notice.belongsTo(db.subscriber, { foreignKey: 'branchName', as: 'subscriber' });
-db.subscriber.hasMany(db.notice, { foreignKey: 'subscriberName', as: 'reviews' });
+db.notice.belongsTo(db.subscriber, { foreignKey: 'branchName', as: 'subscriber4' });
+db.subscriber.hasMany(db.notice, { foreignKey: 'subscriberName', as: 'reviews2' });
 module.exports = db;
