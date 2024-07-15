@@ -79,6 +79,7 @@ app.get("/user/userMachine",userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
 app.post("/report-issue",machineController.reportIssue);
+app.post("/report-completed", machineController.reportCompleted);
 app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);

@@ -42,3 +42,19 @@ exports.reportIssue = async (req, res) => {
         });
     }
 };
+exports.reportCompleted = async (req, res) => {
+    const { machine_id } = req.body;
+    try {
+        await Machine.update(
+            { state: 'available' }, // 업데이트할 데이터
+            {
+                where: { machineID: machine_id } // 조건
+            }
+        );
+        res.send({ message: 'Machine status updated to available' });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
