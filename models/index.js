@@ -20,15 +20,10 @@ db.Review.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch' });
 db.machine.hasMany(db.reservation, { foreignKey: 'machineID', as: 'reservation'});
 db.reservation.belongsTo(db.machine, { foreignKey: 'machineID', as: 'machine' });
 
-db.branch.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
-db.subscriber.belongsTo(db.branch, { foreignKey: 'name', as: 'branch2' });
-
 db.machine.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch3' });
 db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine2' });
 
 db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber2' });
 db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation2' });
-
-
 
 module.exports = db;
