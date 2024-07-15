@@ -88,7 +88,7 @@ app.post('/manager/getNotice', noticeController.createNotice);
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
-app.get('/deleteReview/:id', reviewsController.deleteReview);
+app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
