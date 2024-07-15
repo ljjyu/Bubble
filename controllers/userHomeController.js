@@ -16,10 +16,14 @@ exports.getUserReservations = async (req, res) => {
                 subscriberName: subscriberName
             },
             order: [['created_at', 'DESC']],
-            include: {
+            include: [{
                 model: db.machine,
-                as: 'machine' // Machine 모델을 include
-            }
+                as: 'machine',
+                include: {
+                    model: db.branch,
+                    as: 'branch'
+                }
+            }]
         });
         res.render("user/userHome", {reservations: data});
     } catch (err) {
