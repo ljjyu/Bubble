@@ -25,11 +25,7 @@ module.exports = (sequelize, Sequelize) => {
              type: Sequelize.STRING
         },
         branchName: {
-            type: Sequelize.STRING,
-            references: {
-                model: 'notice',
-                key: 'subscriberName'
-            }
+            type: Sequelize.STRING
         },
         address: {
             type: Sequelize.STRING
