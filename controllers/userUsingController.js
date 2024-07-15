@@ -9,12 +9,18 @@ exports.getUserUsingPage = async (req, res) => {
         const oneHourAgo = new Date();
         oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
+        // 로그인된 사용자의 정보를 가져옵니다.
+        const user = req.session.user;
+        const subscriberName = user ? user.name : 'Unknown User';
+
         const reservations = await Reservation.findAll({
             where: {
                 reservationDate: {
                     [Op.gt]: oneHourAgo
-                }
+                },
+                subscriberName: subscriberName
             },
+            order: [['created_at', 'DESC']],
             include: {
                 model: Machine,
                 as: 'machine'
