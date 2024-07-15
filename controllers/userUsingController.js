@@ -9,12 +9,16 @@ exports.getUserUsingPage = async (req, res) => {
         const oneHourAgo = new Date();
         oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
+        const currentUser = req.user.name;
+
         const reservations = await Reservation.findAll({
             where: {
                 reservationDate: {
                     [Op.gt]: oneHourAgo
-                }
+                },
+                subscriberName: currentUser
             },
+            order: [['created_at', 'DESC']],
             include: {
                 model: Machine,
                 as: 'machine'

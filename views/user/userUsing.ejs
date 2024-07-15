@@ -31,9 +31,7 @@
 </head>
 <body>
     <div class="main-content">
-        <% if (reservations.length === 0) { %>
-            <p>사용중인 기기가 없습니다.</p>
-        <% } else { %>
+        <% if (reservations && reservations.length > 0) { %>
             <div class="machines-container">
                 <% reservations.forEach((reservation, index) => { %>
                     <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
@@ -44,6 +42,8 @@
                     </div>
                 <% }); %>
             </div>
+        <% } else { %>
+            <p>사용중인 기기가 없습니다.</p>
         <% } %>
     </div>
 </body>
