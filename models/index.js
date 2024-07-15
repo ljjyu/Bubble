@@ -26,4 +26,7 @@ db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine2' });
 db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber2' });
 db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation2' });
 
+db.branch.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
+db.subscriber.belongsTo(db.branch, { foreignKey: 'manager', as: 'branch2' });
+
 module.exports = db;
