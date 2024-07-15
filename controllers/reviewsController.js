@@ -6,10 +6,12 @@ const db = require("../models/index"),
 exports.getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll({
-            include: {
-                model: Branch,
-                as: 'branch'
-            },
+            include: [
+                {
+                    model: Branch,
+                    as: 'branch'
+                }
+            ],
             order: [['created_at', 'DESC']]
         });
         res.render("reviews/getReviews", {reviews});
