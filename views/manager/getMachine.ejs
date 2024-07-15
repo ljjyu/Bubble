@@ -47,6 +47,7 @@
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
                     <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
+                        <button class="report-issue" data-machine-id="<%= machine.id %>">고장</button>
                     </div>
 	            <% }); %>
             </div>
@@ -56,9 +57,31 @@
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
 		            <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
+                        <button class="report-issue" data-machine-id="<%= machine.id %>">고장</button>
                     </div>
                 <% }); %>
 	        </div>
 	    </div>
     </div>
+    <script>
+        document.querySelectorAll('.report-issue').forEach(button => {
+            button.addEventListener('click', function() {
+                const machineID = this.getAttribute('data-machine-id');
+                fetch('/report-issue', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ machineID: machineID })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+        </script>
 </body>
