@@ -1,6 +1,6 @@
 const db = require("../models/index"),
     Review = db.Review,
-    Branch = db.Branch,
+    Branch = db.branch,
     Op = db.Sequelize.Op;
 
 exports.getAllReviews = async (req, res) => {
