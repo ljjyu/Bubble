@@ -65,7 +65,14 @@ exports.saveReviews = async (req, res) => {
 //삭제
 exports.deleteReview = async (req, res) => {
     const reviewId = req.params.id;
+    const user = req.session.user;
     try {
+        const branch = await Branch.findOne({ where: { branchName: user.branchName } });
+        const review = await Review.findOne({ where: { id: reviewId, branchID: branch.branchID } });
+        if (!review) {
+            req.flash('error', 'Review not found or you do not have permission to delete this review.');
+            return res.redirect('/reviews/getReviews');
+        }
         await Review.destroy({where: { id: reviewId }});
         req.flash('success', 'Review deleted successfully.');
         res.redirect('/reviews/getReviews');
