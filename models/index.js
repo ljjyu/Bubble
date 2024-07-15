@@ -12,4 +12,8 @@ db.reservation = require("./reservation.js")(sequelize, Sequelize);
 db.notice = require("./notice.js")(sequelize, Sequelize);
 db.Review = require("./reviews.js")(sequelize, Sequelize);
 db.branch = require("./branch.js")(sequelize, Sequelize);
+
+// 모델 간의 관계 정의 (Associations)
+db.branch.hasMany(db.Review, { foreignKey: 'branchID', as: 'reviews' });
+db.Review.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch' });
 module.exports = db;

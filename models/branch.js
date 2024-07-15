@@ -26,9 +26,5 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "branch",
         timestamps: false
     });
-    Branch.hasMany(sequelize.models.Review, {
-        foreignKey: 'branchID',
-        as: 'reviews'
-    });
     return Branch;
 }
