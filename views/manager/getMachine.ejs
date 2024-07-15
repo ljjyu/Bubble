@@ -91,7 +91,7 @@
             document.querySelectorAll('.report-completed').forEach(button => {
                 button.addEventListener('click', function() {
                     const machineID = this.getAttribute('data-machine-id');
-                    fetch('/report-issue', {
+                    fetch('/report-completed', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -104,7 +104,7 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('고장 신고 중 오류가 발생했습니다.');
+                        alert('수리 완료 중 오류가 발생했습니다.');
                     });
                 });
             });
