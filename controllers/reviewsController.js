@@ -70,7 +70,7 @@ exports.deleteReview = async (req, res) => {
         const branch = await Branch.findOne({ where: { branchName: user.branchName } });
         const review = await Review.findOne({ where: { id: reviewId, branchID: branch.branchID } });
         if (!review) {
-            req.flash('error', 'Review not found or you do not have permission to delete this review.');
+            req.flash('error', 'You do not have permission to delete this review.');
             return res.redirect('/reviews/getReviews');
         }
         await Review.destroy({where: { id: reviewId }});
