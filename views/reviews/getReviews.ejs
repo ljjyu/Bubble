@@ -48,6 +48,7 @@
                 <li class="review-item">
                     <strong><%= review.name %></strong> - <%= '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) %><br>
                     <p><%= review.review %></p>
+                    <small>지점: <%= review.branchID.branchName %></small>
                     <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
                     <% if (user && user.role === 'admin') { %>
                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>

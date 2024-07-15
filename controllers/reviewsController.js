@@ -1,10 +1,17 @@
 const db = require("../models/index"),
     Review = db.Review,
+    Branch = db.branch,
     Op = db.Sequelize.Op;
 
 exports.getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.findAll({order: [['created_at', 'DESC']]});
+        const reviews = await Review.findAll({
+            include: {
+                model: db.branch,
+                as: 'branch'
+            },
+            order: [['created_at', 'DESC']]
+        });
         res.render("reviews/getReviews", {reviews});
     } catch (err) {
         res.status(500).send({message: err.message});
@@ -17,7 +24,7 @@ exports.getReviewsPage = (req, res) => {
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveReviews = async (req, res) => {
 	try {
-	    const { name, review, rating } = req.body;
+	    const { name, review, rating, branchSelect } = req.body;
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
         const subscriberName = user ? user.name : 'Unknown User';
@@ -31,7 +38,8 @@ exports.saveReviews = async (req, res) => {
             review,
             rating,
             subscriberName,
-            created_at: new Date()
+            branchID : branchSelect,
+            createdAt: new Date()
         });
             res.redirect("/reviews/getReviews");
         } catch (err) {

@@ -43,5 +43,9 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "reviews",
         timestamps: false
     });
+    Review.belongsTo(sequelize.models.branch, {
+        foreignKey: 'branchID',
+        as: 'branch'
+    });
     return Review;
 }

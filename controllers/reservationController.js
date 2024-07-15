@@ -12,7 +12,8 @@ exports.getAllReservations = async (req, res) => {
             include: {
                 model: db.machine,
                 as: 'machine' // Machine 모델을 include
-            }
+            },
+            order: [['created_at', 'DESC']]
         });
         res.render("user/userReserve", { reservations: data });
     } catch (err) {
