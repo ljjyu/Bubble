@@ -4,20 +4,20 @@ const db = require("../models/index"),
     Op = db.Sequelize.Op;
 
 exports.getAllMachines = async (req, res) => {
-    const branchID = req.query.branchID || 0;
+    const subscriberBranchName = req.session.user.branchName;
     try {
-        const branches = await Branch.findAll();
-        let machines;
-        if (branchID > 0) {
-            machines = await Machine.findAll({ where: { branchID: branchID } });
-        } else {
-            machines = await Machine.findAll();
+        const branch = await Branch.findAll({ where: { branchName: subscriberBranchName } });
+        // branch가 존재하는지 확인합니다.
+        if (!branch) {
+            res.status(404).send({
+                 message: '해당 branch를 찾을 수 없습니다.'
+            });
         }
+        machines = await Machine.findAll({ where: { branchID: branch.branchID } });
         res.render("manager/getMachine", {
             user: req.session.user,
             machines: machines,
-            branches: branches,
-            selectedBranch: branchID
+            selectedBranch: branch.branchID
         });
     } catch (err) {
         res.status(500).send({
