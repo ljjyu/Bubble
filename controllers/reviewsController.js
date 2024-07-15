@@ -7,7 +7,7 @@ exports.getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll({
             include: {
-                model: db.branch,
+                model: Branch,
                 as: 'branch'
             },
             order: [['created_at', 'DESC']]
