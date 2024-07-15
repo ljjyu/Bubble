@@ -21,6 +21,11 @@
 <body>
     <div class="main-content">
         <h2>공지사항 확인</h2>
+        <div class="button-container">
+            <% if (user && user.role === 'admin') { %>
+                <a href="/manager/getNotice" class="btn">공지사항 작성하기</a>
+            <% } %>
+        </div>
 	<table>
             <thead>
                 <tr>

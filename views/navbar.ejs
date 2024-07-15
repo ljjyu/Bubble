@@ -23,7 +23,6 @@
             <% if (user) { %>
                 <% if (user.role === 'admin') { %>
                     <li><a href="/manager/getMachine">machine</a></li>
-                    <li><a href="/manager/getNotice">write notice</a></li>
                     <li><a href="/manager/getStatistic">statistic</a></li>
                 <% } %>
                 <% if (user.role === 'user') { %>
