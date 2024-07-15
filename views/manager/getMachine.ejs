@@ -64,22 +64,25 @@
 	    </div>
     </div>
     <script>
-        document.querySelectorAll('.report-issue').forEach(button => {
-            button.addEventListener('click', function() {
-                const machineID = this.getAttribute('data-machine-id');
-                fetch('/report-issue', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ machineID: machineID })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.report-issue').forEach(button => {
+                button.addEventListener('click', function() {
+                    const machineID = this.getAttribute('data-machine-id');
+                    fetch('/report-issue', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ machineID: machineID })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('고장 신고 중 오류가 발생했습니다.');
+                    });
                 });
             });
         });
