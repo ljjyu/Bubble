@@ -91,20 +91,20 @@
             document.querySelectorAll('.report-completed').forEach(button => {
                 button.addEventListener('click', function() {
                     const machineID = this.getAttribute('data-machine-id');
-                    fetch('/report-completed', {
-                         method: 'POST',
+                    fetch('/report-issue', {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ machine_id: machineID })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data.message);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('수리 완료 중 오류가 발생했습니다.');
-                        });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('고장 신고 중 오류가 발생했습니다.');
                     });
                 });
             });
