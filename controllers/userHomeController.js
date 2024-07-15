@@ -6,11 +6,13 @@ const db = require("../models/index"),
 
 exports.getUserReservations = async (req, res) => {
     try {
-         const currentUser = req.user.name;
+         // 로그인된 사용자의 정보를 가져옵니다.
+         const user = req.session.user;
+         const subscriberName = user ? user.name : 'Unknown User';
         // createdAt을 기준으로 내림차순 정렬
         const data = await Reservation.findAll({
             where: {
-                subscriberName: currentUser
+                subscriberName: subscriberName
             },
             order: [['created_at', 'DESC']],
             include: {
