@@ -31,4 +31,7 @@ db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reser
 
 db.Review.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
 db.subscriber.hasMany(db.Review, { foreignKey: 'subscriberName', as: 'reviews' });
+
+db.notice.belongsTo(db.subscriber, { foreignKey: 'branchName', as: 'subscriber' });
+db.subscriber.hasMany(db.notice, { foreignKey: 'subscriberName', as: 'reviews' });
 module.exports = db;
