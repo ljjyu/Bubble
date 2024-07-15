@@ -51,13 +51,34 @@
                     <small>지점: <%= review.branch.branchName %></small>
                     <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
                     <% if (user && user.role === 'admin') { %>
-                        <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
+                         <button onclick="deleteReview('<%= review.id %>')">삭제</button>
                     <% } %>
 		            <% if (user && user.role === 'user') { %>
-                        <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
+		                <button onclick="reportReview('<%= review.id %>')">신고</button>
                     <% } %>
                 </li>
             <% }); %>
         </ul>
     </div>
+    <script>
+        function deleteReview(id) {
+            fetch(`/reviews/deleteReview/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('An error occurred while deleting the review.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                 alert('An error occurred while deleting the review.');
+            });
+        }
+    </script>
 </body>
