@@ -21,7 +21,7 @@ exports.getUserReservations = async (req, res) => {
                 as: 'machine',
                 include: {
                     model: db.branch,
-                    as: 'branch'
+                    as: 'branch3'
                 }
             }]
         });
