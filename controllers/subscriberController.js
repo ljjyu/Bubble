@@ -25,9 +25,14 @@ exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
         const existingSubscriber = await Subscriber.findOne({where: { email: email }});
+        const existingBranchName = await Subscriber.findOne({where: { branchName: branchName }});
         if (existingSubscriber) {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
+            });
+        } else if (existingBranchName) {
+            res.status(400).send({
+                message: "이미 등록된 지점명입니다."
             });
         } else if (password.length<8) {
             res.status(400).send({
