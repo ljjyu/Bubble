@@ -5,6 +5,7 @@ const db = require("../models/index"),
 
 exports.getAllReviews = async (req, res) => {
     try {
+        const user = req.session.user;
         const reviews = await Review.findAll({
             include: [
                 {
@@ -14,14 +15,26 @@ exports.getAllReviews = async (req, res) => {
             ],
             order: [['created_at', 'DESC']]
         });
-        res.render("reviews/getReviews", {reviews});
+        res.render("reviews/getReviews", {
+            reviews,
+            user
+        });
     } catch (err) {
         res.status(500).send({message: err.message});
     }
 };
 // 폼 입력이 가능한 웹 페이지 렌더링
 exports.getReviewsPage = (req, res) => {
-    res.render("reviews/writeReviews");
+    try {
+        const branches = await Branch.findAll();
+        const user = req.session.user; // 세션에서 사용자 정보 가져오기
+        res.render("reviews/writeReviews", {
+            branches,
+            user // 사용자 정보를 템플릿으로 전달
+        });
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
 };
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveReviews = async (req, res) => {
@@ -31,7 +44,7 @@ exports.saveReviews = async (req, res) => {
         const user = req.session.user;
         const subscriberName = user ? user.name : 'Unknown User';
         // 입력값 유효성 검사
-        if (!name || !review || !rating) {
+        if (!name || !review || !rating || !branchSelect) {
             req.flash('error', 'All fields are required.');
             return res.redirect('/reviews/writeReviews');
         }
