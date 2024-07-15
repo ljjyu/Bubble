@@ -16,4 +16,19 @@ db.branch = require("./branch.js")(sequelize, Sequelize);
 // 모델 간의 관계 정의 (Associations)
 db.branch.hasMany(db.Review, { foreignKey: 'branchID', as: 'reviews' });
 db.Review.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch' });
+
+db.machine.hasMany(db.reservation, { foreignKey: 'machineID', as: 'reservation'});
+db.reservation.belongsTo(db.machine, { foreignKey: 'machineID', as: 'machine' });
+
+db.branch.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
+db.subscriber.belongsTo(db.branch, { foreignKey: 'name', as: 'branch' });
+
+db.machine.belongsTo(db.branch, { foreignKey: 'branchID', as: 'branch' });
+db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine' });
+
+db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
+db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation' });
+
+db.Review.belongTo(db.subscriber, { foreignKey: 'name', as: 'subscriber' });
+db.subscriber.hasMany(db.Review, { foreignKey: 'subscriberName', as: 'reviews' });
 module.exports = db;
