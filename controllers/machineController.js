@@ -27,12 +27,12 @@ exports.getAllMachines = async (req, res) => {
 };
 // 기계 상태를 needs_repair로 업데이트하는 엔드포인트 추가
 exports.reportIssue = async (req, res) => {
-    const { machineID } = req.body;
+    const { machine-id } = req.body;
     try {
         await Machine.update(
             { state: 'needs_repair' }, // 업데이트할 데이터
             {
-                where: { id: machineID } // 조건
+                where: { machineID: machine-id } // 조건
             }
         );
         res.send({ message: 'Machine status updated to needs_repair' });
