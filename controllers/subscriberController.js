@@ -27,58 +27,62 @@ exports.saveSubscriber = async (req, res) => {
         const existingSubscriber = await Subscriber.findOne({where: { email: email }});
         let existingBranchName;
         if (existingSubscriber) {
-            res.status(400).send({
+            return res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
             });
-        } else if (password.length<8) {
-            res.status(400).send({
+        }
+        if (password.length<8) {
+            return res.status(400).send({
                 message: "비밀번호는 8자리 이상이어야 합니다."
             });
-        } else if (branchName) {
-            existingBranchName = await Subscriber.findOne({where: { branchName: branchName }});
-        } else if (existingBranchName && role === 'admin') {
-            res.status(400).send({
-                message: "이미 등록된 지점명입니다."
-            });
-        } else if (role === 'admin' && (!branchName || !address)) {
-            res.status(400).send({
+        }
+        if (role === 'admin' && (!branchName || !address)) {
+            return res.status(400).send({
                 message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요."
             });
-        } else {
-            const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
-            // 새로운 지점 생성
-            let newBranch;
-            // 새로운 지점 생성
-            if (role === 'admin') {
-                 newBranch = await Branch.create({
+        }
+        const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
+        // 새로운 지점 생성
+        let newBranch;
+        // 새로운 지점 생성
+        if (role === 'admin') {
+            const [existingBranch, createdBranch] = await Promise.all([
+                branchName ? Subscriber.findOne({ where: { branchName: branchName } }) : null,
+                Branch.create({
                     branchName: branchName,
                     address: address,
                     manager: email
+                })
+            ]);
+            if (existingBranch) {
+                return res.status(400).send({
+                    message: "이미 등록된 지점명입니다."
                 });
-                // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
-                const machines = [];
-                for (let i = 1; i <= 4; i++) {
-                    machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
-                    machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
-                }
-                await Machine.bulkCreate(machines);
             }
-
-            await Subscriber.create({
-                name: name,
-                email: email,
-                password: hashedPassword,
-                role: role,
-		        phoneNumber: phoneNumber,
-                cardNumber: cardNumber,
-                branchName: role === 'admin' ? branchName : null,
-                address: role === 'admin' ? address : null
-            });
-
-            res.redirect("/");
+            newBranch = createdBranch;
+            // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
+            const machines = [];
+            for (let i = 1; i <= 4; i++) {
+                machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
+                machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
+            }
+            await Machine.bulkCreate(machines);
         }
+
+         await Subscriber.create({
+             name: name,
+             email: email,
+             password: hashedPassword,
+             role: role,
+		     phoneNumber: phoneNumber,
+             cardNumber: cardNumber,
+             branchName: role === 'admin' ? branchName : null,
+             address: role === 'admin' ? address : null
+         });
+
+         res.redirect("/");
     } catch (err) {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message
         });
     }
