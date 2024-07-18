@@ -25,18 +25,20 @@ exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
         const existingSubscriber = await Subscriber.findOne({where: { email: email }});
-        const existingBranchName = await Subscriber.findOne({where: { branchName: branchName }});
+        const existingBranchName;
         if (existingSubscriber) {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
             });
+        } else if (password.length<8) {
+            res.status(400).send({
+                message: "비밀번호는 8자리 이상이어야 합니다."
+            });
+        } else if (branchName) {
+            existingBranchName = await Subscriber.findOne({where: { branchName: branchName }});
         } else if (existingBranchName && role === 'admin') {
             res.status(400).send({
                 message: "이미 등록된 지점명입니다."
-            });
-        } else if (password.length<8) {
-            res.status(400).send({
-                 message: "비밀번호는 8자리 이상이어야 합니다."
             });
         } else if (role === 'admin' && (!branchName || !address)) {
             res.status(400).send({
