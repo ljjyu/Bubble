@@ -25,7 +25,7 @@ exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
         const existingSubscriber = await Subscriber.findOne({where: { email: email }});
-        const existingBranchName;
+        let existingBranchName;
         if (existingSubscriber) {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
