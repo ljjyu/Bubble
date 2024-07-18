@@ -43,10 +43,8 @@ exports.saveSubscriber = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
         // 새로운 지점 생성
-        let newBranch;
-        // 새로운 지점 생성
         if (role === 'admin') {
-            const [existingBranch, createdBranch] = await Promise.all([
+            const [existingBranch, newBranch] = await Promise.all([ // 병렬 처리
                 branchName ? Subscriber.findOne({ where: { branchName: branchName } }) : null,
                 Branch.create({
                     branchName: branchName,
@@ -59,7 +57,6 @@ exports.saveSubscriber = async (req, res) => {
                     message: "이미 등록된 지점명입니다."
                 });
             }
-            newBranch = createdBranch;
             // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
             const machines = [];
             for (let i = 1; i <= 4; i++) {
