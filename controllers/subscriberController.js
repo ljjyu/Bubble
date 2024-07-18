@@ -30,7 +30,7 @@ exports.saveSubscriber = async (req, res) => {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
             });
-        } else if (existingBranchName) {
+        } else if (existingBranchName && role === 'admin') {
             res.status(400).send({
                 message: "이미 등록된 지점명입니다."
             });
@@ -69,8 +69,8 @@ exports.saveSubscriber = async (req, res) => {
                 role: role,
 		        phoneNumber: phoneNumber,
                 cardNumber: cardNumber,
-                branchName: branchName,
-                address: address
+                branchName: role === 'admin' ? branchName : null,
+                address: role === 'admin' ? address : null
             });
 
             res.redirect("/");
