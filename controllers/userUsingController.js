@@ -6,24 +6,21 @@ const db = require("../models/index"),
 
 exports.getUserUsingPage = async (req, res) => {
     try {
-        // 5분 후 시간을 계산합니다.
-        const MinutesLater = moment().add(5, 'minutes').toDate();
-
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
         const subscriberName = user ? user.name : 'Unknown User';
 
         const reservations = await Reservation.findAll({
             where: {
-                reservationDate: {
-                    [Op.gt]: MinutesLater
-                },
                 subscriberName: subscriberName
             },
             order: [['created_at', 'DESC']],
             include: {
                 model: Machine,
-                as: 'machine'
+                as: 'machine',
+                where: {
+                    state: 'in_use' // Machine의 상태가 'in_use'인 경우만 조회
+                }
             },
             order: [['created_at', 'DESC']]
         });
