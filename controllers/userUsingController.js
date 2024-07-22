@@ -8,7 +8,6 @@ exports.getUserUsingPage = async (req, res) => {
     try {
         // 30분 후 시간을 계산합니다.
         const thirtyMinutesLater = moment().add(30, 'minutes').toDate();
-        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
