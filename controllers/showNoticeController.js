@@ -15,3 +15,22 @@ exports.getAllNotices = async (req, res) => {
         });
     }
 };
+//삭제
+exports.deleteNotice = async (req, res) => {
+    const noticeId = req.params.noticeNumber;
+    const user = req.session.user;
+    try {
+        const branch = await Branch.findOne({ where: { branchName: user.branchName } });
+        const notice = await Notice.findOne({ where: { noticeNumber: noticeId, branchID: branch.branchID } });
+        if (!notice) {
+            req.flash('error', 'Notice not found or you do not have permission to delete this notice.');
+            return res.redirect('/showNotice');
+        }
+        await Notice.destroy({where: { noticeNumber: noticeId }});
+        req.flash('success', 'Notice deleted successfully.');
+        res.redirect('/showNotice');
+    } catch (err) {
+        req.flash('error', 'An error occurred while deleting the notice.');
+        res.redirect('/showNotice');
+    }
+};

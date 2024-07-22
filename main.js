@@ -91,6 +91,7 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
+app.get('/showNotice/deleteNotice/:noticeNumber', showNoticeController.deleteNotice);
 app.use("/getWeather", weatherController);
 
 app.get('/user/getBranches', branchController.getBranches);
