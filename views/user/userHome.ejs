@@ -56,10 +56,10 @@
                         <span class="left-align">사용 현황 : <%= reservation.machine.state %> </span>
                         <% if (reservation.machine.state === 'in_use') { %>
                             <%  const currentTime = moment();
-                                const reservationTime = moment(reservation.reservationDate);
+                                const reservationTime = moment(reservation.reservationDate).add(5, 'minutes');
                                 const diffDuration = moment.duration(currentTime.diff(reservationTime));
-                                const minutes = diffDuration.minutes();
-                                const seconds = diffDuration.seconds(); %>
+                                const minutes = Math.max(diffDuration.minutes(), 0); // 음수 방지를 위해 Math.max 사용
+                                const seconds = Math.max(diffDuration.seconds(), 0); %>
                                 <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
                         <% } %>
                      </div>
