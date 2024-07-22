@@ -35,10 +35,19 @@
             <div class="machines-container">
                 <% reservations.forEach((reservation, index) => { %>
                     <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
-                        <span class="left-align">예약 번호 : <%= reservation.reservationNumber %> </span>
                         <span class="left-align">예약 시간 : <%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %> </span>
                         <span class="left-align">기계 종류 : <%= reservation.machine.type === 'washer' ? '세탁기' : '건조기' %> </span>
                         <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
+                        <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
+                        <span class="left-align">사용 현황 : <% if (reservation.machine.state === 'available') { %> 사용 완료 <% } else if (reservation.machine.state === 'in_use') { %> 사용 중 <% } %></span>
+                        <% if (reservation.machine.state === 'in_use') { %>
+                            <%  const currentTime = moment();
+                                const reservationTime = moment(reservation.reservationDate).add(5, 'minutes');
+                                const diffDuration = moment.duration(currentTime.diff(reservationTime));
+                                const minutes = Math.max(diffDuration.minutes(), 0); // 음수 방지를 위해 Math.max 사용
+                                const seconds = Math.max(diffDuration.seconds(), 0); %>
+                                <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
+                        <% } %>
                     </div>
                 <% }); %>
             </div>
