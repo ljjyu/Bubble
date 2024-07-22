@@ -6,8 +6,8 @@ const db = require("../models/index"),
 
 exports.getUserUsingPage = async (req, res) => {
     try {
-        // 30분 후 시간을 계산합니다.
-        const thirtyMinutesLater = moment().add(30, 'minutes').toDate();
+        // 5분 후 시간을 계산합니다.
+        const MinutesLater = moment().add(5, 'minutes').toDate();
 
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
@@ -16,7 +16,7 @@ exports.getUserUsingPage = async (req, res) => {
         const reservations = await Reservation.findAll({
             where: {
                 reservationDate: {
-                    [Op.gt]: thirtyMinutesLater
+                    [Op.gt]: MinutesLater
                 },
                 subscriberName: subscriberName
             },

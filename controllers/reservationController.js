@@ -68,13 +68,28 @@ exports.createReservation = async (req, res) => {
             subscriberName: userName // 사용자의 이름 저장
         });
 
-        // 예약 생성 후, 해당 machineID의 state 속성을 'in_use'로 업데이트
-//        await Machine.update(
-//            { state: 'in_use' }, // 업데이트할 데이터
-//            {
-//                where: { machineID: randomMachine.machineID } // 조건
-//            }
-//        );
+         예약 생성 후, 해당 machineID의 state 속성을 'in_use'로 업데이트
+        await Machine.update(
+            { state: 'in_use' }, // 업데이트할 데이터
+            {
+                where: { machineID: randomMachine.machineID } // 조건
+            }
+        );
+
+        // 5분 후에 상태를 'available'로 변경하는 작업 예약
+        setTimeout(async () => {
+            try {
+                await Machine.update(
+                    { state: 'available' }, // 업데이트할 데이터
+                    {
+                        where: { machineID: randomMachine.machineID } // 조건
+                    }
+                );
+                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
+            } catch (err) {
+                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
+            }
+        }, 5 * 60 * 1000); // 5분 = 30 * 60 * 1000 밀리초
 
         res.status(201).send(newReservation);
     } catch (err) {
