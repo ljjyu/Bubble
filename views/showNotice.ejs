@@ -47,7 +47,7 @@
                     <td><%= notice.subscriberName %></td>
                     <% if (user && user.role === 'admin') { %>
                         <td>
-                            <form action="/showNotice/deleteNotice/<%= notice.noticeNumber %>" method="POST" style="display:inline;">
+                            <form action="/showNotice/deleteNotice/<%= notice.noticeNumber %>" method="POST">
                                 <button type="submit" class="btn">삭제</button>
                             </form>
                         </td>
