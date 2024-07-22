@@ -57,8 +57,10 @@
                         <% if (reservation.machine.state === 'in_use') { %>
                             <%  const currentTime = moment();
                                 const reservationTime = moment(reservation.reservationDate);
-                                const diffDuration = moment.duration(currentTime.diff(reservationTime)); %>
-                                <span class="left-align">남은 사용 시간 : <%= diffDuration.format('YYYY-MM-DD HH:mm:ss') %> </span>
+                                const diffDuration = moment.duration(currentTime.diff(reservationTime));
+                                const minutes = diffDuration.minutes();
+                                const seconds = diffDuration.seconds(); %>
+                                <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
                         <% } %>
                      </div>
                  <% }); %>
