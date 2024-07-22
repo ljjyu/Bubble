@@ -22,7 +22,7 @@ exports.deleteNotice = async (req, res) => {
     const user = req.session.user;
     try {
         const branch = await Branch.findOne({ where: { branchName: user.branchName } });
-        const notice = await Notice.findOne({ where: { noticeNumber: noticeId, branchID: branch.branchID } });
+        const notice = await Notice.findOne({ where: { noticeNumber: noticeId, subscriberName: branch.branchName } });
         if (!notice) {
             req.flash('error', 'Notice not found or you do not have permission to delete this notice.');
             return res.redirect('/showNotice');
