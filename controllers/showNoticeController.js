@@ -1,5 +1,6 @@
 const db = require("../models/index"),
     Notice = db.notice,
+    Branch = db.branch,
     Op = db.Sequelize.Op;
 
 exports.getAllNotices = async (req, res) => {
