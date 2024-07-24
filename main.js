@@ -30,6 +30,9 @@ const express = require("express"),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
+//문의
+const qnaController = require("./controllers/qnaController");
+
 db.sequelize.sync(); // 모델동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
@@ -95,6 +98,17 @@ app.post('/user/userReserve', reservationController.createReservation);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
+
+//문의
+app.get('/user/saveQuestion', qnaController.getUserInquiries);
+app.get('/manager/createAnswer', qnaController.getAdminInquiries);
+app.post("/user/saveQuestion", qnaController.saveQuestion);
+app.get("/manager/qnaReply", qnaController.qnaReply);
+app.post("/manager/qnaReply", qnaController.submitReply);
+
+const consumer = require('./controllers/consumer');
+// 컨슈머 코드 실행
+consumer.startConsumer();
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
