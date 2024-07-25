@@ -19,7 +19,11 @@ exports.getUserUsingPage = async (req, res) => {
             include: {
                 model: Machine,
                 as: 'machine',
-                include : [Branch],
+                include : [{
+                    model: Branch,
+                    as: 'branch3'
+                    }],
+                }
                 where: {
                     state: 'in_use' // Machine의 상태가 'in_use'인 경우만 조회
                 }
