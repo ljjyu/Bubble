@@ -52,13 +52,13 @@ exports.createReservation = async (req, res) => {
             }
         });
         // 예약 시간의 3분 전과 3분 후를 계산
-        const reservationDateTimeMinus5Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
-        const reservationDateTimePlus5Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
+        const reservationDateTimeMinus3Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
+        const reservationDateTimePlus3Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
 
         // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
         const reservedMachines = await Reservation.findAll({
             where: {
-                reservationDate: { [Op.between]: [reservationDateTimeMinus5Min, reservationDateTimePlus5Min] },
+                reservationDate: { [Op.between]: [reservationDateTimeMinus3Min, reservationDateTimePlus3Min] },
                 machineID: availableMachines.map(machine => machine.machineID)
             }
         });
@@ -91,8 +91,10 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
-//        const reservationEndTime = reservationDateTime.getTime() + 3 * 60 * 1000;
-//        const timeUntilUpdate = reservationEndTime - currentTime.getTime();
+        const timeUntilUpdate = reservationDateTime - currentTime + 3 * 60 * 1000;
+        if (timeUntilUpdate < 0) {
+          timeUntilUpdate = 0; // 예약 시간이 이미 지났다면 즉시 실행
+        }
 
         //3분 후에 상태를 'available'로 변경하는 작업 예약
         setTimeout(async () => {
@@ -107,7 +109,7 @@ exports.createReservation = async (req, res) => {
             } catch (err) {
                 console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
             }
-        },  3 * 60 * 1000);
+        },  timeUntilUpdate);
 
         res.status(201).send(newReservation);
     } catch (err) {
