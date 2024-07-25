@@ -13,6 +13,7 @@ db.reservation = require("./reservation.js")(sequelize, Sequelize);
 db.notice = require("./notice.js")(sequelize, Sequelize);
 db.Review = require("./reviews.js")(sequelize, Sequelize);
 db.branch = require("./branch.js")(sequelize, Sequelize);
+db.Report = require("./report.js")(sequelize, Sequelize);
 
 // 모델 간의 관계 정의 (Associations)
 db.branch.hasMany(db.Review, { foreignKey: 'branchID', as: 'reviews' });
@@ -26,5 +27,8 @@ db.branch.hasMany(db.machine, { foreignKey: 'branchID', as: 'machine2' });
 
 db.reservation.belongsTo(db.subscriber, { foreignKey: 'name', as: 'subscriber2' });
 db.subscriber.hasMany(db.reservation, { foreignKey: 'subscriberName', as: 'reservation2' });
+
+db.Report.belongsTo(db.Review, { foreignKey: 'reviewID', as: 'review' });
+db.Review.hasMany(db.Report, { foreignKey: 'reviewID', as: 'reports' });
 
 module.exports = db;

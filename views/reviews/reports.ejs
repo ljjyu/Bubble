@@ -1,0 +1,49 @@
+<head>
+    <title>리뷰 신고내역</title>
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .report {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .report:last-child {
+            border-bottom: none;
+        }
+        h3 {
+            margin: 0 0 10px;
+        }
+        p {
+            margin: 5px 0;
+            color: #333;
+        }
+        .category, .reason, .reportedAt {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>리뷰 신고내역</h1>
+        <% if (reports.length > 0) { %>
+            <% reports.forEach(report => { %>
+                <div class="report">
+                    <p> 작성자: <%= report.review.name %> </h3>
+		    <p>리뷰 제목: <%= report.review.name %></p>	
+                    <p>리뷰 내용 <%= report.review.review %></p>
+                    <p class="category">Category: <%= report.category %></p>
+                    <p class="reason">Reason: <%= report.reason %></p>
+                    <p class="reportedAt">Reported At: <%= new Date(report.reported_at).toLocaleString() %></p>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No reports available.</p>
+        <% } %>
+    </div>
+</body>

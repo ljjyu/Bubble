@@ -1,48 +1,115 @@
 <head>
     <title>리뷰</title>
     <style>
-	.review-list {
-  	    list-style: none;
-    	    padding: 0;
-	}
+        .review-list {
+            list-style: none;
+            padding: 0;
+        }
 
-	.review-item {
-    	    background-color: #fff;
-    	    border: 1px solid #ddd;
-    	    border-radius: 5px;
-    	    margin: 10px auto;
-    	    padding: 20px;
-    	    max-width: 1000px; 
-   	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}		
+        .review-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px auto;
+            padding: 20px;
+            max-width: 1000px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-	.review-item strong {
-    	    font-size: 1.2em;
-	}	
+        .review-item strong {
+            font-size: 1.2em;
+        }
 
-	.review-item p {
+        .review-item p {
             margin: 10px 0;
-	    font-size: 1em;
-	}
+            font-size: 1em;
+        }
 
-	.review-item small {
-	    color: #888;
-	}
+        .review-item small {
+            color: #888;
+        }
 
-	.button-container {
- 	   text-align: right;
-	   margin-bottom: 20px;
-	}
-	</style>
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function openModal(reviewID) {
+            document.getElementById('reportModal').style.display = 'block';
+            document.getElementById('reviewID').value = reviewID;
+        }
+
+        function closeModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('reportModal')) {
+                closeModal();
+            }
+        }
+
+        function handleCategoryChange() {
+            const category = document.getElementById('category').value;
+            const reasonContainer = document.getElementById('reasonContainer');
+            if (category === '기타') {
+                reasonContainer.style.display = 'block';
+            } else {
+                reasonContainer.style.display = 'none';
+                document.getElementById('reason').value = '';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="main-content">
-	<h1>전체 리뷰</h1>
+        <h1>전체 리뷰</h1>
         <div class="button-container">
-             <% if (user && user.role === 'user') { %>
-                 <a href="/reviews/writeReviews" class="btn">리뷰 작성하기</a>
-             <% } %>
-        </div>    
+            <% if (user && user.role === 'user') { %>
+                <a href="/reviews/writeReviews" class="btn">리뷰 작성하기</a>
+            <% } %>
+            <% if (user && user.role === 'admin') { %>
+                <a href="/reviews/reports" class="btn">신고 내역 열람</a>
+            <% } %>
+        </div>
         <ul class="review-list">
             <% reviews.forEach(function(review) { %>
                 <li class="review-item">
@@ -51,13 +118,36 @@
                     <small>지점: <%= review.branch.branchName %></small>
                     <small>작성일: <%= review.createdAt ? review.createdAt.toLocaleString() : 'N/A' %></small>
                     <% if (user && user.role === 'admin') { %>
-                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
+                        <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
                     <% } %>
-		            <% if (user && user.role === 'user') { %>
-		                <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
+                    <% if (user && user.role === 'user') { %>
+                        <button onclick="openModal(<%= review.id %>)">신고</button>
                     <% } %>
                 </li>
             <% }); %>
         </ul>
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form action="/reviews/reportReview" method="POST">
+                <input type="hidden" id="reviewID" name="reviewID">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-control" required onchange="handleCategoryChange()">
+                        <option value="">Select a category</option>
+                        <option value="부적절한 표현">부적절한 표현</option>
+                        <option value="타인을 향한 비방">타인을 향한 비방</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="form-group" id="reasonContainer" style="display:none;">
+                    <label for="reason">Reason</label>
+                    <textarea id="reason" name="reason" class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Report</button>
+            </form>
+        </div>
     </div>
 </body>

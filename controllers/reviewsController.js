@@ -1,7 +1,10 @@
 const db = require("../models/index"),
     Review = db.Review,
     Branch = db.branch,
+    Report = db.Report,
     Op = db.Sequelize.Op;
+
+const { sendToQueue } = require('../rabbitmqProducer');
 
 exports.getAllReviews = async (req, res) => {
     try {
@@ -11,6 +14,10 @@ exports.getAllReviews = async (req, res) => {
                 {
                     model: Branch,
                     as: 'branch'
+                },
+		{
+                    model: Report,
+                    as: 'reports'
                 }
             ],
             order: [['created_at', 'DESC']]
@@ -81,3 +88,47 @@ exports.deleteReview = async (req, res) => {
         res.redirect('/reviews/getReviews');
     }
 };
+
+//신고 
+exports.reportReview = async (req, res) => {
+    try {
+        const { reviewID, category, reason } = req.body;
+        const user = req.session.user;
+
+        console.log('Received data:', { reviewID, category, reason });
+
+        if (!reviewID || !category || (category === '기타' && !reason)) {
+            req.flash('error', 'All fields are required.');
+            return res.redirect('/reviews/getReviews');
+        }
+
+        const review = await Review.findOne({ where: { id: reviewID } });
+
+        if (!review) {
+            req.flash('error', 'Review not found.');
+            return res.redirect('/reviews/getReviews');
+        }
+
+        const reportReason = category === '기타' ? reason : category;
+
+        const newReport = await Report.create({
+            reviewID,
+            category,
+            reason: reportReason,
+            reporterName: user.name,
+            reportedBy: user.email,
+            branchID: review.branchID,
+            reported_at: new Date()
+        });
+
+        console.log('New Report:', newReport);
+
+        req.flash('success', 'Review reported successfully.');
+        res.redirect('/reviews/getReviews');
+    } catch (err) {
+        console.error('Error reporting review:', err);
+        req.flash('error', 'An error occurred while reporting the review.');
+        res.redirect('/reviews/getReviews');
+    }
+};
+
