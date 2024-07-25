@@ -27,8 +27,7 @@ exports.getUserUsingPage = async (req, res) => {
                 where: {
                     state: 'in_use' // Machine의 상태가 'in_use'인 경우만 조회
                 }
-            },
-            order: [['created_at', 'DESC']]
+            }
         });
 
         // 렌더링할 페이지와 데이터
