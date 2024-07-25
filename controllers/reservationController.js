@@ -94,20 +94,26 @@ exports.createReservation = async (req, res) => {
         const reservationEndTime = reservationDateTime.getTime() + 3 * 60 * 1000;
         const timeUntilUpdate = reservationEndTime - currentTime.getTime();
 
+        await reservationQueue.add({
+            machineID: randomMachine.machineID
+        }, {
+            delay: timeUntilUpdate // 예약된 시간만큼 지연시킵니다.
+        });
+
         // 예약 시간 3분 후에 상태를 'available'로 변경하는 작업 예약
-        setTimeout(async () => {
-            try {
-                await Machine.update(
-                    { state: 'available' }, // 업데이트할 데이터
-                    {
-                        where: { machineID: randomMachine.machineID } // 조건
-                    }
-                );
-                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
-            } catch (err) {
-                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
-            }
-        }, timeUntilUpdate);
+//        setTimeout(async () => {
+//            try {
+//                await Machine.update(
+//                    { state: 'available' }, // 업데이트할 데이터
+//                    {
+//                        where: { machineID: randomMachine.machineID } // 조건
+//                    }
+//                );
+//                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
+//            } catch (err) {
+//                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
+//            }
+//        }, timeUntilUpdate);
 
         res.status(201).send(newReservation);
     } catch (err) {
