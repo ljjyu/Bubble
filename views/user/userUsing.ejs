@@ -42,8 +42,8 @@
                         <span class="left-align">사용 현황 : <% if (reservation.machine.state === 'available') { %> 사용 완료 <% } else if (reservation.machine.state === 'in_use') { %> 사용 중 <% } %></span>
                         <% if (reservation.machine.state === 'in_use') { %>
                             <%  const currentTime = moment();
-                                const reservationTime = moment(reservation.reservationDate).add(5, 'minutes');
-                                const diffDuration = moment.duration(currentTime.diff(reservationTime));
+                                const reservationTime = moment(reservation.reservationDate).add(3, 'minutes');
+                                const diffDuration = moment.duration(reservationTime.diff(currentTime));
                                 const minutes = Math.max(diffDuration.minutes(), 0);
                                 const seconds = Math.max(diffDuration.seconds(), 0); %>
                                 <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>

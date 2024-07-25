@@ -51,9 +51,9 @@ exports.createReservation = async (req, res) => {
                 type: machineType
             }
         });
-        // 예약 시간의 5분 전과 5분 후를 계산
-        const reservationDateTimeMinus5Min = new Date(reservationDateTime.getTime() - 5 * 60 * 1000);
-        const reservationDateTimePlus5Min = new Date(reservationDateTime.getTime() + 5 * 60 * 1000);
+        // 예약 시간의 3분 전과 3분 후를 계산
+        const reservationDateTimeMinus5Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
+        const reservationDateTimePlus5Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
 
         // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
         const reservedMachines = await Reservation.findAll({
@@ -93,7 +93,7 @@ exports.createReservation = async (req, res) => {
         );
         const timeUntilReservation = reservationDateTime - currentTime;
 
-        // 예약 시간 5분 후에 상태를 'available'로 변경하는 작업 예약
+        // 예약 시간 3분 후에 상태를 'available'로 변경하는 작업 예약
         setTimeout(async () => {
             try {
                 await Machine.update(
@@ -106,7 +106,7 @@ exports.createReservation = async (req, res) => {
             } catch (err) {
                 console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
             }
-        }, timeUntilReservation + 5 * 60 * 1000); // 5분 = 30 * 60 * 1000 밀리초
+        }, timeUntilReservation + 3 * 60 * 1000); // 5분 = 30 * 60 * 1000 밀리초
 
         res.status(201).send(newReservation);
     } catch (err) {
