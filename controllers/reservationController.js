@@ -4,7 +4,8 @@ const db = require("../models/index"),
     Subscriber = db.subscriber,
     Branch = db.branch,
     { Op } = require('sequelize'),
-    { v4: uuidv4 } = require('uuid');
+    { v4: uuidv4 } = require('uuid'),
+    reservationQueue = require('../controllers/queue');
 
 exports.getAllReservations = async (req, res) => {
     try {
