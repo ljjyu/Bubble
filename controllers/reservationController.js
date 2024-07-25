@@ -67,13 +67,12 @@ exports.createReservation = async (req, res) => {
         const machinesNotReserved = availableMachines.filter(machine => !reservedMachineIDs.includes(machine.machineID));
 
         if (machinesNotReserved.length === 0) {
-            res.status(400).send({
+            return res.status(400).send({
                 message: "이용 가능한 기기가 없습니다."
             });
-        } else {
-            // 랜덤으로 기기 선택
-            const randomMachine = machinesNotReserved[Math.floor(Math.random() * machinesNotReserved.length)];
         }
+        // 랜덤으로 기기 선택
+        const randomMachine = machinesNotReserved[Math.floor(Math.random() * machinesNotReserved.length)];
 
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
