@@ -91,9 +91,7 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
-        const reservationDateTimeStr = `${reservationTime}:00`;
-        const reservationDateStrTime = new Date(reservationDateTimeStr);
-        const timeUntilUpdate = reservationDateStrTime - currentTime + 3 * 60 * 1000;
+        const timeUntilUpdate = reservationDateTime.getTime() + 3 * 60 * 1000 - currentTime.getTime();
         if (timeUntilUpdate < 0) {
           timeUntilUpdate = 0; // 예약 시간이 이미 지났다면 즉시 실행
         }
