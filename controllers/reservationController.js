@@ -4,7 +4,8 @@ const db = require("../models/index"),
     Subscriber = db.subscriber,
     Branch = db.branch,
     { Op } = require('sequelize'),
-    { v4: uuidv4 } = require('uuid');
+    { v4: uuidv4 } = require('uuid'),
+    cron = require('node-cron');
 
 exports.getAllReservations = async (req, res) => {
     try {
@@ -91,6 +92,8 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
+        const reservationDateTimePlus3MinStr = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
+        const cronTime = `${reservationDateTimePlus3MinStr.getUTCMinutes()} ${reservationDateTimePlus3MinStr.getUTCHours()} ${reservationDateTimePlus3MinStr.getUTCDate()} ${reservationDateTimePlus3MinStr.getUTCMonth() + 1} *`;
 //        const reservationDateStrTime = new Date(`${reservationTime}:00`);
 //        const timeUntilUpdate = reservationDateStrTime.getTime() + 3 * 60 * 1000 - currentTime.getTime();
 //        if (timeUntilUpdate < 0) {
@@ -98,19 +101,35 @@ exports.createReservation = async (req, res) => {
 //        }
 
         //3분 후에 상태를 'available'로 변경하는 작업 예약
-        setTimeout(async () => {
+//        setTimeout(async () => {
+//            try {
+//                await Machine.update(
+//                    { state: 'available' }, // 업데이트할 데이터
+//                    {
+//                        where: { machineID: randomMachine.machineID } // 조건
+//                    }
+//                );
+//                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
+//            } catch (err) {
+//                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
+//            }
+//        }, 3 * 60 * 1000);
+        cron.schedule(cronTime, async () => {
             try {
                 await Machine.update(
-                    { state: 'available' }, // 업데이트할 데이터
+                    { state: 'available' },
                     {
-                        where: { machineID: randomMachine.machineID } // 조건
+                        where: { machineID: randomMachine.machineID }
                     }
                 );
                 console.log(`Machine ${randomMachine.machineID} has been set to available.`);
             } catch (err) {
                 console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
             }
-        }, 3 * 60 * 1000);
+        }, {
+            scheduled: true,
+            timezone: "UTC" // 필요한 경우 타임존 설정
+        });
 
         res.status(201).send(newReservation);
     } catch (err) {
