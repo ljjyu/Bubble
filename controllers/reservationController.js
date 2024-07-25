@@ -91,10 +91,10 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
-        const reservationEndTime = reservationDateTime.getTime() + 3 * 60 * 1000;
-        const timeUntilUpdate = reservationEndTime - currentTime.getTime();
+//        const reservationEndTime = reservationDateTime.getTime() + 3 * 60 * 1000;
+//        const timeUntilUpdate = reservationEndTime - currentTime.getTime();
 
-        //예약 시간 3분 후에 상태를 'available'로 변경하는 작업 예약
+        //3분 후에 상태를 'available'로 변경하는 작업 예약
         setTimeout(async () => {
             try {
                 await Machine.update(
@@ -107,7 +107,7 @@ exports.createReservation = async (req, res) => {
             } catch (err) {
                 console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
             }
-        }, timeUntilUpdate);
+        },  3 * 60 * 1000);
 
         res.status(201).send(newReservation);
     } catch (err) {
