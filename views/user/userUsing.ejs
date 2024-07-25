@@ -44,7 +44,7 @@
                             <%  const currentTime = moment();
                                 const reservationTime = moment(reservation.reservationDate).add(5, 'minutes');
                                 const diffDuration = moment.duration(currentTime.diff(reservationTime));
-                                const minutes = Math.max(diffDuration.minutes(), 0); // 음수 방지를 위해 Math.max 사용
+                                const minutes = Math.max(diffDuration.minutes(), 0);
                                 const seconds = Math.max(diffDuration.seconds(), 0); %>
                                 <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
                         <% } %>

@@ -1,6 +1,7 @@
 const db = require("../models/index"),
     Machine = db.machine,
     Reservation = db.reservation,
+    Branch = db.branch,
     moment = require('moment'),
     Op = db.Sequelize.Op;
 
@@ -18,6 +19,7 @@ exports.getUserUsingPage = async (req, res) => {
             include: {
                 model: Machine,
                 as: 'machine',
+                include : [Branch],
                 where: {
                     state: 'in_use' // Machine의 상태가 'in_use'인 경우만 조회
                 }
