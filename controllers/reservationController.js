@@ -4,7 +4,7 @@ const db = require("../models/index"),
     Subscriber = db.subscriber,
     Branch = db.branch,
     { Op } = require('sequelize'),
-    { v4: uuidv4 } = require('uuid'); // For generating unique reservation numbers
+    { v4: uuidv4 } = require('uuid');
 
 exports.getAllReservations = async (req, res) => {
     try {
@@ -25,8 +25,8 @@ exports.getAllReservations = async (req, res) => {
 
 exports.createReservation = async (req, res) => {
     try {
-        const { machineType, branchName, reservationTime } = req.body; // Update to match the correct keys
-        const reservationNumber = uuidv4(); // Generate a unique reservation number
+        const { machineType, branchName, reservationTime } = req.body;
+        const reservationNumber = uuidv4();
 
         // 예약 시간이 현재 시간보다 과거인지 확인
          const currentTime = new Date();
@@ -43,21 +43,36 @@ exports.createReservation = async (req, res) => {
                 message: "존재하지 않는 지점입니다."
             });
          }
-         // 이용 가능한 기기 조회
+
+        // 해당 지점 기기 조회
         const availableMachines = await Machine.findAll({
             where: {
                 branchID: branch.branchID,
-                type: machineType,
-                state: 'available'
+                type: machineType
             }
         });
-         if (availableMachines.length === 0) {
-            return res.status(400).send({
+        // 예약 시간의 5분 전과 5분 후를 계산
+        const reservationDateTimeMinus5Min = new Date(reservationDateTime.getTime() - 5 * 60 * 1000);
+        const reservationDateTimePlus5Min = new Date(reservationDateTime.getTime() + 5 * 60 * 1000);
+
+        // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
+        const reservedMachines = await Reservation.findAll({
+            where: {
+                reservationDate: { [Op.between]: [reservationDateTimeMinus5Min, reservationDateTimePlus5Min] },
+                machineID: availableMachines.map(machine => machine.machineID)
+            }
+        });
+
+        const reservedMachineIDs = reservedMachines.map(reservation => reservation.machineID);
+        const machinesNotReserved = availableMachines.filter(machine => !reservedMachineIDs.includes(machine.machineID));
+
+        if (machinesNotReserved.length === 0) {
+            res.status(400).send({
                 message: "이용 가능한 기기가 없습니다."
             });
         }
         // 랜덤으로 기기 선택
-        const randomMachine = availableMachines[Math.floor(Math.random() * availableMachines.length)];
+        const randomMachine = machinesNotReserved[Math.floor(Math.random() * machinesNotReserved.length)];
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
         const userName = user ? user.name : 'Unknown User';
@@ -75,8 +90,9 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
+        const timeUntilReservation = reservationDateTime - currentTime;
 
-        // 5분 후에 상태를 'available'로 변경하는 작업 예약
+        // 예약 시간 5분 후에 상태를 'available'로 변경하는 작업 예약
         setTimeout(async () => {
             try {
                 await Machine.update(
@@ -89,7 +105,7 @@ exports.createReservation = async (req, res) => {
             } catch (err) {
                 console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
             }
-        }, 5 * 60 * 1000); // 5분 = 30 * 60 * 1000 밀리초
+        }, timeUntilReservation + 5 * 60 * 1000); // 5분 = 30 * 60 * 1000 밀리초
 
         res.status(201).send(newReservation);
     } catch (err) {
