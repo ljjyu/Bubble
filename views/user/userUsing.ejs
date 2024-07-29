@@ -37,7 +37,7 @@
                 <% reservations.forEach((reservation, index) => {
                     const currentTime = moment();
                     const reservationTime = moment(reservation.reservationDate);
-                    const isTodayOrFuture = reservationTime.isSameOrAfter(currentTime, 'day');
+                    const isTodayOrFuture = reservationTime.isSameOrAfter(currentTime, 'minutes');
                     const isToday = reservationTime.isSame(currentTime, 'day');
                 %>
                     <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">

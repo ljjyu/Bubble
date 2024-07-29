@@ -30,14 +30,6 @@ exports.createReservation = async (req, res) => {
         const { machineType, branchName, reservationTime } = req.body;
         const reservationNumber = uuidv4();
 
-         // 예약 시간이 현재 시간보다 과거인지 확인
-//         const currentTime = new Date();
-//         const reservationDateTime = new Date(reservationTime);
-//         if (reservationDateTime < currentTime) {
-//              return res.status(400).send({
-//                    message: "예약 시간은 현재 시간보다 이후여야 합니다."
-//              });
-//         }
         const currentTime = moment();
         const reservationDateTime = moment(reservationTime);
         if (reservationDateTime.isBefore(currentTime)) {
@@ -62,15 +54,12 @@ exports.createReservation = async (req, res) => {
             }
         });
         // 예약 시간의 3분 전과 3분 후를 계산
-//        const reservationDateTimeMinus3Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
-//        const reservationDateTimePlus3Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
         const reservationDateTimeMinus3Min = reservationDateTime.clone().subtract(3, 'minutes');
         const reservationDateTimePlus3Min = reservationDateTime.clone().add(3, 'minutes');
 
         // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
         const reservedMachines = await Reservation.findAll({
             where: {
-                //reservationDate: { [Op.between]: [reservationDateTimeMinus3Min, reservationDateTimePlus3Min] },
                 reservationDate: { [Op.between]: [reservationDateTimeMinus3Min.toDate(), reservationDateTimePlus3Min.toDate()] },
                 machineID: availableMachines.map(machine => machine.machineID)
             }
@@ -97,37 +86,28 @@ exports.createReservation = async (req, res) => {
             subscriberName: userName // 사용자의 이름 저장
         });
 
+        const cronTimeInUse = reservationDateTime.format('m H D M *');
         //예약 생성 후, 해당 machineID의 state 속성을 'in_use'로 업데이트
-        await Machine.update(
-            { state: 'in_use' }, // 업데이트할 데이터
-            {
-                where: { machineID: randomMachine.machineID } // 조건
+        cron.schedule(cronTimeInUse, async () => {
+            try {
+                await Machine.update(
+                    { state: 'in_use' },
+                    {
+                        where: { machineID: randomMachine.machineID }
+                    }
+                );
+                console.log(`Machine ${randomMachine.machineID} has been set to in_use.`);
+            } catch (err) {
+                console.error(`Error updating machine ${randomMachine.machineID} to in_use:`, err.message);
             }
-        );
+        }, {
+            scheduled: true,
+            timezone: "Asia/Seoul"
+        });
 
-//        const reservationDateStrTime = new Date(`${reservationTime}:00`);
-//        const timeUntilUpdate = reservationDateStrTime.getTime() + 3 * 60 * 1000 - currentTime.getTime();
-//        if (timeUntilUpdate < 0) {
-//          timeUntilUpdate = 0; // 예약 시간이 이미 지났다면 즉시 실행
-//        }
+        const cronTimeAvailable = reservationDateTimePlus3Min.format('m H D M *');
 
-        //3분 후에 상태를 'available'로 변경하는 작업 예약
-//        setTimeout(async () => {
-//            try {
-//                await Machine.update(
-//                    { state: 'available' }, // 업데이트할 데이터
-//                    {
-//                        where: { machineID: randomMachine.machineID } // 조건
-//                    }
-//                );
-//                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
-//            } catch (err) {
-//                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
-//            }
-//        }, 3 * 60 * 1000);
-        const cronTime = reservationDateTimePlus3Min.format('m H D M *');
-
-        cron.schedule(cronTime, async () => {
+        cron.schedule(cronTimeAvailable, async () => {
             try {
                 await Machine.update(
                     { state: 'available' },
