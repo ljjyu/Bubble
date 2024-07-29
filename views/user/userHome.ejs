@@ -64,6 +64,11 @@
                          <%  if (isPast && reservation.machine.state === 'available') { %>  사용 완료 <% }
                             else if (isNow && reservation.machine.state === 'available') { %> 사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% } %></span>
+                            <script>
+                            console.log('isPast:', isPast);
+                            console.log('isNow:', isNow);
+                            console.log('isToday:', isToday);
+                            </script>
                      </div>
                  <% }); %>
              <% } else { %>
