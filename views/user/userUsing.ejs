@@ -48,7 +48,7 @@
                         <span class="left-align">사용 현황 :
                         <%  if (isTodayOrFuture && reservation.machine.state === 'available') { %>  사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% }
-                            else if (reservationTime.isBefore(currentTime)) { %> 사용 완료 <% } %></span>
+                            else if (reservationTime.isBefore(currentTime) && reservation.machine.state === 'available') { %> 사용 완료 <% } %></span>
                         <% if (reservation.machine.state === 'in_use') { %>
                             <%  const reservationTime = moment(reservation.reservationDate).add(3, 'minutes');
                                 const diffDuration = moment.duration(reservationTime.diff(currentTime));

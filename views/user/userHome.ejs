@@ -61,7 +61,7 @@
                         <span class="left-align">사용 현황 :
                          <%  if (isTodayOrFuture && reservation.machine.state === 'available') { %>  사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% }
-                            else if (reservationTime.isBefore(currentTime)) { %> 사용 완료 <% } %></span>
+                            else if (reservationTime.isBefore(currentTime) && reservation.machine.state === 'available') { %> 사용 완료 <% } %></span>
                      </div>
                  <% }); %>
              <% } else { %>
