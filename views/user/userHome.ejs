@@ -65,6 +65,11 @@
                             else if (isNow && reservation.machine.state === 'available') { %> 사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% } %></span>
                             <script>
+                            var reservationTimeStr = "<%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %>";
+                                                        var currentTimeStr = "<%= moment(currentTime).format('YYYY-MM-DD HH:mm:ss') %>";
+                                                        var isPast = <%= isPast %>;
+                                                        var isNow = <%= isNow %>;
+                                                        var isToday = <%= isToday %>;
                             console.log('isPast:', isPast);
                             console.log('isNow:', isNow);
                             console.log('isToday:', isToday);
