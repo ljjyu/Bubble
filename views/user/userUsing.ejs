@@ -35,8 +35,8 @@
         <% if (reservations && reservations.length > 0) { %>
             <div class="machines-container">
                 <% reservations.forEach((reservation, index) => {
-                    const currentTime = moment();
-                    const reservationTime = moment(reservation.reservationDate);
+                    const currentTime = moment().tz('Asia/Seoul');
+                    const reservationTime = moment(reservation.reservationDate).tz('Asia/Seoul');
                     const isTodayOrFuture = reservationTime.isSameOrAfter(currentTime, 'minutes');
                     const isToday = reservationTime.isSame(currentTime, 'day');
                 %>
