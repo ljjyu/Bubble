@@ -37,7 +37,8 @@
                 <% reservations.forEach((reservation, index) => {
                     const currentTime = moment().tz('Asia/Seoul');
                     const reservationTime = moment(reservation.reservationDate).tz('Asia/Seoul');
-                    const isTodayOrFuture = reservationTime.isSameOrAfter(currentTime, 'minutes');
+                    const isPast = reservationTime.isBefore(currentTime);
+                    const isNow = reservationTime.isSameOrAfter(currentTime, 'minutes');
                     const isToday = reservationTime.isSame(currentTime, 'day');
                 %>
                     <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
@@ -46,8 +47,8 @@
                         <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
                         <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
                         <span class="left-align">사용 현황 :
-                        <%  if (reservationTime.isBefore(currentTime) && reservation.machine.state === 'available') { %>  사용 완료 <% }
-                            else if (isTodayOrFuture && reservation.machine.state === 'available') { %> 사용 전 <% }
+                        <%  if (isPast && reservation.machine.state === 'available') { %>  사용 완료 <% }
+                            else if (isNow && reservation.machine.state === 'available') { %> 사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% } %></span>
                         <% if (reservation.machine.state === 'in_use') { %>
                             <%  const reservationTime = moment(reservation.reservationDate).add(3, 'minutes');
