@@ -31,13 +31,21 @@ exports.createReservation = async (req, res) => {
         const reservationNumber = uuidv4();
 
          // 예약 시간이 현재 시간보다 과거인지 확인
-         const currentTime = new Date();
-         const reservationDateTime = new Date(reservationTime);
-         if (reservationDateTime < currentTime) {
-              return res.status(400).send({
-                    message: "예약 시간은 현재 시간보다 이후여야 합니다."
-              });
-         }
+//         const currentTime = new Date();
+//         const reservationDateTime = new Date(reservationTime);
+//         if (reservationDateTime < currentTime) {
+//              return res.status(400).send({
+//                    message: "예약 시간은 현재 시간보다 이후여야 합니다."
+//              });
+//         }
+        const currentTime = moment();
+        const reservationDateTime = moment(reservationTime);
+        if (reservationDateTime.isBefore(currentTime)) {
+           return res.status(400).send({
+               message: "예약 시간은 현재 시간보다 이후여야 합니다."
+           });
+        }
+
          // 지점 ID 확인
          const branch = await Branch.findOne({ where: { branchName: branchName } });
          if (!branch) {
@@ -54,13 +62,16 @@ exports.createReservation = async (req, res) => {
             }
         });
         // 예약 시간의 3분 전과 3분 후를 계산
-        const reservationDateTimeMinus3Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
-        const reservationDateTimePlus3Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
+//        const reservationDateTimeMinus3Min = new Date(reservationDateTime.getTime() - 3 * 60 * 1000);
+//        const reservationDateTimePlus3Min = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
+        const reservationDateTimeMinus3Min = reservationDateTime.clone().subtract(3, 'minutes');
+        const reservationDateTimePlus3Min = reservationDateTime.clone().add(3, 'minutes');
 
         // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
         const reservedMachines = await Reservation.findAll({
             where: {
-                reservationDate: { [Op.between]: [reservationDateTimeMinus3Min, reservationDateTimePlus3Min] },
+                //reservationDate: { [Op.between]: [reservationDateTimeMinus3Min, reservationDateTimePlus3Min] },
+                reservationDate: { [Op.between]: [reservationDateTimeMinus3Min.toDate(), reservationDateTimePlus3Min.toDate()] },
                 machineID: availableMachines.map(machine => machine.machineID)
             }
         });
