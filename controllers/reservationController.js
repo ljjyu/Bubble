@@ -114,7 +114,10 @@ exports.createReservation = async (req, res) => {
 //            }
 //        }, 3 * 60 * 1000);
         const reservationDateTimePlus3MinStr = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
-        const cronTime = `${reservationDateTimePlus3MinStr.getUTCMinutes()} ${reservationDateTimePlus3MinStr.getUTCHours()} ${reservationDateTimePlus3MinStr.getUTCDate()} ${reservationDateTimePlus3MinStr.getUTCMonth() + 1} *`;
+        const formattedTime = format(reservationDateTimePlus3MinKST, 'm H d M *', { timeZone: 'Asia/Seoul' });
+        const [minute, hour, day, month] = formattedTime.split(' ');
+
+        const cronTime = `${minute} ${hour} ${day} ${month} *`;
         cron.schedule(cronTime, async () => {
             try {
                 await Machine.update(
@@ -129,7 +132,7 @@ exports.createReservation = async (req, res) => {
             }
         }, {
             scheduled: true,
-            timezone: "UTC" // 필요한 경우 타임존 설정
+            timezone: "Asia/Seoul"
         });
 
         res.status(201).send(newReservation);
