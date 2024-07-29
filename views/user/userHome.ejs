@@ -41,7 +41,6 @@
             text-align: left;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment-timezone.min.js"></script>
 </head>
 <body>
     <div class="main-content">
@@ -64,16 +63,6 @@
                          <%  if (isPast && reservation.machine.state === 'available') { %>  사용 완료 <% }
                             else if (isNow && reservation.machine.state === 'available') { %> 사용 전 <% }
                             else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% } %></span>
-                            <script>
-                            var reservationTimeStr = "<%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %>";
-                                                        var currentTimeStr = "<%= moment(currentTime).format('YYYY-MM-DD HH:mm:ss') %>";
-                                                        var isPast = <%= isPast %>;
-                                                        var isNow = <%= isNow %>;
-                                                        var isToday = <%= isToday %>;
-                            console.log('isPast:', isPast);
-                            console.log('isNow:', isNow);
-                            console.log('isToday:', isToday);
-                            </script>
                      </div>
                  <% }); %>
              <% } else { %>
@@ -81,4 +70,6 @@
              <% } %>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment-timezone.min.js"></script>
 </body>
