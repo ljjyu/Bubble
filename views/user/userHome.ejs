@@ -53,7 +53,10 @@
                         <span class="left-align">기계 종류 : <%= reservation.machine.type === 'washer' ? '세탁기' : '건조기' %> </span>
                         <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
                         <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
-                        <span class="left-align">사용 현황 : <% if (reservation.machine.state === 'available') { %> 사용 완료 <% } else if (reservation.machine.state === 'in_use') { %> 사용 중 <% } %></span>
+                        <span class="left-align">사용 현황 :
+                         <%  if (isTodayOrFuture && reservation.machine.state === 'available') { %>  사용 전 <% }
+                            else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% }
+                            else if (reservationTime.isBefore(currentTime)) { %> 사용 완료 <% } %></span>
                      </div>
                  <% }); %>
              <% } else { %>
