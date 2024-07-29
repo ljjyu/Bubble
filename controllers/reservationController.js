@@ -92,8 +92,7 @@ exports.createReservation = async (req, res) => {
                 where: { machineID: randomMachine.machineID } // 조건
             }
         );
-        const reservationDateTimePlus3MinStr = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
-        const cronTime = `${reservationDateTimePlus3MinStr.getUTCMinutes()} ${reservationDateTimePlus3MinStr.getUTCHours()} ${reservationDateTimePlus3MinStr.getUTCDate()} ${reservationDateTimePlus3MinStr.getUTCMonth() + 1} *`;
+
 //        const reservationDateStrTime = new Date(`${reservationTime}:00`);
 //        const timeUntilUpdate = reservationDateStrTime.getTime() + 3 * 60 * 1000 - currentTime.getTime();
 //        if (timeUntilUpdate < 0) {
@@ -114,6 +113,8 @@ exports.createReservation = async (req, res) => {
 //                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
 //            }
 //        }, 3 * 60 * 1000);
+        const reservationDateTimePlus3MinStr = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
+        const cronTime = `${reservationDateTimePlus3MinStr.getUTCMinutes()} ${reservationDateTimePlus3MinStr.getUTCHours()} ${reservationDateTimePlus3MinStr.getUTCDate()} ${reservationDateTimePlus3MinStr.getUTCMonth() + 1} *`;
         cron.schedule(cronTime, async () => {
             try {
                 await Machine.update(
