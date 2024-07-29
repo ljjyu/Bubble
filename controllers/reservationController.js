@@ -114,11 +114,9 @@ exports.createReservation = async (req, res) => {
 //                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
 //            }
 //        }, 3 * 60 * 1000);
-        const reservationDateTimePlus3MinStr = new Date(reservationDateTime.getTime() + 3 * 60 * 1000);
-        const formattedTime = format(reservationDateTimePlus3MinKST, 'm H d M *', { timeZone: 'Asia/Seoul' });
-        const [minute, hour, day, month] = formattedTime.split(' ');
+        const reservationDateTimePlus3Min = moment(reservationDateTime).add(3, 'minutes');
+        const cronTime = reservationDateTimePlus3Min.format('m H D M *');
 
-        const cronTime = `${minute} ${hour} ${day} ${month} *`;
         cron.schedule(cronTime, async () => {
             try {
                 await Machine.update(
