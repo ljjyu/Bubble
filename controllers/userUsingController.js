@@ -2,7 +2,7 @@ const db = require("../models/index"),
     Machine = db.machine,
     Reservation = db.reservation,
     Branch = db.branch,
-    moment = require('moment'),
+    moment = require('moment-timezone'),
     Op = db.Sequelize.Op;
 
 exports.getUserUsingPage = async (req, res) => {

@@ -3,7 +3,7 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    moment = require('moment'),
+    moment = require('moment-timezone'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
