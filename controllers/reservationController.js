@@ -114,7 +114,6 @@ exports.createReservation = async (req, res) => {
 //                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
 //            }
 //        }, 3 * 60 * 1000);
-        const reservationDateTimePlus3Min = moment(reservationDateTime).add(3, 'minutes');
         const cronTime = reservationDateTimePlus3Min.format('m H D M *');
 
         cron.schedule(cronTime, async () => {
