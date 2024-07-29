@@ -59,9 +59,9 @@
                         <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
                         <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
                         <span class="left-align">사용 현황 :
-                         <%  if (isTodayOrFuture && reservation.machine.state === 'available') { %>  사용 전 <% }
-                            else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% }
-                            else if (!isTodayOrFuture && reservation.machine.state === 'available') { %> 사용 완료 <% } %></span>
+                         <%  if (reservationTime.isBefore(currentTime) && reservation.machine.state === 'available') { %>  사용 완료 <% }
+                            else if (isTodayOrFuture && reservation.machine.state === 'available') { %> 사용 전 <% }
+                            else if (isToday && reservation.machine.state !== 'available') { %> 사용 중 <% } %></span>
                      </div>
                  <% }); %>
              <% } else { %>
