@@ -37,7 +37,12 @@ exports.getUserUsingPage = async (req, res) => {
         });
 
         // 렌더링할 페이지와 데이터
-        res.render('user/userUsing', { reservations: reservations });
+        res.render('user/userUsing', {
+            reservations: reservations,
+            currentTime: currentTime,
+            startOfToday: startOfToday,
+            endOfToday: endOfToday
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send({
