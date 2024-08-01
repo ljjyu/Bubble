@@ -52,6 +52,10 @@
                 const reservationTime = moment(reservation.reservationDate).tz('Asia/Seoul');
                 const reservationEndTime = reservationTime.clone().add(3, 'minutes');
                 let status = reservationTime.isBefore(currentTime) ? '사용 완료' : '사용 전';
+                console.log('Current Time:', currentTime.format('YYYY-MM-DD HH:mm:ss'));
+                                    console.log('reservationTime:', reservationTime.format('YYYY-MM-DD HH:mm:ss'));
+                                    console.log('reservationEndTime:', reservationEndTime.format('YYYY-MM-DD HH:mm:ss'));
+                                    console.log('Status:', status);
                 %>
                     <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
                         <span class="left-align">예약 시간 : <%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %> </span>
