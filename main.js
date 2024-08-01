@@ -20,6 +20,8 @@ const express = require("express"),
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
     newsController = require("./controllers/newsController"), //news
+    passwordController = require("./controllers/passwordController"), //password
+    passwordRoutes = require('./routes/passwordRoutes'), //password
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -67,6 +69,9 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(bodyParser.json()); //password
+app.use(bodyParser.urlencoded({ extended: false })); //password
+
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
@@ -93,6 +98,7 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); //news
+app.use('/password', passwordRoutes); //password
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);

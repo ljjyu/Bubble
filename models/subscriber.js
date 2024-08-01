@@ -30,6 +30,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         address: {
             type: Sequelize.STRING
+        },
+	resetPasswordToken: {
+            type: Sequelize.STRING
+        },
+        resetPasswordExpires: {
+            type: Sequelize.DATE
         }
     },
     {
