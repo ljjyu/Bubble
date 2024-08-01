@@ -36,6 +36,7 @@
                 <% reservations.forEach((reservation, index) => {
                     const currentTime = moment().tz('Asia/Seoul');
                     const reservationTime = moment(reservation.reservationDate);
+                    const reservationTimeInSeoul = reservationTime.clone().tz('Asia/Seoul', true);
                     let status = reservationTimeInSeoul.isBefore(currentTime) ? '사용 완료' : '사용 전';
                     console.log('Current Time:', currentTime.format('YYYY-MM-DD HH:mm:ss'));
                     console.log('reservationTime:', reservationTime.format('YYYY-MM-DD HH:mm:ss'));
