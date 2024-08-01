@@ -58,8 +58,7 @@
                         <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
                         <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
                         <span class="left-align">사용 현황 :
-                        <%  if (reservation.machine.state === 'in_use') { %>  사용 중 <% }
-                            else { %> status <% } %>
+                        <% if (reservation.machine.state === 'in_use') { %> 사용 중 <% } else { %> <%= status %> <% } %>
                         </span>
                      </div>
                  <% }); %>
