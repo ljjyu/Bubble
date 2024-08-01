@@ -20,6 +20,7 @@ const express = require("express"),
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
     newsController = require("./controllers/newsController"), //news
+    myPageController = require("./controllers/myPageController"), // myPage
     passwordController = require("./controllers/passwordController"), //password
     passwordRoutes = require('./routes/passwordRoutes'), //password
     layouts = require("express-ejs-layouts"),
