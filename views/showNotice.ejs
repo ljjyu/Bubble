@@ -26,25 +26,33 @@
                 <a href="/manager/getNotice" class="btn">공지사항 작성하기</a>
             <% } %>
         </div>
-	<table>
+        <table>
             <thead>
                 <tr>
-                    <th>공지번호</th>
                     <th>제목</th>
                     <th>작성일</th>
                     <th>내용</th>
                     <th>지점명</th>
+                    <% if (user && user.role === 'admin') { %>
+                        <th>삭제</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
                 <% notices.forEach(notice => { %>
-                    <tr>
-                        <td><%= notice.noticeNumber %></td>
-                        <td><%= notice.title %></td>
-                        <td><%= moment(notice.created_at).format('YYYY-MM-DD HH:mm:ss') %></td>
-                        <td><%= notice.contents %></td>
-                        <td><%= notice.subscriberName %></td>
-                    </tr>
+                <tr>
+                    <td><%= notice.title %></td>
+                    <td><%= moment(notice.created_at).format('YYYY-MM-DD HH:mm:ss') %></td>
+                    <td><%= notice.contents %></td>
+                    <td><%= notice.subscriberName %></td>
+                    <% if (user && user.role === 'admin') { %>
+                        <td>
+                            <form action="/showNotice/deleteNotice/<%= notice.noticeNumber %>" method="POST">
+                                <button type="submit" class="btn">삭제</button>
+                            </form>
+                        </td>
+                    <% } %>
+                </tr>
                 <% }) %>
             </tbody>
         </table>

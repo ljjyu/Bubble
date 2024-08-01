@@ -28,7 +28,7 @@ exports.getUserReservations = async (req, res) => {
         res.render("user/userHome", {reservations: data});
     } catch (err) {
         res.status(500).send({
-        message: err.message
+            message: err.message
         });
     }
 };

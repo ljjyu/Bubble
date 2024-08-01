@@ -99,36 +99,42 @@
                 alert('해당 월은 아직 오픈되지 않았습니다.');
                 return;
             }
-
-            const response = await fetch('/reservations', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    branchName,
-                    machineType,
-                    reservationTime: reservationTime //안 되면 지울 내용 :이후의 내용 0610
-                })
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log(result);  // result 객체를 확인합니다.
-
-                // 예약 시간을 포맷팅합니다.
-                const formattedTime = new Date(reservationTime).toLocaleString('ko-KR', {
-                    dateStyle: 'short',
-                    timeStyle: 'short',
-                    hour12: false
+            try {
+                const response = await fetch('/reservations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        branchName,
+                        machineType,
+                        reservationTime
+                    })
                 });
 
-                alert(`${branchName}지점의 ${machineType}가 ${formattedTime}에 예약되었습니다.`);
-            } else {
-                const error = await response.json();
-                alert(`예약에 실패했습니다: ${error.message}`);
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result);  // result 객체를 확인합니다.
+
+                    // 예약 시간을 포맷팅합니다.
+                    const formattedTime = new Date(reservationTime).toLocaleString('ko-KR', {
+                        dateStyle: 'short',
+                        timeStyle: 'short',
+                        hour12: false
+                    });
+
+                    alert(`${branchName}지점의 ${machineType}가 ${formattedTime}에 예약되었습니다.`);
+                } else {
+                    const error = await response.json();
+                    alert(`예약에 실패했습니다: ${error.message}`);
+                }
+            } catch (error) {
+                console.error("예약 요청 중 오류 발생", error);
+                alert('예약 요청 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
             }
         }
         document.addEventListener('DOMContentLoaded', loadBranches);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment-timezone.min.js"></script>
 </body>

@@ -45,7 +45,7 @@
                 <h2>세탁기</h2>
                 <% machines.filter(machine => machine.type === 'washer').forEach((machine, index) => { %>
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
-                    <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+                    <div class="machine <%= machine.state === 'available' ? 'purple' : machine.state === 'in_use' ? 'yellow': machine.state === 'needs_repair' ? 'darkslategray' : '' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
                         <button class="report-issue" data-machine-id="<%= machine.machineID %>">고장</button>
                         <button class="report-completed" data-machine-id="<%= machine.machineID %>">수리 완료</button>
@@ -56,7 +56,7 @@
                 <h2>건조기</h2>
                 <% machines.filter(machine => machine.type === 'dryer').forEach((machine, index) => { %>
                     <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
-		            <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+		            <div class="machine <%= machine.state === 'available' ? 'purple' : machine.state === 'in_use' ? 'yellow': machine.state === 'needs_repair' ? 'darkslategray' : '' %>" data-id="<%= dataId %>">
                         <span>상태: <%= machine.state %></span>
                         <button class="report-issue" data-machine-id="<%= machine.machineID %>">고장</button>
                         <button class="report-completed" data-machine-id="<%= machine.machineID %>">수리 완료</button>
