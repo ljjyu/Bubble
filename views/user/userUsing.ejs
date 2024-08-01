@@ -38,27 +38,23 @@
                     const reservationTime = moment(reservation.reservationDate);
                     const reservationTimeInSeoul = reservationTime.clone().tz('Asia/Seoul', true);
                     let status = reservationTimeInSeoul.isBefore(currentTime) ? '사용 완료' : '사용 전';
-                    console.log('Current Time:', currentTime.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log('reservationTime:', reservationTime.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log(' reservationTimeInSeoul:',  reservationTimeInSeoul.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log('Status:', status);
                 %>
-                    <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
-                        <span class="left-align">예약 시간 : <%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %> </span>
-                        <span class="left-align">기계 종류 : <%= reservation.machine.type === 'washer' ? '세탁기' : '건조기' %> </span>
-                        <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
-                        <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
-                        <span class="left-align">사용 현황 :
-                        <% if (reservation.machine.state === 'in_use') { %> 사용 중 <% } else { %> <%= status %> <% } %>
-                        </span>
-                        <% if (reservation.machine.state === 'in_use') { %>
-                            <%  const reservationTime = moment(reservation.reservationDate).add(3, 'minutes');
-                                const diffDuration = moment.duration(reservationTime.diff(currentTime));
-                                const minutes = Math.max(diffDuration.minutes(), 0);
-                                const seconds = Math.max(diffDuration.seconds(), 0); %>
-                                <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
-                        <% } %>
-                    </div>
+                <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
+                    <span class="left-align">예약 시간 : <%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %> </span>
+                    <span class="left-align">기계 종류 : <%= reservation.machine.type === 'washer' ? '세탁기' : '건조기' %> </span>
+                    <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
+                    <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
+                    <span class="left-align">사용 현황 :
+                    <% if (reservation.machine.state === 'in_use') { %> 사용 중 <% } else { %> <%= status %> <% } %>
+                    </span>
+                    <% if (reservation.machine.state === 'in_use') { %>
+                        <%  const reservationTime = moment(reservation.reservationDate).add(3, 'minutes');
+                            const diffDuration = moment.duration(reservationTime.diff(currentTime));
+                            const minutes = Math.max(diffDuration.minutes(), 0);
+                            const seconds = Math.max(diffDuration.seconds(), 0); %>
+                            <span class="left-align">남은 사용 시간 : <%= minutes %>분 <%= seconds %>초 </span>
+                    <% } %>
+                </div>
                 <% }); %>
             </div>
         <% } else { %>
