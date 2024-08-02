@@ -33,7 +33,7 @@ exports.sendResetEmail = async (req, res) => {
         );
 
         // 비밀번호 재설정 링크 생성
-        const resetUrl = `http://34.64.46.65/password/reset-password/${token}`;
+        const resetUrl = `http://34.47.118.94/password/reset-password/${token}`;
 
         // 이메일 전송 설정
         const transporter = nodemailer.createTransport({
