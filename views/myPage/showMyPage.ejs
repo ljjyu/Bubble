@@ -18,16 +18,18 @@
             });
 
             document.getElementById("delete-account").addEventListener("click", function() {
-                fetch("/deleteAccount", {
-                    method: "POST"
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = "/";
-                    } else {
-                        alert("delete account failed.");
-                    }
-                });
+                if (confirm("회원 탈퇴를 하시겠습니까?")) {
+                    fetch("/deleteAccount", {
+                        method: "POST"
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = "/";
+                        } else {
+                            alert("delete account failed.");
+                        }
+                    });
+                }
             });
         });
     </script>
