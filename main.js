@@ -100,6 +100,7 @@ app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); //news
 app.use('/password', passwordRoutes); //password
+app.get("/myPage", myPageController);
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
