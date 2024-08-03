@@ -1,9 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <title>마이 페이지</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script defer src="/scripts/script.js"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .main-content {
+            max-width: 500px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 40px;
+            margin-bottom: 40px;
+            transition: background-color 0.3s;
+        }
+        .profile {
+            text-align: center;
+            padding: 20px;
+        }
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .profile .nickname p {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .profile .nickname button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4d9ef8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .settings, footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        .settings button, footer button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #4d9ef8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .settings button:hover, footer button:hover {
+            background-color: #357ae8; /* 마우스를 올렸을 때 색상 변경 */
+        }
+        .settings button:last-child, footer button:last-child {
+            margin-bottom: 0;
+        }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("logout").addEventListener("click", function() {
                 fetch("/logout", {
                     method: "POST"
@@ -26,7 +89,7 @@
                         if (response.ok) {
                             window.location.href = "/";
                         } else {
-                            alert("delete account failed.");
+                            alert("Delete account failed.");
                         }
                     });
                 }
@@ -36,29 +99,26 @@
 </head>
 <body>
     <div class="main-content">
-        <header>
-            <h1>My Page</h1>
-        </header>
-
         <section class="profile">
-<!--             <img src="<%= user.profileImage %>" alt="Profile Image" class="profile-image"> -->
+            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_411978.svg" alt="Profile Image" class="profile-image">
             <div class="nickname">
-                <p><%= user.userName %></p>
-                <button id="edit-profile">Edit Profile</button>
+                <p><%= user.name %></p>
+            </div>
+            <div class="email">
+                <p><%= user.email %></p>
             </div>
         </section>
         <section class="settings">
-<!--             <button id="notifications-toggle"> -->
-<!--                 <%= user.notificationsEnabled ? 'Disable Notifications' : 'Enable Notifications' %> -->
-<!--             </button> -->
-            <button id="change-password">Change Password</button>
-        </section>
-        <section class="wishlist">
-            <button id="view-wishlist">View Wishlist</button>
+	    <button id="wishlist">좋아요 목록</button>
+            <button id="alarm">알림 받기</button>
+            <button id="dark-mode">다크모드</button>
+	    <button id="change-pw">비밀번호 변경</button>
         </section>
         <footer>
-            <button id="logout">Logout</button>
-            <button id="delete-account">Delete Account</button>
+            <button id="logout">로그아웃</button>
+            <button id="delete-account">회원탈퇴</button>
         </footer>
     </div>
 </body>
+</html>
+

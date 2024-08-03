@@ -11,6 +11,16 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.dark-mode {
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+.dark-mode .main-content {
+    background-color: #444; 
+}
+
 .main-content {
     padding: 20px;
     max-width: 1000px;
