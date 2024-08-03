@@ -48,7 +48,7 @@ exports.logout = (req, res) => {
     });
 };
 
-exports.deleteAccount = (req, res) => {
+exports.deleteAccount = async (req, res) => {
     try {
         // 로그인된 사용자의 정보를 가져옵니다.
         const user = req.session.user;
