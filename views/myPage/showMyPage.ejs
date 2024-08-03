@@ -1,0 +1,33 @@
+<head>
+    <title>마이 페이지</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <header>
+            <h1>My Page</h1>
+        </header>
+
+        <section class="profile">
+            <img src="<%= user.profileImage %>" alt="Profile Image" class="profile-image">
+            <div class="nickname">
+                <p><%= user.nickname %></p>
+                <button id="edit-profile">Edit Profile</button>
+            </div>
+        </section>
+        <section class="settings">
+            <button id="notifications-toggle">
+                <%= user.notificationsEnabled ? 'Disable Notifications' : 'Enable Notifications' %>
+            </button>
+            <button id="change-password">Change Password</button>
+        </section>
+        <section class="wishlist">
+            <button id="view-wishlist">View Wishlist</button>
+        </section>
+        <footer>
+            <button id="logout">Logout</button>
+            <button id="delete-account">Delete Account</button>
+        </footer>
+    </div>
+</body>
