@@ -2,6 +2,35 @@
     <title>마이 페이지</title>
     <style>
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("logout").addEventListener("click", function() {
+                fetch("/logout", {
+                    method: "POST"
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/"; // 로그아웃 후 리디렉션할 페이지
+                    } else {
+                        alert("Logout failed.");
+                    }
+                });
+            });
+
+            document.getElementById("delete-account").addEventListener("click", function() {
+                fetch("/deleteAccount", {
+                    method: "POST"
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/";
+                    } else {
+                        alert("delete account failed.");
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="main-content">
@@ -12,7 +41,7 @@
         <section class="profile">
             <img src="<%= user.profileImage %>" alt="Profile Image" class="profile-image">
             <div class="nickname">
-                <p><%= user.nickname %></p>
+                <p><%= user.userName %></p>
                 <button id="edit-profile">Edit Profile</button>
             </div>
         </section>

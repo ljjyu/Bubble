@@ -47,3 +47,28 @@ exports.logout = (req, res) => {
         res.redirect('/');
     });
 };
+
+exports.deleteAccount = (req, res) => {
+    try {
+        // 로그인된 사용자의 정보를 가져옵니다.
+        const user = req.session.user;
+        const userName = user ? user.name : 'Unknown User';
+
+        // 사용자 삭제
+        const result = await Subscriber.destroy({
+            where: { name: userName }
+        });
+        if (result === 0) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).send('Failed to log out');
+            }
+            res.redirect('/');
+        });
+    } catch (error) {
+        console.error('Error during account deletion:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};
