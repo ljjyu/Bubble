@@ -94,6 +94,7 @@ app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);
 
 app.get("/reviews/getReviews", reviewsController.getAllReviews);
+app.post("/reviews/getReviews/favorites", reviewsController.addFavorites);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
