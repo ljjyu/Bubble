@@ -11,7 +11,7 @@ exports.getAllSubscribers = async (req, res) => {
     try {
         const data = await Subscriber.findAll();
         console.log(data);
-        res.render("subscribers/getSubscriber", {subscribers: data});
+        res.render("subscribers/getSubscriber", { subscribers: data });
     } catch (err) {
         res.status(500).send({
             message: err.message
@@ -29,6 +29,7 @@ exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
         const existingSubscriber = await Subscriber.findOne({ where: { email: email } });
+
         if (existingSubscriber) {
             res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
@@ -114,11 +115,13 @@ exports.getVerificationPage = (req, res) => {
 exports.verifySubscriber = async (req, res) => {
     try {
         const { email, verificationCode } = req.body;
-        const subscriber = await Subscriber.findOne({ where: { email: email, verificationCode: verificationCode } });
-        if (subscriber) {
+        const subscriber = await Subscriber.findOne({ where: { email: email } });
+
+        if (subscriber && subscriber.verificationCode === verificationCode) {
             subscriber.isVerified = true;
+            subscriber.verificationCode = null; // 인증 코드 삭제
             await subscriber.save();
-            res.redirect("/");
+            res.redirect("/"); // 인증 완료 후 홈으로 리다이렉트
         } else {
             res.status(400).send({
                 message: "인증 코드가 잘못되었습니다."
@@ -130,4 +133,5 @@ exports.verifySubscriber = async (req, res) => {
         });
     }
 };
+
 
