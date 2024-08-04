@@ -1,5 +1,6 @@
 const db = require("../models/index"),
     Review = db.Review,
+    favorites = db.favorites,
     Op = db.Sequelize.Op;
 
 exports.getAllReviews = async (req, res) => {
