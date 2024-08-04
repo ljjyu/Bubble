@@ -66,7 +66,32 @@
             margin-bottom: 0;
         }
     </style>
+</head>
+<body>
+    <div class="main-content">
+        <section class="profile">
+            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_411978.svg" alt="Profile Image" class="profile-image">
+            <div class="nickname">
+                <p><%= user.name %></p>
+            </div>
+            <div class="email">
+                <p><%= user.email %></p>
+            </div>
+        </section>
+        <section class="settings">
+	    <button id="wishlist">좋아요 목록</button>
+            <button id="alarm">알림 받기</button>
+            <button id="dark-mode">다크모드</button>
+	    <button id="change-pw">비밀번호 변경</button>
+        </section>
+        <footer>
+            <button id="logout">로그아웃</button>
+            <button id="delete-account">회원탈퇴</button>
+        </footer>
+    </div>
+
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("logout").addEventListener("click", function() {
                 fetch("/logout", {
                     method: "POST"
@@ -96,29 +121,6 @@
             });
         });
     </script>
-</head>
-<body>
-    <div class="main-content">
-        <section class="profile">
-            <img src="https://pic.onlinewebfonts.com/thumbnails/icons_411978.svg" alt="Profile Image" class="profile-image">
-            <div class="nickname">
-                <p><%= user.name %></p>
-            </div>
-            <div class="email">
-                <p><%= user.email %></p>
-            </div>
-        </section>
-        <section class="settings">
-	    <button id="wishlist">좋아요 목록</button>
-            <button id="alarm">알림 받기</button>
-            <button id="dark-mode">다크모드</button>
-	    <button id="change-pw">비밀번호 변경</button>
-        </section>
-        <footer>
-            <button id="logout">로그아웃</button>
-            <button id="delete-account">회원탈퇴</button>
-        </footer>
-    </div>
 </body>
 </html>
 
