@@ -39,7 +39,7 @@ module.exports = (sequelize, Sequelize) => {
         resetPasswordExpires: {
             type: Sequelize.DATE
         },
-        verificationToken: {
+        verificationCode: {
             type: DataTypes.STRING,
             allowNull: true
         },
