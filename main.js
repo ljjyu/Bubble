@@ -77,6 +77,9 @@ app.use(bodyParser.urlencoded({ extended: false })); //password
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
+app.get("/subscribers/verify", subscriberController.getVerificationPage); // 이메일 인증 페이지 렌더링
+app.post("/subscribers/verify", subscriberController.verifySubscriber); // 이메일 인증 코드 검증
+
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
 
