@@ -55,9 +55,9 @@
         <ul class="review-list">
             <% favorites.forEach(function(favorite) { %>
                 <li class="review-item">
-                    <strong><%= favorite.reviews.name %></strong> - <%= '★'.repeat(favorite.reviews.rating) + '☆'.repeat(5 - favorite.reviews.rating) %><br>
-                    <p><%= favorite.reviews.review %></p>
-                    <small>작성일: <%= favorite.reviews.createdAt ? favorite.reviews.createdAt.toLocaleString() : 'N/A' %></small>
+                    <strong><%= favorite.review1.name %></strong> - <%= '★'.repeat(favorite.review1.rating) + '☆'.repeat(5 - favorite.review1.rating) %><br>
+                    <p><%= favorite.review1.review %></p>
+                    <small>작성일: <%= favorite.review1.createdAt ? favorite.review1.createdAt.toLocaleString() : 'N/A' %></small>
                 </li>
             <% }); %>
         </ul>
