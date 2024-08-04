@@ -45,6 +45,7 @@ exports.addFavorites = async (req, res) => {
     // 로그인된 사용자의 정보를 가져옵니다.
     const user = req.session.user;
     const userName = user ? user.name : 'Unknown User';
+    const reviewID = req.body.reviewId;
     try {
         // favorites 테이블에서 해당 사용자와 리뷰 ID로 존재하는지 확인
         const favorite = await favorites.findOne({ where: { userName: userName, reviewID: reviewID } });

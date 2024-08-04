@@ -1,0 +1,51 @@
+<head>
+    <title>내 찜 목록</title>
+    <style>
+	.review-list {
+  	    list-style: none;
+    	    padding: 0;
+	}
+
+	.review-item {
+    	    background-color: #fff;
+    	    border: 1px solid #ddd;
+    	    border-radius: 5px;
+    	    margin: 10px auto;
+    	    padding: 20px;
+    	    max-width: 1000px;
+   	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.review-item strong {
+    	    font-size: 1.2em;
+	}
+
+	.review-item p {
+            margin: 10px 0;
+	    font-size: 1em;
+	}
+
+	.review-item small {
+	    color: #888;
+	}
+
+	.button-container {
+ 	   text-align: right;
+	   margin-bottom: 20px;
+	}
+	</style>
+</head>
+<body>
+    <div class="main-content">
+	<h1>내 찜 목록</h1>
+        <ul class="review-list">
+            <% favorites.forEach(function(favorite) { %>
+                <li class="review-item">
+                    <strong><%= favorite.review1.name %></strong> - <%= '★'.repeat(favorite.review1.rating) + '☆'.repeat(5 - favorite.review1.rating) %><br>
+                    <p><%= favorite.review1.review %></p>
+                    <small>작성일: <%= favorite.review1.createdAt ? favorite.review1.createdAt.toLocaleString() : 'N/A' %></small>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>

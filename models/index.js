@@ -13,4 +13,6 @@ db.notice = require("./notice.js")(sequelize, Sequelize);
 db.Review = require("./reviews.js")(sequelize, Sequelize);
 db.branch = require("./branch.js")(sequelize, Sequelize);
 db.favorites = require("./favorites.js")(sequelize, Sequelize);
+
+db.favorites.belongsTo(db.Review, { foreignKey: 'reviewID', as: 'review1' });
 module.exports = db;
