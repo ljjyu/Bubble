@@ -22,6 +22,7 @@ const express = require("express"),
     newsController = require("./controllers/newsController"), //news
     myPageController = require("./controllers/myPageController"), // myPage
     passwordController = require("./controllers/passwordController"), //password
+    changepwController = require("./controllers/changepwController"), //mypagePw
     passwordRoutes = require('./routes/passwordRoutes'), //password
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
@@ -101,6 +102,7 @@ app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); //news
 app.use('/password', passwordRoutes); //password
+app.post('/changePassword', changepwController.changePassword); //mypagePw
 app.get("/myPage", myPageController.getAllMyPage);
 
 app.get('/user/getBranches', branchController.getBranches);
