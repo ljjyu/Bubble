@@ -33,6 +33,20 @@
  	   text-align: right;
 	   margin-bottom: 20px;
 	}
+	.heart {
+        color: grey;
+        cursor: pointer;
+    }
+    .heart.liked {
+        color: red;
+    }
+    .heart:before {
+        content: '\2661';
+        font-size: 1.5em;
+    }
+    .heart.liked:before {
+        content: '\2665';
+    }
 	</style>
 </head>
 <body>
@@ -53,10 +67,34 @@
                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
                     <% } %>
 		            <% if (user && user.role === 'user') { %>
+		                <span class="heart" onclick="toggleLike(this, <%= review.id %>)"></span>
                         <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
                     <% } %>
                 </li>
             <% }); %>
         </ul>
     </div>
+     <script>
+     function toggleLike(element, reviewId) {
+         element.classList.toggle('liked');
+
+         fetch('/reviews/getReviews/favorites', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             body: JSON.stringify({ reviewId: reviewId })
+         })
+         .then(response => {
+             if (response.ok) {
+                 console.log('Favorite added/removed successfully');
+             } else {
+                 console.error('Error adding/removing favorite');
+             }
+         })
+         .catch(error => {
+             console.error('Network error:', error);
+         });
+     }
+     </script>
 </body>

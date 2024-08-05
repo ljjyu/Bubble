@@ -1,5 +1,6 @@
 const db = require("../models/index"),
     Review = db.Review,
+    favorites = db.favorites,
     Op = db.Sequelize.Op;
 
 exports.getAllReviews = async (req, res) => {
@@ -39,27 +40,27 @@ exports.saveReviews = async (req, res) => {
             res.redirect('/reviews/writeReviews');
         }
 };
-//삭제
-/*exports.deleteReview = async (req, res) => {
-    const reviewId = req.params.id;
+// 찜 추가/삭제 함수
+exports.addFavorites = async (req, res) => {
+    // 로그인된 사용자의 정보를 가져옵니다.
+    const user = req.session.user;
+    const userName = user ? user.name : 'Unknown User';
+    const reviewID = req.body.reviewId;
     try {
-        const review = await Review.findByPk(reviewId);
+        // favorites 테이블에서 해당 사용자와 리뷰 ID로 존재하는지 확인
+        const favorite = await favorites.findOne({ where: { userName: userName, reviewID: reviewID } });
 
-        if (!review) {
-            req.flash('error', 'Review not found.');
-            return res.redirect('/reviews/getReviews');
+        if (favorite) {
+            // 존재하면 삭제
+            await favorite.destroy();
+            res.status(200).json({ message: '즐겨찾기에서 삭제되었습니다.' });
+        } else {
+            // 존재하지 않으면 추가
+            await favorites.create({ userName: userName, reviewID: reviewID });
+            res.status(200).json({ message: '즐겨찾기에 추가되었습니다.' });
         }
-
-        if (req.user.role !== 'admin' && req.user.email !== review.userEmail) {
-            req.flash('error', 'Unauthorized action.');
-            return res.redirect('/reviews/getReviews');
-        }
-
-        await Review.destroy({ where: { id: reviewId } });
-        req.flash('success', 'Review deleted successfully.');
-        res.redirect('/reviews/getReviews');
     } catch (err) {
-        req.flash('error', 'An error occurred while deleting the review.');
+        req.flash('error', 'An error occurred while saving the review favorites.');
         res.redirect('/reviews/getReviews');
     }
-};*/
+};

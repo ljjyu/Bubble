@@ -238,6 +238,10 @@
                 console.error('Error:', error);
                 alert("비밀번호 변경 중 오류가 발생했습니다.");
             });
+
+            document.getElementById('wishlist').addEventListener('click', function() {
+            	window.location.href = '/myPage/getMyFavorites';
+            });
         });
     </script>
 </body>
