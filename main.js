@@ -35,6 +35,10 @@ const express = require("express"),
     Sequelize = db.Sequelize,
     axios = require('axios'), //news
     cheerio = require('cheerio'), //news
+    socketIo = require('socket.io'),
+    http = require("http"),
+    server = http.createServer(app),
+    io = socketIo(server),
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델동기화
