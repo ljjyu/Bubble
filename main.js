@@ -78,7 +78,17 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); //password
 app.use(bodyParser.urlencoded({ extended: false })); //password
 
+// Socket.IO 설정
+io.on('connection', (socket) => {
+    console.log("연결되었습니다");
+
+    // 추가적인 Socket.IO 설정 및 이벤트 리스너
+    socket.on('disconnect', () => {
+        console.log("해제되었습니다");
+    });
+});
 reservationController(io);
+
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링

@@ -6,12 +6,6 @@ const db = require("../models/index"),
     { Op } = require('sequelize'),
     { v4: uuidv4 } = require('uuid'),
     moment = require('moment'),
-    express = require("express"),
-    app = express(),
-    http = require("http"),
-    socketIO = require("socket.io"),
-    server = http.createServer(app),
-    io = socketIO(server),
     cron = require('node-cron');
 
 exports.getAllReservations = async (req, res) => {
@@ -30,95 +24,94 @@ exports.getAllReservations = async (req, res) => {
     }
 };
 
-exports.createReservation = async (req, res) => {
-    try {
-        const { machineType, branchName, reservationTime } = req.body;
-        const reservationNumber = uuidv4();
+module.exports = (io) => {
+    exports.createReservation = async (req, res) => {
+        try {
+            const { machineType, branchName, reservationTime } = req.body;
+            const reservationNumber = uuidv4();
 
-        const currentTime = moment();
-        const reservationDateTime = moment(reservationTime);
-        if (reservationDateTime.isBefore(currentTime)) {
-           return res.status(400).send({
-               message: "예약 시간은 현재 시간보다 이후여야 합니다."
-           });
-        }
+            const currentTime = moment();
+            const reservationDateTime = moment(reservationTime);
+            if (reservationDateTime.isBefore(currentTime)) {
+               return res.status(400).send({
+                   message: "예약 시간은 현재 시간보다 이후여야 합니다."
+               });
+            }
 
-         // 지점 ID 확인
-         const branch = await Branch.findOne({ where: { branchName: branchName } });
-         if (!branch) {
-            return res.status(400).send({
-                message: "존재하지 않는 지점입니다."
+             // 지점 ID 확인
+             const branch = await Branch.findOne({ where: { branchName: branchName } });
+             if (!branch) {
+                return res.status(400).send({
+                    message: "존재하지 않는 지점입니다."
+                });
+             }
+
+            // 해당 지점 기기 조회
+            const availableMachines = await Machine.findAll({
+                where: {
+                    branchID: branch.branchID,
+                    type: machineType
+                }
             });
-         }
+            // 예약 시간의 3분 전과 3분 후를 계산
+            const reservationDateTimeMinus3Min = reservationDateTime.clone().subtract(3, 'minutes');
+            const reservationDateTimePlus3Min = reservationDateTime.clone().add(3, 'minutes');
 
-        // 해당 지점 기기 조회
-        const availableMachines = await Machine.findAll({
-            where: {
-                branchID: branch.branchID,
-                type: machineType
-            }
-        });
-        // 예약 시간의 3분 전과 3분 후를 계산
-        const reservationDateTimeMinus3Min = reservationDateTime.clone().subtract(3, 'minutes');
-        const reservationDateTimePlus3Min = reservationDateTime.clone().add(3, 'minutes');
-
-        // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
-        const reservedMachines = await Reservation.findAll({
-            where: {
-                reservationDate: { [Op.between]: [reservationDateTimeMinus3Min.toDate(), reservationDateTimePlus3Min.toDate()] },
-                machineID: availableMachines.map(machine => machine.machineID)
-            }
-        });
-
-        const reservedMachineIDs = reservedMachines.map(reservation => reservation.machineID);
-        const machinesNotReserved = availableMachines.filter(machine => !reservedMachineIDs.includes(machine.machineID));
-
-        if (machinesNotReserved.length === 0) {
-            return res.status(400).send({
-                message: "이용 가능한 기기가 없습니다."
+            // 이미 예약된 기기를 제외한 이용 가능한 기기 필터링
+            const reservedMachines = await Reservation.findAll({
+                where: {
+                    reservationDate: { [Op.between]: [reservationDateTimeMinus3Min.toDate(), reservationDateTimePlus3Min.toDate()] },
+                    machineID: availableMachines.map(machine => machine.machineID)
+                }
             });
-        }
-        // 랜덤으로 기기 선택
-        const randomMachine = machinesNotReserved[Math.floor(Math.random() * machinesNotReserved.length)];
 
-        // 로그인된 사용자의 정보를 가져옵니다.
-        const user = req.session.user;
-        const userName = user ? user.name : 'Unknown User';
+            const reservedMachineIDs = reservedMachines.map(reservation => reservation.machineID);
+            const machinesNotReserved = availableMachines.filter(machine => !reservedMachineIDs.includes(machine.machineID));
 
-        const newReservation = await Reservation.create({
-            reservationDate: reservationTime, // Store reservationTime as reservationDate
-            machineID: randomMachine.machineID,
-            subscriberName: userName // 사용자의 이름 저장
-        });
-
-        const cronTimeInUse = reservationDateTime.format('m H D M *');
-        //예약 생성 후, 해당 machineID의 state 속성을 'in_use'로 업데이트
-        cron.schedule(cronTimeInUse, async () => {
-            try {
-                await Machine.update(
-                    { state: 'in_use' },
-                    {
-                        where: { machineID: randomMachine.machineID }
-                    }
-                );
-                console.log(`Machine ${randomMachine.machineID} has been set to in_use.`);
-            } catch (err) {
-                console.error(`Error updating machine ${randomMachine.machineID} to in_use:`, err.message);
+            if (machinesNotReserved.length === 0) {
+                return res.status(400).send({
+                    message: "이용 가능한 기기가 없습니다."
+                });
             }
-        }, {
-            scheduled: true,
-            timezone: "Asia/Seoul"
-        });
+            // 랜덤으로 기기 선택
+            const randomMachine = machinesNotReserved[Math.floor(Math.random() * machinesNotReserved.length)];
 
-        const reservationDateTimePlus2Min = reservationDateTime.clone().add(2, 'minutes');
-        io.on('connection', (socket) => {
-            console.log("연결되었습니다");
+            // 로그인된 사용자의 정보를 가져옵니다.
+            const user = req.session.user;
+            const userName = user ? user.name : 'Unknown User';
 
+            const newReservation = await Reservation.create({
+                reservationDate: reservationTime, // Store reservationTime as reservationDate
+                machineID: randomMachine.machineID,
+                subscriberName: userName // 사용자의 이름 저장
+            });
+
+            const cronTimeInUse = reservationDateTime.format('m H D M *');
+            //예약 생성 후, 해당 machineID의 state 속성을 'in_use'로 업데이트
+            cron.schedule(cronTimeInUse, async () => {
+                try {
+                    await Machine.update(
+                        { state: 'in_use' },
+                        {
+                            where: { machineID: randomMachine.machineID }
+                        }
+                    );
+                    console.log(`Machine ${randomMachine.machineID} has been set to in_use.`);
+                } catch (err) {
+                    console.error(`Error updating machine ${randomMachine.machineID} to in_use:`, err.message);
+                }
+            }, {
+                scheduled: true,
+                timezone: "Asia/Seoul"
+            });
+
+            // 알림 스케줄링
+            const reservationDateTimePlus2Min = reservationDateTime.clone().add(2, 'minutes');
             const cronTimeNotification = reservationDateTimePlus2Min.format('m H D M *');
-            // 알림톡 메시지 받기
-            crib,schedule(cronTimeNotification, () => {
-                socket.emit("notification", {
-                    message:"사용 완료 시간 1분 전입니다."
+
+            cron.schedule(cronTimeNotification, () => {
+                io.emit("notification", {
+                    message: "사용 완료 시간 1분 전입니다."
                 });
                 console.log("Notification sent to user");
             }, {
@@ -126,34 +119,31 @@ exports.createReservation = async (req, res) => {
                 timezone: "Asia/Seoul"
             });
 
-            socket.on("disconnect", () => {
-                console.log("해제되었습니다");
+            const cronTimeAvailable = reservationDateTimePlus3Min.format('m H D M *');
+
+            cron.schedule(cronTimeAvailable, async () => {
+                try {
+                    await Machine.update(
+                        { state: 'available' },
+                        {
+                            where: { machineID: randomMachine.machineID }
+                        }
+                    );
+                    console.log(`Machine ${randomMachine.machineID} has been set to available.`);
+                } catch (err) {
+                    console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
+                }
+            }, {
+                scheduled: true,
+                timezone: "Asia/Seoul"
             });
-        });
 
-        const cronTimeAvailable = reservationDateTimePlus3Min.format('m H D M *');
-
-        cron.schedule(cronTimeAvailable, async () => {
-            try {
-                await Machine.update(
-                    { state: 'available' },
-                    {
-                        where: { machineID: randomMachine.machineID }
-                    }
-                );
-                console.log(`Machine ${randomMachine.machineID} has been set to available.`);
-            } catch (err) {
-                console.error(`Error updating machine ${randomMachine.machineID} to available:`, err.message);
-            }
-        }, {
-            scheduled: true,
-            timezone: "Asia/Seoul"
-        });
-
-        res.status(201).send(newReservation);
-    } catch (err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
+            res.status(201).send(newReservation);
+        } catch (err) {
+            res.status(500).send({
+                message: err.message
+            });
+        }
+    };
 };
+
