@@ -1,43 +1,47 @@
 const db = require("../models/index"),
+    Machine = db.machine,
     Reservation = db.reservation,
+    Branch = db.branch,
+    moment = require('moment-timezone'),
     Op = db.Sequelize.Op;
-const moment = require('moment-timezone');
+
 exports.getUserUsingPage = async (req, res) => {
     try {
-        data = await Reservation.findAll();
-        // 세션에서 예약 정보를 가져옴
-        const reservations = req.session.reservations || [];
+        // 1시간 전 시간을 계산합니다.
+        const oneHourAgo = new Date();
+        oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
-        // 예약 정보가 없을 경우 빈 배열 반환
-        if (!reservations.length) {
-            return res.render('user/userUsing', { reservations: [] });
-        }
-        // 현재 시간
-        const currentTime = moment().tz('Asia/Seoul');
+        // 로그인된 사용자의 정보를 가져옵니다.
+        const user = req.session.user;
+        const subscriberName = user ? user.name : 'Unknown User';
 
-        // 예약 정보를 형식에 맞게 변환하고 잔여 시간 계산
-        const userReservations = await Promise.all(reservations.map(async (reservation) => {
-            const { machineType, machineNum, reservationDate } = reservation;
+        // 오늘의 시작과 끝 시간을 계산
+        const startOfToday = moment().startOf('day').toDate();
+        const endOfToday = moment().endOf('day').toDate();
 
-            // 예약한 세탁기의 작동 시간 (분 단위로 가정)
-            const operationTime = 15;
-
-            // 예약 시작 시간과 현재 시간 사이의 차이를 계산하여 잔여 시간 계산
-            const startDateTime = moment(reservationDate).tz('Asia/Seoul');
-            const elapsedTime = currentTime.diff(startDateTime, 'minutes');
-            const remainingTime = operationTime - elapsedTime;
-
-            return {
-                id: `${machineType}${machineNum}`,
-                machineType,
-                machineNum,
-                reservationDate: moment(reservationDate).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'),
-                remainingTime: remainingTime > 0 ? moment().startOf('day').add(remainingTime, 'minutes').format('HH:mm:ss') : '00:00:00'
-            }; 
-        }));
+        const reservations = await Reservation.findAll({
+            where: {
+                subscriberName: subscriberName,
+                reservationDate: {
+                    [Op.between]: [startOfToday, endOfToday] // 오늘 날짜 범위 필터링
+                }
+            },
+            order: [['created_at', 'DESC']],
+            include: [{
+                model: Machine,
+                as: 'machine',
+                include : [{
+                    model: Branch,
+                    as: 'branch3'
+                }],
+                where: {
+                    state: 'in_use' // Machine의 상태가 'in_use'인 경우만 조회
+                }
+            }]
+        });
 
         // 렌더링할 페이지와 데이터
-        res.render('user/userUsing', { reservations: userReservations });
+        res.render('user/userUsing', { reservations: reservations });
     } catch (err) {
         console.error(err);
         res.status(500).send({
