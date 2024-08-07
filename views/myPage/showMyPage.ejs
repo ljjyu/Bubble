@@ -131,7 +131,9 @@
         </section>
         <footer>
             <button id="logout">로그아웃</button>
-            <button id="delete-account">회원탈퇴</button>
+            <% if (user.role === 'user') { %>
+                <button id="delete-account">회원탈퇴</button>
+            <% } %>
         </footer>
     </div>
 

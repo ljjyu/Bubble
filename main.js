@@ -3,7 +3,6 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    moment = require('moment'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -31,14 +30,15 @@ const express = require("express"),
     cookieParser = require("cookie-parser"),
     passport = require("passport"),
     bcrypt = require('bcrypt'),
-    db = require("./models/index"),
-    Sequelize = db.Sequelize,
+    moment = require('moment'),
     axios = require('axios'), //news
     cheerio = require('cheerio'), //news
-    socketIo = require('socket.io'),
-    http = require("http"),
+    db = require("./models/index"),
+    http = require("http"), // socket.io
+    socketIO = require("socket.io"),
     server = http.createServer(app),
-    io = socketIo(server),
+    io = socketIO(server),
+    Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델동기화
@@ -78,6 +78,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); //password
 app.use(bodyParser.urlencoded({ extended: false })); //password
 
+reservationController(io);
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
@@ -116,6 +117,10 @@ app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
+
+app.get("/myPage/SocketIO", (req, res) => {
+    res.render("myPage/SocketIO");
+});
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
