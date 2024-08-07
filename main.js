@@ -7,7 +7,7 @@ const express = require("express"),
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
     machineController = require("./controllers/machineController"),
-    reservationController = require("./controllers/reservationController"),
+    reservationController = require("./controllers/reservationController")(io),
     userHomeController = require("./controllers/userHomeController"),
     userMachineController = require("./controllers/userMachineController"),
     weatherController = require("./controllers/weatherController"),
@@ -87,7 +87,6 @@ io.on('connection', (socket) => {
         console.log("해제되었습니다");
     });
 });
-reservationController(io);
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
@@ -100,6 +99,7 @@ app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
 
 app.post("/reservations", reservationController.createReservation);
+app.get("/manager/getReservation",reservationController.getAllReservations);
 
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
@@ -107,7 +107,6 @@ app.get("/user/userUsing", userUsingController.getUserUsingPage);
 app.get("/user/userMachine",userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
-app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);

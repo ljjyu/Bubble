@@ -8,22 +8,6 @@ const db = require("../models/index"),
     moment = require('moment'),
     cron = require('node-cron');
 
-exports.getAllReservations = async (req, res) => {
-    try {
-        const data = await Reservation.findAll({
-            include: {
-                model: db.machine,
-                as: 'machine' // Machine 모델을 include
-            }
-        });
-        res.render("user/userReserve", { reservations: data });
-    } catch (err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
-};
-
 module.exports = (io) => {
     return {
         createReservation: async (req, res) => {
@@ -145,6 +129,21 @@ module.exports = (io) => {
                     message: err.message
                 });
            }
+        },
+        getAllReservations: async (req, res) => {
+            try {
+                const data = await Reservation.findAll({
+                    include: {
+                        model: db.machine,
+                        as: 'machine' // Machine 모델을 include
+                    }
+                });
+                res.render("user/userReserve", { reservations: data });
+            } catch (err) {
+                res.status(500).send({
+                    message: err.message
+                });
+            }
         }
     };
 };
