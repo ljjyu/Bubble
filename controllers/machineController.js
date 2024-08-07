@@ -13,7 +13,6 @@ exports.getAllMachines = async (req, res) => {
         } else {
             machines = await Machine.findAll();
         }
-        console.log(machines);
         res.render("manager/getMachine", {
             user: req.session.user,
             machines: machines,
