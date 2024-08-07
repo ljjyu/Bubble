@@ -3,6 +3,10 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
+    http = require("http"), // socket.io
+    socketIO = require("socket.io"),
+    server = http.createServer(app),
+    io = socketIO(server),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -34,10 +38,6 @@ const express = require("express"),
     axios = require('axios'), //news
     cheerio = require('cheerio'), //news
     db = require("./models/index"),
-    http = require("http"), // socket.io
-    socketIO = require("socket.io"),
-    server = http.createServer(app),
-    io = socketIO(server),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
