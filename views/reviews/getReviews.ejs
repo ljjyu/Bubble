@@ -48,14 +48,42 @@
         }
 
         .modal-content {
-            background-color: #fff;
+	    background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;
             border-radius: 5px;
+	}
+
+	.modal-form {
+	    margin: 0px;
+	    box-shadow: 0 0 0;
+	}
+
+	.form-group {
+	    margin-bottom: 15px;
+	}
+	
+	.form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+	
+	#reasonContainer textarea {
+            resize: vertical;
+        }
+
+	.submit-button {
+	    text-align: right;
+	}
 
         .close {
             color: #aaa;
@@ -66,7 +94,7 @@
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: black;`i
             text-decoration: none;
             cursor: pointer;
         }
@@ -121,7 +149,7 @@
                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
                     <% } %>
                     <% if (user && user.role === 'user') { %>
-                        <button onclick="openModal(<%= review.id %>)">신고</button>
+                        <a href="#" onclick="openModal(<%= review.id %>)">신고</a>
                     <% } %>
                 </li>
             <% }); %>
@@ -131,22 +159,24 @@
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <form action="/reviews/reportReview" method="POST">
+            <form class="modal-form" action="/reviews/reportReview" method="POST">
                 <input type="hidden" id="reviewID" name="reviewID">
                 <div class="form-group">
-                    <label for="category">Category</label>
+                    <label for="category">신고 사유</label>
                     <select id="category" name="category" class="form-control" required onchange="handleCategoryChange()">
-                        <option value="">Select a category</option>
+                        <option value="">사유를 선택하세요.</option>
                         <option value="부적절한 표현">부적절한 표현</option>
                         <option value="타인을 향한 비방">타인을 향한 비방</option>
                         <option value="기타">기타</option>
                     </select>
                 </div>
                 <div class="form-group" id="reasonContainer" style="display:none;">
-                    <label for="reason">Reason</label>
+                    <label for="reason">이유를 알려주세요.</label>
                     <textarea id="reason" name="reason" class="form-control"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Report</button>
+		<div class="submit-button">
+                    <button type="submit" class="btn btn-primary">신고하기</button>
+		</div>
             </form>
         </div>
     </div>
