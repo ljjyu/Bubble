@@ -128,7 +128,7 @@ app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
 app.get("/user/userUsing", (req, res) => {
-    res.render("myPage/SocketIO");
+    res.render("myPage/SocketIO", {dbPort: process.env.DB_PORT});
 });
 
 app.get("/", homeController.showIndex);
@@ -140,6 +140,6 @@ app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-app.listen(app.get("port"), () => {
+app.listen(app.get("port"), '0.0.0.0', () => {
     console.log(`Server running on port: ${app.get("port")}`);
 });
