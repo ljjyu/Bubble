@@ -79,14 +79,14 @@ app.use(bodyParser.json()); //password
 app.use(bodyParser.urlencoded({ extended: false })); //password
 
 // Socket.IO 설정
-//io.on('connection', (socket) => {
-//    console.log("연결되었습니다");
-//
-//    // 추가적인 Socket.IO 설정 및 이벤트 리스너
-//    socket.on('disconnect', () => {
-//        console.log("해제되었습니다");
-//    });
-//});
+io.on('connection', (socket) => {
+    console.log("연결되었습니다");
+
+    // 추가적인 Socket.IO 설정 및 이벤트 리스너
+    socket.on('disconnect', () => {
+        console.log("해제되었습니다");
+    });
+});
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
@@ -127,9 +127,9 @@ app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
-//app.get("/myPage/SocketIO", (req, res) => {
-//    res.render("myPage/SocketIO");
-//});
+app.get("/user/userUsing", (req, res) => {
+    res.render("myPage/SocketIO");
+});
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
