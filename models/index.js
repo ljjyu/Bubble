@@ -12,15 +12,11 @@ db.reservation = require("./reservation.js")(sequelize, Sequelize);
 db.notice = require("./notice.js")(sequelize, Sequelize);
 db.Review = require("./reviews.js")(sequelize, Sequelize);
 db.branch = require("./branch.js")(sequelize, Sequelize);
-db.qna = require("./qna.js")(sequelize, Sequelize);
+db.qnaChat = require("./qnaChat.js")(sequelize, Sequelize);
 // 모델 관계 설정
-db.qna.belongsTo(db.branch, {
+db.qnaChat.belongsTo(db.branch, {
     foreignKey: 'branchID',
     targetKey: 'branchID'
 });
 
-db.qna.belongsTo(db.subscriber, {
-    foreignKey: 'userEmail',
-    targetKey: 'email'
-});
 module.exports = db;
