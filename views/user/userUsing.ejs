@@ -61,25 +61,25 @@
             <p>사용중인 기기가 없습니다.</p>
         <% } %>
     </div>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+<!--     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script> -->
+<!--     <script src="/socket.io/socket.io.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment-timezone.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const socket = io('http:///<%= externalIP %>:<%= port %>');
+<!--     <script> -->
+<!--     document.addEventListener("DOMContentLoaded", () => { -->
+<!--         const socket = io('http:///<%= externalIP %>:<%= port %>'); -->
 
-        socket.on('connect', () => {
-            console.log("Connected to server");
-        });
+<!--         socket.on('connect', () => { -->
+<!--             console.log("Connected to server"); -->
+<!--         }); -->
 
-        socket.on('notification', (data) => {
-            alert(data.message);
-        });
+<!--         socket.on('notification', (data) => { -->
+<!--             alert(data.message); -->
+<!--         }); -->
 
-        socket.on('disconnect', () => {
-            console.log("Disconnected from server");
-        });
-    });
-    </script>
+<!--         socket.on('disconnect', () => { -->
+<!--             console.log("Disconnected from server"); -->
+<!--         }); -->
+<!--     }); -->
+<!--     </script> -->
 </body>

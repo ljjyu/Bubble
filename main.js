@@ -3,11 +3,11 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    http = require("http"), // socket.io
-    socketIO = require("socket.io"),
-    server = http.createServer(app),
-    io = socketIO(server),
-    config = require("./config/config"),
+//    http = require("http"), // socket.io
+//    socketIO = require("socket.io"),
+//    server = http.createServer(app),
+//    io = socketIO(server),
+//    config = require("./config/config"),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -43,9 +43,6 @@ const express = require("express"),
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델동기화
-const Subscriber = db.subscriber;
-const Machine = db.machine;
-const Reservation = db.reservation;
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
@@ -80,14 +77,14 @@ app.use(bodyParser.json()); //password
 app.use(bodyParser.urlencoded({ extended: false })); //password
 
 // Socket.IO 설정
-io.on('connection', (socket) => {
-    console.log("연결되었습니다");
-
-    // 추가적인 Socket.IO 설정 및 이벤트 리스너
-    socket.on('disconnect', () => {
-        console.log("해제되었습니다");
-    });
-});
+//io.on('connection', (socket) => {
+//    console.log("연결되었습니다");
+//
+//    // 추가적인 Socket.IO 설정 및 이벤트 리스너
+//    socket.on('disconnect', () => {
+//        console.log("해제되었습니다");
+//    });
+//});
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
@@ -128,12 +125,12 @@ app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
-app.get("/user/userUsing", (req, res) => {
-    res.render("user/userUsing", {
-        externalIP: config.external.ip,
-        port: config.external.port
-    });
-});
+//app.get("/user/userUsing", (req, res) => {
+//    res.render("user/userUsing", {
+//        externalIP: config.external.ip,
+//        port: config.external.port
+//    });
+//});
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
@@ -144,6 +141,10 @@ app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-app.listen(app.get("port"), '0.0.0.0', () => {
+//app.listen(app.get("port"), '0.0.0.0', () => {
+//    console.log(`Server running on port: ${app.get("port")}`);
+//});
+
+app.listen(app.get("port"), () => {
     console.log(`Server running on port: ${app.get("port")}`);
 });
