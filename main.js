@@ -7,6 +7,7 @@ const express = require("express"),
     socketIO = require("socket.io"),
     server = http.createServer(app),
     io = socketIO(server),
+    config = require("./config/config"),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -127,8 +128,11 @@ app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
+const externalIP = config.external.ip;
+const port = config.external.port;
+const socketURL = 'http://${externalIP}:${port}';
 app.get("/user/userUsing", (req, res) => {
-    res.render("myPage/SocketIO", {dbPort: process.env.DB_PORT});
+    res.render("user/userUsing", { externalIP, port });
 });
 
 app.get("/", homeController.showIndex);

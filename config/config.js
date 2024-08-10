@@ -14,5 +14,9 @@ module.exports = {
         host: process.env.DB_HOST,
         dialect: "mysql",
         logging: false
+    },
+    external: {
+        ip: process.env.EXTERNAL_IP,
+        port: process.env.PORT || 80
     }
-}
+};
