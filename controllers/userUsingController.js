@@ -3,6 +3,7 @@ const db = require("../models/index"),
     Reservation = db.reservation,
     Branch = db.branch,
     moment = require('moment-timezone'),
+    config = require("../config/config"),
     Op = db.Sequelize.Op;
 
 exports.getUserUsingPage = async (req, res) => {
@@ -41,7 +42,11 @@ exports.getUserUsingPage = async (req, res) => {
         });
 
         // 렌더링할 페이지와 데이터
-        res.render('user/userUsing', { reservations: reservations });
+        res.render('user/userUsing', {
+            reservations: reservations,
+            externalIP: config.external.ip,
+            port: config.external.port
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send({

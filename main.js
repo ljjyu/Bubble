@@ -128,11 +128,11 @@ app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
 
-const externalIP = config.external.ip;
-const port = config.external.port;
-const socketURL = 'http://${externalIP}:${port}';
 app.get("/user/userUsing", (req, res) => {
-    res.render("user/userUsing", { externalIP, port });
+    res.render("user/userUsing", {
+        externalIP: config.external.ip,
+        port: config.external.port
+    });
 });
 
 app.get("/", homeController.showIndex);
