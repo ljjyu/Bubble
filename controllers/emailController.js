@@ -18,24 +18,32 @@ exports.sendVerificationCode = async (req, res) => {
 
     try {
         // 이메일이 데이터베이스에 존재하는지 확인
-        const existingSubscriber = await Subscriber.findOne({ where: { email } });
-
-        if (existingSubscriber) {
-            return res.status(400).json({ message: '이미 등록된 이메일 주소입니다.' });
-        }
-
-        // 인증 코드 생성
-        const verificationCode = crypto.randomBytes(4).toString('hex'); // 4바이트 길이의 코드
-
-        // 인증 코드와 만료일 저장 (예: 1시간 후 만료)
-        await Subscriber.create({
-            email,
-            verificationCode,
-            verificationExpires: Date.now() + 3600000
+        const [subscriber, created] = await Subscriber.findOrCreate({
+            where: { email },
+            defaults: {
+                verificationCode: crypto.randomBytes(4).toString('hex'), // 4바이트 길이의 코드
+                verificationExpires: Date.now() + 3600000 // 1시간 후 만료
+            }
         });
 
+        if (!created) {
+            // 이메일이 이미 존재하고 인증 코드가 만료되지 않은 경우
+            if (subscriber.verificationExpires > Date.now()) {
+                return res.status(400).json({ message: '이미 인증 코드가 발송되었습니다. 잠시 후 다시 시도해주세요.' });
+            }
+
+            // 인증 코드와 만료일 업데이트
+            await Subscriber.update(
+                {
+                    verificationCode: crypto.randomBytes(4).toString('hex'),
+                    verificationExpires: Date.now() + 3600000
+                },
+                { where: { email } }
+            );
+        }
+
         // 인증 코드 전송 링크 생성
-        const verificationUrl = `http://34.47.118.94/verification?code=${verificationCode}`;
+        const verificationUrl = `http://34.47.118.94/verification?code=${subscriber.verificationCode}`;
 
         // 이메일 전송 설정
         const mailOptions = {
@@ -85,6 +93,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).json({ message: '인증 코드 확인 중 오류가 발생했습니다.' });
     }
 };
+
 
 
 
