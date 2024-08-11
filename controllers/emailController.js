@@ -50,14 +50,14 @@ app.use(express.static("public"));
 // 레이아웃 설정
 app.use(layouts);
 // 데이터 파싱
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
-}));
+ }));
 app.use(flash());
 app.locals.moment = moment;
 
@@ -79,9 +79,8 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 
-// 이메일 인증 관련 라우트
-app.post('/email/send-verification', emailController.sendVerificationCode); // 인증 코드 전송
-app.post('/email/verify', emailController.verifySubscriber); // 인증 코드 검증
+// 이메일 관련 라우트
+app.use('/email', emailRoutes);
 
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
@@ -91,10 +90,10 @@ app.post("/reservations", reservationController.createReservation);
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage);
-app.get("/user/userMachine", userMachineController.getUserMachines);
+app.get("/user/userMachine",userMachineController.getUserMachines);
 
-app.get("/manager/getMachine", machineController.getAllMachines);
-app.get("/manager/getReservation", reservationController.getAllReservations);
+app.get("/manager/getMachine",machineController.getAllMachines);
+app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);
@@ -126,3 +125,4 @@ app.use(errorController.internalServerError);
 app.listen(app.get("port"), () => {
     console.log(`Server running on port: ${app.get("port")}`);
 });
+
