@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const branch = sequelize.define("branch", { // 엔티티 생성
+    const Branch = sequelize.define("Branch", { // 엔티티 생성
         branchID: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
@@ -26,5 +26,5 @@ module.exports = (sequelize, Sequelize) => {
         tableName: "branch",
         timestamps: false
     });
-    return branch;
+    return Branch;
 }

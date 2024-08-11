@@ -3,12 +3,17 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    moment = require('moment'),
+//    http = require("http"), // socket.io
+//    socketIO = require("socket.io"),
+//    server = http.createServer(app),
+//    io = socketIO(server),
+//    config = require("./config/config"),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
+    //reservationController = require("./controllers/reservationController")(io),
     userHomeController = require("./controllers/userHomeController"),
     userMachineController = require("./controllers/userMachineController"),
     weatherController = require("./controllers/weatherController"),
@@ -22,6 +27,7 @@ const express = require("express"),
     newsController = require("./controllers/newsController"), //news
     myPageController = require("./controllers/myPageController"), // myPage
     passwordController = require("./controllers/passwordController"), //password
+    changepwController = require("./controllers/changepwController"), //mypagePw
     passwordRoutes = require('./routes/passwordRoutes'), //password
     emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우트
     layouts = require("express-ejs-layouts"),
@@ -31,16 +37,14 @@ const express = require("express"),
     cookieParser = require("cookie-parser"),
     passport = require("passport"),
     bcrypt = require('bcrypt'),
-    db = require("./models/index"),
-    Sequelize = db.Sequelize,
+    moment = require('moment'),
     axios = require('axios'), //news
     cheerio = require('cheerio'), //news
+    db = require("./models/index"),
+    Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델동기화
-const Subscriber = db.subscriber;
-const Machine = db.machine;
-const Reservation = db.reservation;
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
@@ -74,6 +78,16 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); //password
 app.use(bodyParser.urlencoded({ extended: false })); //password
 
+// Socket.IO 설정
+//io.on('connection', (socket) => {
+//    console.log("연결되었습니다");
+//
+//    // 추가적인 Socket.IO 설정 및 이벤트 리스너
+//    socket.on('disconnect', () => {
+//        console.log("해제되었습니다");
+//    });
+//});
+
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
@@ -87,6 +101,7 @@ app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
 
 app.post("/reservations", reservationController.createReservation);
+app.get("/manager/getReservation",reservationController.getAllReservations);
 
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
@@ -108,11 +123,19 @@ app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); //news
 app.use('/password', passwordRoutes); //password
+app.post('/changePassword', changepwController.changePassword); //mypagePw
 app.get("/myPage", myPageController.getAllMyPage);
 app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
+
+//app.get("/user/userUsing", (req, res) => {
+//    res.render("user/userUsing", {
+//        externalIP: config.external.ip,
+//        port: config.external.port
+//    });
+//});
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
@@ -122,6 +145,10 @@ app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
+
+//app.listen(app.get("port"), '0.0.0.0', () => {
+//    console.log(`Server running on port: ${app.get("port")}`);
+//});
 
 app.listen(app.get("port"), () => {
     console.log(`Server running on port: ${app.get("port")}`);

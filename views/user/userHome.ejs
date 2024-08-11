@@ -46,14 +46,26 @@
     <div class="main-content">
         <div id="reserv-status-container">
             <h1>예약 내역</h1>
-            <% reservations.forEach((reservation, index) => { %>
+            <% if (reservations && reservations.length > 0) { %>
+                <% reservations.forEach((reservation, index) => {
+                const currentTime = moment().tz('Asia/Seoul');
+                const reservationTime = moment(reservation.reservationDate);
+                const reservationTimeInSeoul = reservationTime.clone().tz('Asia/Seoul', true);
+                let status = reservationTimeInSeoul.isBefore(currentTime) ? '사용 완료' : '사용 전';
+                %>
                 <div class="machine <%= reservation.machine && reservation.machine.type === 'washer' ? 'purple' : 'yellow' %>" data-id="<%= index + 1 %>">
-                    <span class="left-align">예약 번호 : <%= reservation.reservationNumber %> </span>
                     <span class="left-align">예약 시간 : <%= moment(reservation.reservationDate).format('YYYY-MM-DD HH:mm:ss') %> </span>
                     <span class="left-align">기계 종류 : <%= reservation.machine.type === 'washer' ? '세탁기' : '건조기' %> </span>
                     <span class="left-align">기계 번호 : <%= reservation.machineID %> </span>
+                    <span class="left-align">지점 : <%= reservation.machine.branch3.branchName %> </span>
+                    <span class="left-align">사용 현황 : <% if (reservation.machine.state === 'in_use') { %> 사용 중 <% } else { %> <%= status %> <% } %> </span>
                 </div>
-            <% }); %>
+                 <% }); %>
+             <% } else { %>
+                 <p>예약 내역이 없습니다.</p>
+             <% } %>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.29.1/moment-timezone.min.js"></script>
 </body>
