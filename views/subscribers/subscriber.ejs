@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 페이지</title>
     <style>
-        .signup-form{
+        .signup-form {
             max-width: 1000px;
             padding: 20px;
             margin: auto;
         }
-        .subscription-form{
+        .subscription-form {
             padding: 20px;
             max-width: 1000px;
         }
@@ -19,13 +19,15 @@
             justify-content: start;
             margin-bottom: 1rem;
         }
-        .radio-group label{
+        .signup-form {
+            padding: 20px;
+        }
+        .radio-group label {
             font-family: sans-serif;
             vertical-align: middle;
             margin-right: 0.5rem;
         }
-        [type="radio"],
-        span {
+        [type="radio"], span {
             vertical-align: middle;
         }
     </style>
@@ -126,11 +128,11 @@
             <h2>이메일 인증</h2>
             <form id="verification-form" onsubmit="handleVerify(event)">
                 <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
-                <input type="hidden" name="email" value="<%= email %>">
                 <input type="submit" value="인증하기">
             </form>
         </div>
     </div>
 </body>
 </html>
+
 
