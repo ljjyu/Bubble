@@ -59,7 +59,7 @@
             const data = Object.fromEntries(formData.entries());
 
             // 인증 코드 확인 요청
-            const response = await fetch('/email/verify', {
+            const response = await fetch('/email/verify-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -81,7 +81,7 @@
             event.preventDefault();
             const email = document.querySelector('input[name="email"]').value;
 
-            const response = await fetch('/email/send-verification', {
+            const response = await fetch('/email/send-verification-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -135,6 +135,7 @@
     </div>
 </body>
 </html>
+
 
 
 

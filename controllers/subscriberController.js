@@ -68,16 +68,17 @@ exports.saveSubscriber = async (req, res) => {
             phoneNumber,
             cardNumber,
             branchName: role === 'admin' ? branchName : null,
-            address: role === 'admin' ? address : null,
-            isVerified: false // 초기에는 인증되지 않은 상태
+            address: role === 'admin' ? address : null
         });
 
-        res.status(200).send('회원가입이 완료되었습니다. 이메일을 확인하여 인증 코드를 입력해 주세요.');
+        res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
     } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: err.message });
+        res.status(500).send({
+            message: err.message
+        });
     }
 };
+
 
 
 

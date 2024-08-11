@@ -23,6 +23,7 @@ const express = require("express"),
     passwordController = require("./controllers/passwordController"), // password
     passwordRoutes = require('./routes/passwordRoutes'), // password
     emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
+    emailController = require("./controllers/emailController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -72,6 +73,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json()); // password
 app.use(bodyParser.urlencoded({ extended: false })); // password
+app.use('/email', emailRoutes); //이메일인증
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
