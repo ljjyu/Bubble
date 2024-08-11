@@ -38,8 +38,8 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
-            // 회원가입 요청
-            const response = await fetch('/subscribers/subscriber', {
+            // 인증 코드 요청
+            const response = await fetch('/send-verification-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,9 +51,9 @@
 
             if (response.status === 200) {
                 alert(result);
-                document.getElementById('verification-section').style.display = 'block';
+                window.location.href = '/verification'; // 인증 페이지로 리다이렉트
             } else {
-                alert(`회원가입 오류: ${result}`);
+                alert(`인증 코드 요청 오류: ${result}`);
             }
         }
 
@@ -81,55 +81,28 @@
                 alert(`인증 오류: ${result}`);
             }
         }
-
-        async function sendVerificationCode(event) {
-            event.preventDefault();
-            const email = document.querySelector('input[name="email"]').value;
-
-            const response = await fetch('/send-verification-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email })
-            });
-
-            const result = await response.text();
-
-            if (response.status === 200) {
-                alert('인증 코드가 이메일로 전송되었습니다.');
-                // 인증 코드 페이지로 리다이렉트
-                window.location.href = '/verification';
-            } else {
-                alert(`인증 코드 전송 오류: ${result}`);
-            }
-        }
     </script>
 </head>
 <body>
     <div class="signup-form">
         <h1>회원가입</h1>
-        <p>이름, 이메일, 비밀번호는 필수입니다.</p>
         <form class="subscription-form" onsubmit="handleSubmit(event)">
-            <div class="radio-group">
-                <input type="radio" id="roleUser" name="role" value="user" required>
-                <label for="roleUser">User</label>
-                <input type="radio" id="roleAdmin" name="role" value="admin" required>
-                <label for="roleAdmin">Admin</label>
-            </div>
-            <input type="text" name="name" placeholder="이름" required autocomplete="off">
             <input type="text" name="email" placeholder="이메일" required autocomplete="off">
-            <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
-            <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
-            <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
-            <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
-            <input type="text" name="address" placeholder="지점주소" autocomplete="off">
-            <input type="submit" value="회원가입">
+            <input type="submit" value="인증 코드 요청">
         </form>
-        <button onclick="sendVerificationCode(event)">인증코드 요청</button>
+        <div id="verification-section" style="display: none;">
+            <h2>이메일 인증</h2>
+            <form id="verification-form" onsubmit="handleVerify(event)">
+                <input type="text" name="email" placeholder="이메일" required autocomplete="off">
+                <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
+                <input type="submit" value="인증하기">
+            </form>
+        </div>
     </div>
 </body>
 </html>
+
+
 
 
 

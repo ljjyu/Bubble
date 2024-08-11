@@ -18,41 +18,29 @@ exports.sendVerificationCode = async (req, res) => {
 
     try {
         // 이메일이 데이터베이스에 존재하는지 확인
-        const [subscriber, created] = await Subscriber.findOrCreate({
-            where: { email },
-            defaults: {
-                verificationCode: crypto.randomBytes(4).toString('hex'), // 4바이트 길이의 코드
-                verificationExpires: Date.now() + 3600000 // 1시간 후 만료
-            }
-        });
+        const existingSubscriber = await Subscriber.findOne({ where: { email } });
 
-        if (!created) {
-            // 이메일이 이미 존재하고 인증 코드가 만료되지 않은 경우
-            if (subscriber.verificationExpires > Date.now()) {
-                return res.status(400).json({ message: '이미 인증 코드가 발송되었습니다. 잠시 후 다시 시도해주세요.' });
-            }
-
-            // 인증 코드와 만료일 업데이트
-            await Subscriber.update(
-                {
-                    verificationCode: crypto.randomBytes(4).toString('hex'),
-                    verificationExpires: Date.now() + 3600000
-                },
-                { where: { email } }
-            );
+        if (existingSubscriber) {
+            return res.status(400).json({ message: '이미 등록된 이메일 주소입니다.' });
         }
 
-        // 인증 코드 전송 링크 생성
-        const verificationUrl = `http://34.47.118.94/verification?code=${subscriber.verificationCode}`;
+        // 인증 코드 생성
+        const verificationCode = crypto.randomBytes(3).toString('hex'); // 6자리 코드
+
+        // 인증 코드와 만료일 저장
+        await Subscriber.create({
+            email,
+            verificationCode,
+            verificationExpires: Date.now() + 3600000 // 1시간 후 만료
+        });
 
         // 이메일 전송 설정
         const mailOptions = {
             to: email,
             from: 'coin.bubblebubble@gmail.com',
             subject: '이메일 인증 코드',
-            text: `인증 코드를 입력하려면 다음 링크를 클릭하세요:\n` +
-                `${verificationUrl}\n\n` +
-                `해당 링크는 1시간 동안만 유효합니다.`
+            text: `이메일 인증 코드는 다음과 같습니다: ${verificationCode}\n\n` +
+                `이 코드는 1시간 동안 유효합니다.`
         };
 
         // 이메일 전송
@@ -64,7 +52,7 @@ exports.sendVerificationCode = async (req, res) => {
     }
 };
 
-// 이메일 인증 코드 확인
+// 이메일 인증 코드 검증
 exports.verifyCode = async (req, res) => {
     const { email, verificationCode } = req.body;
 
@@ -93,6 +81,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).json({ message: '인증 코드 확인 중 오류가 발생했습니다.' });
     }
 };
+
 
 
 
