@@ -7,8 +7,8 @@ const Subscriber = db.subscriber; // 구독자 모델
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'your-email@gmail.com',  // 인증에 사용할 이메일 주소
-        pass: 'your-email-password'     // 해당 이메일 계정의 비밀번호
+        user: 'coin.bubblebubble@gmail.com',  // 인증에 사용할 이메일 주소
+        pass: 'oepq lqjc chdh hymn'     // 해당 이메일 계정의 비밀번호
     }
 });
 
