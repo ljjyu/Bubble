@@ -4,24 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이메일 인증</title>
-    <style>
-        .verification-form {
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-    </style>
 </head>
 <body>
-    <div class="verification-form">
-        <h1>이메일 인증</h1>
-        <form id="verification-form" action="/email/verify-code" method="POST">
-            <input type="hidden" name="email" value="<%= email %>">
-            <input type="text" name="verificationCode" placeholder="인증 코드" required>
-            <button type="submit">인증하기</button>
-        </form>
-    </div>
+    <h1>이메일 인증</h1>
+    <form id="verification-form" onsubmit="handleVerify(event)">
+        <input type="text" name="email" placeholder="이메일" required autocomplete="off">
+        <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
+        <input type="submit" value="인증하기">
+    </form>
+    <script>
+        async function handleVerify(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // 인증 코드 확인 요청
+            const response = await fetch('/verify-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.text();
+
+            if (response.status === 200) {
+                alert('인증이 성공적으로 완료되었습니다.');
+                window.location.href = '/'; // 인증 완료 후 리다이렉트
+            } else {
+                alert(`인증 오류: ${result}`);
+            }
+        }
+    </script>
 </body>
 </html>
+
