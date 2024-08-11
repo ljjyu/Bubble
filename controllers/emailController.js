@@ -3,11 +3,12 @@ const Subscriber = db.subscriber;
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
+// Nodemailer 트랜스포터 설정
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    service: 'Gmail', // 또는 다른 이메일 서비스 제공자
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.EMAIL_USER, // .env 파일에서 읽어온 이메일 주소
+        pass: process.env.EMAIL_PASS  // .env 파일에서 읽어온 이메일 비밀번호
     }
 });
 
@@ -83,5 +84,6 @@ exports.verifyCode = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
 
 
