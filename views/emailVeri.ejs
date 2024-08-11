@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이메일 인증</title>
+    <style>
+        .verification-form {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-form">
+        <h1>이메일 인증</h1>
+        <form id="verification-form" action="/email/verify-code" method="POST">
+            <input type="hidden" name="email" value="<%= email %>">
+            <input type="text" name="verificationCode" placeholder="인증 코드" required>
+            <button type="submit">인증하기</button>
+        </form>
+    </div>
+</body>
+</html>
