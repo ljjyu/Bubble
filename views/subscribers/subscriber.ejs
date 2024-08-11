@@ -51,7 +51,7 @@
 
             if (response.status === 200) {
                 alert(result);
-                window.location.href = '/verification'; // 인증 페이지로 리다이렉트
+                document.getElementById('verification-section').style.display = 'block';
             } else {
                 alert(`회원가입 오류: ${result}`);
             }
@@ -81,6 +81,27 @@
                 alert(`인증 오류: ${result}`);
             }
         }
+
+        async function sendVerificationCode(event) {
+            event.preventDefault();
+            const email = document.querySelector('input[name="email"]').value;
+
+            const response = await fetch('/send-verification-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await response.text();
+
+            if (response.status === 200) {
+                alert('인증 코드가 이메일로 전송되었습니다.');
+            } else {
+                alert(`인증 코드 전송 오류: ${result}`);
+            }
+        }
     </script>
 </head>
 <body>
@@ -102,9 +123,23 @@
             <input type="text" name="address" placeholder="지점주소" autocomplete="off">
             <input type="submit" value="회원가입">
         </form>
+
+        <!-- 이메일 인증 코드 요청 부분 -->
+        <div id="verification-section" style="display: none;">
+            <h2>이메일 인증</h2>
+            <form id="verification-request-form" onsubmit="sendVerificationCode(event)">
+                <input type="text" name="email" placeholder="이메일" required autocomplete="off">
+                <input type="submit" value="인증 코드 요청">
+            </form>
+            <form id="verification-form" onsubmit="handleVerify(event)">
+                <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
+                <input type="submit" value="인증하기">
+            </form>
+        </div>
     </div>
 </body>
 </html>
+
 
 
 
