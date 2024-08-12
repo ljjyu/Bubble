@@ -4,14 +4,16 @@ const db = require('../models/index');
 const Subscriber = db.subscriber;
 const Branch = db.branch;
 const Machine = db.machine;
-const emailController = require('./emailController'); // 이메일 인증 기능을 가져옵니다.
+const Op = db.Sequelize.Op;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
         const data = await Subscriber.findAll();
         res.render("subscribers/getSubscriber", { subscribers: data });
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send({
+            message: err.message
+        });
     }
 };
 
@@ -21,64 +23,62 @@ exports.getSubscriptionPage = (req, res) => {
 
 exports.saveSubscriber = async (req, res) => {
     try {
-        const { name, email, password, role, phoneNumber, cardNumber, branchName, address, verificationCode } = req.body;
+        const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
+        const existingSubscriber = await Subscriber.findOne({ where: { email } });
 
-        // 인증 코드 검증
-        const subscriber = await Subscriber.findOne({ where: { email } });
-        if (subscriber && subscriber.verificationCode === parseInt(verificationCode, 10) && Date.now() <= subscriber.verificationExpires) {
-            // 인증 코드가 유효하면, 비밀번호를 해시하고 회원가입을 진행합니다.
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+        if (existingSubscriber) {
+            return res.status(400).send({ message: "이미 등록된 이메일 주소입니다." });
+        }
 
-            if (role === 'admin') {
-                if (!branchName || !address) {
-                    return res.status(400).send({ message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요." });
-                }
+        if (password.length < 8) {
+            return res.status(400).send({ message: "비밀번호는 8자리 이상이어야 합니다." });
+        }
 
-                const existingBranch = await Branch.findOne({ where: { branchName } });
-                if (existingBranch) {
-                    return res.status(400).send({ message: "이미 등록된 지점명입니다." });
-                }
+        if (role === 'admin' && (!branchName || !address)) {
+            return res.status(400).send({ message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요." });
+        }
 
-                const newBranch = await Branch.create({
-                    branchName,
-                    address,
-                    manager: email
-                });
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-                const machines = [];
-                for (let i = 1; i <= 4; i++) {
-                    machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
-                    machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
-                }
-                await Machine.bulkCreate(machines);
+        if (role === 'admin') {
+            const existingBranch = await Branch.findOne({ where: { branchName } });
+            if (existingBranch) {
+                return res.status(400).send({ message: "이미 등록된 지점명입니다." });
             }
 
-            await Subscriber.create({
-                name,
-                email,
-                password: hashedPassword,
-                role,
-                phoneNumber,
-                cardNumber,
-                branchName: role === 'admin' ? branchName : null,
-                address: role === 'admin' ? address : null,
-                verified: true
+            const newBranch = await Branch.create({
+                branchName,
+                address,
+                manager: email
             });
 
-            // 인증 코드와 만료 시간 초기화
-            await Subscriber.update(
-                { verificationCode: null, verificationExpires: null },
-                { where: { email } }
-            );
-
-            res.send("회원가입이 완료되었습니다.");
-        } else {
-            res.status(400).send('유효하지 않거나 만료된 인증 코드입니다.');
+            const machines = [];
+            for (let i = 1; i <= 4; i++) {
+                machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
+                machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
+            }
+            await Machine.bulkCreate(machines);
         }
+
+        await Subscriber.create({
+            name,
+            email,
+            password: hashedPassword,
+            role,
+            phoneNumber,
+            cardNumber,
+            branchName: role === 'admin' ? branchName : null,
+            address: role === 'admin' ? address : null
+        });
+
+        res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send({
+            message: err.message
+        });
     }
 };
+
 
 
 
