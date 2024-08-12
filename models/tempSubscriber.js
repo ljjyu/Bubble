@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const TempSubscriber = sequelize.define("TempSubscriber", {
+    const TempSubscriber = sequelize.define("tempSubscriber", {
         name: {
             type: DataTypes.STRING,
             allowNull: false
