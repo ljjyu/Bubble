@@ -21,27 +21,12 @@ exports.sendVerificationCode = async (req, res) => {
         const code = crypto.randomInt(100000, 999999); // 6자리 인증 코드
         const expiresAt = Date.now() + 15 * 60 * 1000; // 15분 후 만료
 
-        // 데이터베이스에 이메일이 존재하지 않으면 새로 추가
-        const [subscriber, created] = await Subscriber.findOrCreate({
-            where: { email },
-            defaults: {
-                verificationCode: code,
-                verificationExpires: expiresAt,
-                // 필요에 따라 기본값 설정
-                password: '', // 혹은 null 대신 기본값을 설정할 수 있습니다.
-                verified: false // 기본값 설정
-            }
-        });
+        // 데이터베이스에 저장
+        await Subscriber.update(
+            { verificationCode: code, verificationExpires: expiresAt },
+            { where: { email } }
+        );
 
-        if (!created) {
-            // 기존 이메일의 경우, 인증 코드와 만료일 업데이트
-            await Subscriber.update(
-                { verificationCode: code, verificationExpires: expiresAt },
-                { where: { email } }
-            );
-        }
-
-        // 인증 코드 전송
         await transporter.sendMail({
             from: EMAIL_USER,
             to: email,
@@ -59,14 +44,12 @@ exports.verifyCode = async (req, res) => {
     try {
         const { email, verificationCode } = req.body;
 
-        // 이메일이 데이터베이스에 존재하는지 확인
         const subscriber = await Subscriber.findOne({ where: { email } });
 
         if (!subscriber) {
             return res.status(400).send('유효하지 않은 이메일입니다.');
         }
 
-        // 인증 코드 및 만료일 확인
         if (subscriber.verificationCode !== parseInt(verificationCode, 10)) {
             return res.status(400).send('인증 코드가 일치하지 않습니다.');
         }
@@ -83,6 +66,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
        
 
 
