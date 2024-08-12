@@ -4,7 +4,7 @@ const db = require('../models/index');
 const Subscriber = db.subscriber;
 const Branch = db.branch;
 const Machine = db.machine;
-const emailController = require('./emailController'); // 이메일 인증 관련 메서드를 사용하는 이메일 컨트롤러
+const Op = db.Sequelize.Op;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
@@ -38,40 +38,9 @@ exports.saveSubscriber = async (req, res) => {
             return res.status(400).send({ message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요." });
         }
 
-        // 이메일 인증 코드 전송
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        await emailController.sendVerificationCode(email); // email만 전달
 
-        // 데이터베이스에 사용자 정보를 임시로 저장 (나중에 인증 후 실제 저장)
-        await Subscriber.create({
-            name,
-            email,
-            password: hashedPassword,
-            role,
-            phoneNumber,
-            cardNumber,
-            branchName: role === 'admin' ? branchName : null,
-            address: role === 'admin' ? address : null,
-            verified: false // 인증 완료 여부
-        });
-
-        res.send("인증 코드가 이메일로 전송되었습니다. 인증 코드를 입력하여 회원가입을 완료해 주세요.");
-    } catch (err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
-};
-
-exports.verifySubscriber = async (req, res) => {
-    try {
-        const { email, verificationCode } = req.body;
-        await emailController.verifyCode(email, verificationCode);
-
-        const subscriber = await Subscriber.findOne({ where: { email } });
-
-        if (subscriber.role === 'admin') {
-            const { branchName, address } = subscriber;
+        if (role === 'admin') {
             const existingBranch = await Branch.findOne({ where: { branchName } });
             if (existingBranch) {
                 return res.status(400).send({ message: "이미 등록된 지점명입니다." });
@@ -91,9 +60,22 @@ exports.verifySubscriber = async (req, res) => {
             await Machine.bulkCreate(machines);
         }
 
-        res.status(200).send('회원가입이 완료되었습니다.');
+        await Subscriber.create({
+            name,
+            email,
+            password: hashedPassword,
+            role,
+            phoneNumber,
+            cardNumber,
+            branchName: role === 'admin' ? branchName : null,
+            address: role === 'admin' ? address : null
+        });
+
+        res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        res.status(500).send({
+            message: err.message
+        });
     }
 };
 
