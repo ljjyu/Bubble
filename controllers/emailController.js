@@ -4,7 +4,6 @@ const db = require('../models/index');
 const Subscriber = db.subscriber;
 const TempSubscriber = db.tempSubscriber;
 
-// 이메일 주소와 비밀번호를 코드에 직접 설정합니다.
 const EMAIL_USER = 'coin.bubblebubble@gmail.com';
 const EMAIL_PASS = 'oepq lqjc chdh hymn'; // 실제 비밀번호를 입력하세요.
 
@@ -28,6 +27,10 @@ exports.sendVerificationCode = async (req, res) => {
             { where: { email } }
         );
 
+        // 로그 추가: 업데이트된 내용을 확인
+        const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
+        console.log('Updated TempSubscriber:', tempSubscriber);
+
         await transporter.sendMail({
             from: EMAIL_USER,
             to: email,
@@ -46,6 +49,9 @@ exports.verifyCode = async (req, res) => {
         const { email, verificationCode } = req.body;
 
         const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
+
+        // 로그 추가: 데이터 조회 결과 확인
+        console.log('Fetched TempSubscriber for verification:', tempSubscriber);
 
         if (!tempSubscriber) {
             return res.status(400).send('유효하지 않은 이메일입니다.');
@@ -94,6 +100,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
 
 
 

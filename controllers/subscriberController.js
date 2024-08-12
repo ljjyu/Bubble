@@ -5,7 +5,6 @@ const Subscriber = db.subscriber;
 const TempSubscriber = db.tempSubscriber;
 const Branch = db.branch;
 const Machine = db.machine;
-const Op = db.Sequelize.Op;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
@@ -53,6 +52,10 @@ exports.saveSubscriber = async (req, res) => {
             address: role === 'admin' ? address : null
         });
 
+        // 로그 추가: 데이터베이스에 저장된 내용을 확인
+        const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
+        console.log('Saved TempSubscriber:', tempSubscriber);
+
         res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
     } catch (err) {
         res.status(500).send({
@@ -60,6 +63,7 @@ exports.saveSubscriber = async (req, res) => {
         });
     }
 };
+
 
 
 
