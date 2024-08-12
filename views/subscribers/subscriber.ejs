@@ -25,6 +25,15 @@
         [type="radio"], span {
             vertical-align: middle;
         }
+        #signup-section {
+            margin-top: 20px;
+        }
+        #verify-button {
+            display: none; /* 초기에는 숨기기 */
+        }
+        #signup-button {
+            display: none; /* 초기에는 숨기기 */
+        }
     </style>
     <script>
         let isVerified = false; // 인증 완료 여부를 저장하는 변수
@@ -49,7 +58,7 @@
             if (response.status === 200) {
                 alert('인증이 성공적으로 완료되었습니다.');
                 isVerified = true; // 인증 완료 상태로 변경
-                document.getElementById('signup-section').style.display = 'block'; // 회원가입 폼 표시
+                document.getElementById('signup-button').style.display = 'inline'; // 회원가입 버튼 표시
             } else {
                 alert(`인증 오류: ${result}`);
             }
@@ -71,7 +80,7 @@
 
             if (response.status === 200) {
                 alert('인증 코드가 이메일로 전송되었습니다.');
-                document.getElementById('verification-section').style.display = 'block'; // 인증 코드 입력 폼 표시
+                document.getElementById('verify-button').style.display = 'inline'; // 인증 코드 입력 폼 표시
             } else {
                 alert(`인증 코드 전송 오류: ${result}`);
             }
@@ -113,41 +122,40 @@
         <h1>회원가입</h1>
         <p>이름, 이메일, 비밀번호는 필수입니다.</p>
 
-        <!-- 인증 코드 요청 버튼 -->
-        <button onclick="sendVerificationCode(event)">인증 코드 요청</button>
-
-        <div id="verification-section" style="display: none;">
-            <h2>이메일 인증</h2>
-            <form id="verification-form" onsubmit="handleVerify(event)">
-                <input type="text" name="email" placeholder="이메일" required autocomplete="off">
-                <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
-                <input type="submit" value="인증하기">
-            </form>
-        </div>
-
         <!-- 회원가입 폼 -->
-        <div id="signup-section" style="display: none;">
-            <h2>회원가입</h2>
-            <form class="subscription-form" onsubmit="handleSubmit(event)">
-                <div class="radio-group">
-                    <input type="radio" id="roleUser" name="role" value="user" required>
-                    <label for="roleUser">User</label>
-                    <input type="radio" id="roleAdmin" name="role" value="admin" required>
-                    <label for="roleAdmin">Admin</label>
-                </div>
-                <input type="text" name="name" placeholder="이름" required autocomplete="off">
-                <input type="text" name="email" placeholder="이메일" required autocomplete="off">
-                <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
-                <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
-                <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
-                <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
-                <input type="text" name="address" placeholder="지점주소" autocomplete="off">
-                <input type="submit" name="join" value="회원가입">
-            </form>
-        </div>
+        <form class="subscription-form" onsubmit="handleSubmit(event)">
+            <div class="radio-group">
+                <input type="radio" id="roleUser" name="role" value="user" required>
+                <label for="roleUser">User</label>
+                <input type="radio" id="roleAdmin" name="role" value="admin" required>
+                <label for="roleAdmin">Admin</label>
+            </div>
+            <input type="text" name="name" placeholder="이름" required autocomplete="off">
+            <input type="text" name="email" placeholder="이메일" required autocomplete="off">
+            <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
+            <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
+            <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
+            <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
+            <input type="text" name="address" placeholder="지점주소" autocomplete="off">
+            
+            <!-- 인증 버튼과 입력 폼 -->
+            <button onclick="sendVerificationCode(event)">인증 코드 요청</button>
+            
+            <div id="verify-button">
+                <h2>이메일 인증</h2>
+                <form id="verification-form" onsubmit="handleVerify(event)">
+                    <input type="text" name="email" placeholder="이메일" required autocomplete="off">
+                    <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
+                    <input type="submit" value="인증하기">
+                </form>
+            </div>
+
+            <input type="submit" id="signup-button" value="회원가입"> <!-- 인증 후에만 활성화 -->
+        </form>
     </div>
 </body>
 </html>
+
 
 
 
