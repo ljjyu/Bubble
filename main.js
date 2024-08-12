@@ -23,7 +23,6 @@ const express = require("express"),
     passwordController = require("./controllers/passwordController"), // password
     passwordRoutes = require('./routes/passwordRoutes'), // password
     emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
-    //emailController = require("./controllers/emailController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -38,26 +37,29 @@ const express = require("express"),
     Op = Sequelize.Op;
 
 db.sequelize.sync(); // 모델 동기화
+
 const Subscriber = db.subscriber;
+const TempSubscriber = db.tempSubscriber; // TempSubscriber 모델 추가
 const Machine = db.machine;
 const Reservation = db.reservation;
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
+
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
 app.use(layouts);
 // 데이터 파싱
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
- }));
+    cookie: { maxAge: 600000 } // 세션 유지 시간 설정 (밀리초 단위)
+}));
 app.use(flash());
 app.locals.moment = moment;
 
@@ -71,9 +73,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json()); // password
-app.use(bodyParser.urlencoded({ extended: false })); // password
-app.use('/email', emailRoutes); //이메일인증
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/email', emailRoutes); // 이메일인증 라우트
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
@@ -92,10 +94,10 @@ app.post("/reservations", reservationController.createReservation);
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage);
-app.get("/user/userMachine",userMachineController.getUserMachines);
+app.get("/user/userMachine", userMachineController.getUserMachines);
 
-app.get("/manager/getMachine",machineController.getAllMachines);
-app.get("/manager/getReservation",reservationController.getAllReservations);
+app.get("/manager/getMachine", machineController.getAllMachines);
+app.get("/manager/getReservation", reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
 app.post('/manager/getNotice', noticeController.createNotice);
@@ -107,8 +109,8 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
-app.use("/getNews", newsController); // news
-app.use('/password', passwordRoutes); // password
+app.use("/getNews", newsController); // 뉴스 라우트
+app.use('/password', passwordRoutes); // 비밀번호 라우트
 app.get("/myPage", myPageController.getAllMyPage);
 app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
@@ -127,4 +129,5 @@ app.use(errorController.internalServerError);
 app.listen(app.get("port"), () => {
     console.log(`Server running on port: ${app.get("port")}`);
 });
+
 

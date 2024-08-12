@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const db = require('../models/index');
 const Subscriber = db.subscriber;
+const TempSubscriber = db.tempSubscriber;
 const Branch = db.branch;
 const Machine = db.machine;
 const Op = db.Sequelize.Op;
@@ -40,27 +41,8 @@ exports.saveSubscriber = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        if (role === 'admin') {
-            const existingBranch = await Branch.findOne({ where: { branchName } });
-            if (existingBranch) {
-                return res.status(400).send({ message: "이미 등록된 지점명입니다." });
-            }
-
-            const newBranch = await Branch.create({
-                branchName,
-                address,
-                manager: email
-            });
-
-            const machines = [];
-            for (let i = 1; i <= 4; i++) {
-                machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
-                machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
-            }
-            await Machine.bulkCreate(machines);
-        }
-
-        await Subscriber.create({
+        // 임시 테이블에 사용자 정보 저장
+        await TempSubscriber.create({
             name,
             email,
             password: hashedPassword,
@@ -78,6 +60,7 @@ exports.saveSubscriber = async (req, res) => {
         });
     }
 };
+
 
 
 
