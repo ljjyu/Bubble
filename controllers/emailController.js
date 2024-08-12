@@ -46,9 +46,9 @@ exports.verifyCode = async (req, res) => {
 
         const subscriber = await Subscriber.findOne({ where: { email } });
 
-        if (!subscriber) {
+       /* if (!subscriber) {
             return res.status(400).send('유효하지 않은 이메일입니다.');
-        }
+        }*/
 
         if (subscriber.verificationCode !== parseInt(verificationCode, 10)) {
             return res.status(400).send('인증 코드가 일치하지 않습니다.');
