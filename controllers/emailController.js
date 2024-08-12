@@ -5,7 +5,7 @@ const Subscriber = db.subscriber;
 
 // 이메일 주소와 비밀번호를 코드에 직접 설정합니다.
 const EMAIL_USER = 'coin.bubblebubble@gmail.com';
-const EMAIL_PASS = 'oepq lqjc chdh '; // 실제 비밀번호를 입력하세요.
+const EMAIL_PASS = 'oepq lqjc chdh hymn'; // 실제 비밀번호를 입력하세요.
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -26,7 +26,10 @@ exports.sendVerificationCode = async (req, res) => {
             where: { email },
             defaults: {
                 verificationCode: code,
-                verificationExpires: expiresAt
+                verificationExpires: expiresAt,
+                // 필요에 따라 기본값 설정
+                password: '', // 혹은 null 대신 기본값을 설정할 수 있습니다.
+                verified: false // 기본값 설정
             }
         });
 
@@ -80,6 +83,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+       
 
 
 
