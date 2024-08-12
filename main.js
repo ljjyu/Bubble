@@ -1,53 +1,52 @@
-const express = require("express"),
-    app = express(),
-    path = require('path'),
-    moment = require('moment'),
-    homeController = require("./controllers/homeController"), // 메인 로그인
-    errorController = require("./controllers/errorController"), // 에러 관련
-    subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
-    emailController = require("./controllers/emailController"), // 이메일 관련 컨트롤러
-    machineController = require("./controllers/machineController"),
-    reservationController = require("./controllers/reservationController"),
-    userHomeController = require("./controllers/userHomeController"),
-    userMachineController = require("./controllers/userMachineController"),
-    weatherController = require("./controllers/weatherController"),
-    statisticController = require("./controllers/statisticController"),
-    noticeController = require("./controllers/noticeController"),
-    showNoticeController = require("./controllers/showNoticeController"),
-    usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
-    reviewsController = require("./controllers/reviewsController"), // 리뷰
-    userUsingController = require("./controllers/userUsingController"), // 잔여 시간 관련
-    branchController = require("./controllers/branchController"), // 빨래방 지점
-    newsController = require("./controllers/newsController"), // news
-    myPageController = require("./controllers/myPageController"), // myPage
-    passwordController = require("./controllers/passwordController"), // password
-    passwordRoutes = require('./routes/passwordRoutes'), // password
-    emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
-    layouts = require("express-ejs-layouts"),
-    bodyParser = require('body-parser'),
-    session = require('express-session'),
-    flash = require('connect-flash'),
-    cookieParser = require("cookie-parser"),
-    passport = require("passport"),
-    bcrypt = require('bcrypt'),
-    db = require("./models/index"),
-    Sequelize = db.Sequelize,
-    axios = require('axios'), // news
-    cheerio = require('cheerio'), // news
-    Op = Sequelize.Op;
-
-db.sequelize.sync(); // 모델 동기화
+const express = require("express");
+const app = express();
+const path = require('path');
+const moment = require('moment');
+const homeController = require("./controllers/homeController");
+const errorController = require("./controllers/errorController");
+const subscriberController = require("./controllers/subscriberController");
+const emailController = require("./controllers/emailController");
+const machineController = require("./controllers/machineController");
+const reservationController = require("./controllers/reservationController");
+const userHomeController = require("./controllers/userHomeController");
+const userMachineController = require("./controllers/userMachineController");
+const weatherController = require("./controllers/weatherController");
+const statisticController = require("./controllers/statisticController");
+const noticeController = require("./controllers/noticeController");
+const showNoticeController = require("./controllers/showNoticeController");
+const usersController = require("./controllers/usersController");
+const reviewsController = require("./controllers/reviewsController");
+const userUsingController = require("./controllers/userUsingController");
+const branchController = require("./controllers/branchController");
+const newsController = require("./controllers/newsController");
+const myPageController = require("./controllers/myPageController");
+const passwordController = require("./controllers/passwordController");
+const passwordRoutes = require('./routes/passwordRoutes');
+const emailRoutes = require('./routes/emailRoutes');
+const layouts = require("express-ejs-layouts");
+const session = require('express-session');
+const flash = require('connect-flash');
+const db = require("./models/index");
 
 const Subscriber = db.subscriber;
-const TempSubscriber = db.tempSubscriber; // TempSubscriber 모델 추가
+const TempSubscriber = db.tempSubscriber;
 const Machine = db.machine;
 const Reservation = db.reservation;
 
+// 데이터베이스 동기화
+db.sequelize.sync({ alter: true }) // 데이터베이스 스키마 업데이트
+    .then(() => {
+        console.log("Database synchronized");
+    })
+    .catch(err => {
+        console.error("Error syncing database:", err);
+    });
+
 app.set("port", process.env.PORT || 80);
-app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
+app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, 'views'));
 
-// 정적 뷰 제공
+// 정적 파일 제공
 app.use(express.static("public"));
 // 레이아웃 설정
 app.use(layouts);
@@ -58,7 +57,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 600000 } // 세션 유지 시간 설정 (밀리초 단위)
+    cookie: { maxAge: 600000 }
 }));
 app.use(flash());
 app.locals.moment = moment;
@@ -73,18 +72,16 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/email', emailRoutes); // 이메일인증 라우트
-
 // 라우트 등록
-app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
-app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
-app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
+app.use('/email', emailRoutes);
 
-app.post('/send-verification-code', emailController.sendVerificationCode); // 이메일 인증 코드 전송
-app.post('/verify-code', emailController.verifyCode); // 이메일 인증 코드 검증
-app.get('/verification', (req, res) => res.render('verification')); // 이메일 인증 페이지
+app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
+app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage);
+app.post("/subscribers/subscriber", subscriberController.saveSubscriber);
+
+app.post('/send-verification-code', emailController.sendVerificationCode);
+app.post('/verify-code', emailController.verifyCode);
+app.get('/verification', (req, res) => res.render('verification'));
 
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
@@ -109,8 +106,8 @@ app.post("/reviews/writeReviews", reviewsController.saveReviews);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.use("/getWeather", weatherController);
-app.use("/getNews", newsController); // 뉴스 라우트
-app.use('/password', passwordRoutes); // 비밀번호 라우트
+app.use("/getNews", newsController);
+app.use('/password', passwordRoutes);
 app.get("/myPage", myPageController.getAllMyPage);
 app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
@@ -129,5 +126,7 @@ app.use(errorController.internalServerError);
 app.listen(app.get("port"), () => {
     console.log(`Server running on port: ${app.get("port")}`);
 });
+
+
 
 
