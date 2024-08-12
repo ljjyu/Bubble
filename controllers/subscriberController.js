@@ -40,7 +40,7 @@ exports.saveSubscriber = async (req, res) => {
 
         // 이메일 인증 코드 전송
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        await emailController.sendVerificationCode(email);
+        await emailController.sendVerificationCode(email); // email만 전달
 
         // 데이터베이스에 사용자 정보를 임시로 저장 (나중에 인증 후 실제 저장)
         await Subscriber.create({
@@ -96,6 +96,7 @@ exports.verifySubscriber = async (req, res) => {
         res.status(500).send({ message: err.message });
     }
 };
+
 
 
 

@@ -30,7 +30,7 @@ exports.sendVerificationCode = async (email) => {
             from: EMAIL_USER,
             to: email,
             subject: '이메일 인증 코드',
-            text: `인증 코드: ${code}`
+            text: `인증 코드: ${code}` // 문자열을 전달해야 합니다.
         });
 
     } catch (err) {
@@ -61,6 +61,7 @@ exports.verifyCode = async (email, verificationCode) => {
         throw new Error(err.message);
     }
 };
+
 
 
 
