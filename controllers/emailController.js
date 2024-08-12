@@ -50,9 +50,6 @@ exports.verifyCode = async (req, res) => {
 
         const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
 
-        // 로그 추가: 데이터 조회 결과 확인
-        console.log('Fetched TempSubscriber for verification:', tempSubscriber);
-
         if (!tempSubscriber) {
             return res.status(400).send('유효하지 않은 이메일입니다.');
         }
@@ -65,41 +62,13 @@ exports.verifyCode = async (req, res) => {
             return res.status(400).send('인증 코드가 만료되었습니다.');
         }
 
-        // 인증 완료 후 메인 테이블에 사용자 정보 저장
-        const newSubscriber = await Subscriber.create({
-            name: tempSubscriber.name,
-            email: tempSubscriber.email,
-            password: tempSubscriber.password,
-            role: tempSubscriber.role,
-            phoneNumber: tempSubscriber.phoneNumber,
-            cardNumber: tempSubscriber.cardNumber,
-            branchName: tempSubscriber.branchName,
-            address: tempSubscriber.address
-        });
-
-        if (newSubscriber.role === 'admin') {
-            const newBranch = await Branch.create({
-                branchName: newSubscriber.branchName,
-                address: newSubscriber.address,
-                manager: newSubscriber.email
-            });
-
-            const machines = [];
-            for (let i = 1; i <= 4; i++) {
-                machines.push({ type: 'washer', state: 'available', branchID: newBranch.branchID });
-                machines.push({ type: 'dryer', state: 'available', branchID: newBranch.branchID });
-            }
-            await Machine.bulkCreate(machines);
-        }
-
-        // 임시 테이블에서 사용자 정보 삭제
-        await TempSubscriber.destroy({ where: { email } });
-
-        res.status(200).send('이메일 인증이 완료되었습니다.');
+        // 인증 완료 상태를 클라이언트 측으로 전달
+        res.status(200).json({ message: '이메일 인증이 완료되었습니다.', status: 'verified' });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
 };
+
 
 
 
