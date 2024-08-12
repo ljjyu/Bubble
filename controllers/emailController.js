@@ -15,9 +15,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-exports.sendVerificationCode = async (req, res) => {
+exports.sendVerificationCode = async (email) => {
     try {
-        const { email } = req.body;
         const code = crypto.randomInt(100000, 999999); // 6자리 인증 코드
         const expiresAt = Date.now() + 15 * 60 * 1000; // 15분 후 만료
 
@@ -34,38 +33,35 @@ exports.sendVerificationCode = async (req, res) => {
             text: `인증 코드: ${code}`
         });
 
-        res.status(200).send('인증 코드가 이메일로 전송되었습니다.');
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        throw new Error(err.message);
     }
 };
 
-exports.verifyCode = async (req, res) => {
+exports.verifyCode = async (email, verificationCode) => {
     try {
-        const { email, verificationCode } = req.body;
-
         const subscriber = await Subscriber.findOne({ where: { email } });
 
         if (!subscriber) {
-            return res.status(400).send('유효하지 않은 이메일입니다.');
+            throw new Error('유효하지 않은 이메일입니다.');
         }
 
         if (subscriber.verificationCode !== parseInt(verificationCode, 10)) {
-            return res.status(400).send('인증 코드가 일치하지 않습니다.');
+            throw new Error('인증 코드가 일치하지 않습니다.');
         }
 
         if (Date.now() > subscriber.verificationExpires) {
-            return res.status(400).send('인증 코드가 만료되었습니다.');
+            throw new Error('인증 코드가 만료되었습니다.');
         }
 
         // 인증 완료
         await Subscriber.update({ verified: true }, { where: { email } });
 
-        res.status(200).send('이메일 인증이 완료되었습니다.');
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        throw new Error(err.message);
     }
 };
+
 
 
        
