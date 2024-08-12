@@ -40,32 +40,6 @@ exports.sendVerificationCode = async (req, res) => {
     }
 };
 
-exports.verifyCode = async (req, res) => {
-    try {
-        const { email, verificationCode } = req.body;
-
-        const subscriber = await Subscriber.findOne({ where: { email } });
-
-        if (!subscriber) {
-            return res.status(400).send('유효하지 않은 이메일입니다.');
-        }
-
-        if (subscriber.verificationCode !== parseInt(verificationCode, 10)) {
-            return res.status(400).send('인증 코드가 일치하지 않습니다.');
-        }
-
-        if (Date.now() > subscriber.verificationExpires) {
-            return res.status(400).send('인증 코드가 만료되었습니다.');
-        }
-
-        // 인증 완료
-        await Subscriber.update({ verified: true }, { where: { email } });
-
-        res.status(200).send('이메일 인증이 완료되었습니다.');
-    } catch (err) {
-        res.status(500).send({ message: err.message });
-    }
-};
 
        
 
