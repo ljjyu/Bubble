@@ -7,6 +7,7 @@ const db = require("../models/index"),
 const { sendToQueue } = require('../rabbitmqProducer');
 
 exports.getAllReviews = async (req, res) => {
+    const branchID = req.query.branchID || 0;
     try {
         const user = req.session.user;
         const reviews = await Review.findAll({
