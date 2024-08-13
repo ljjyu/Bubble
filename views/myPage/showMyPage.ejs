@@ -125,9 +125,14 @@
         </section>
         <section class="settings">
             <button id="wishlist">좋아요 목록</button>
-            <button id="alarm">알림 받기</button>
             <button id="dark-mode">다크모드</button>
             <button id="change-pw">비밀번호 변경</button>
+            <% if (user.role === 'user') { %>
+                <button id="insert-qna">문의 넣기</button>
+            <% } %>
+            <% if (user.role === 'admin') { %>
+                <button id="view-qna">문의 넣기</button>
+            <% } %>
         </section>
         <footer>
             <button id="logout">로그아웃</button>
@@ -188,6 +193,12 @@
         });
         document.getElementById('wishlist').addEventListener('click', function() {
             window.location.href = '/myPage/getMyFavorites';
+        });
+        document.getElementById('wishlist').addEventListener('click', function() {
+            window.location.href = '/user/qnaChat';
+        });
+        document.getElementById('wishlist').addEventListener('click', function() {
+            window.location.href = '/manager/qnaChat';
         });
 
         // Password change modal functionality
