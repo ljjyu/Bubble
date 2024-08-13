@@ -22,9 +22,19 @@ exports.getAllReviews = async (req, res) => {
             ],
             order: [['created_at', 'DESC']]
         });
+        const branches = await Branch.findAll();
+        let branchReview;
+        if (branchID > 0) {
+            branchReview = await Review.findAll({ where: { branchID: branchID } });
+        } else {
+            branchReview = await Review.findAll();
+        }
         res.render("reviews/getReviews", {
             reviews,
-            user
+            user,
+            branchReview: branchReview,
+            branches: branches,
+            selectedBranch: branchID
         });
     } catch (err) {
         res.status(500).send({message: err.message});
