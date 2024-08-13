@@ -3,7 +3,7 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    moment = require('moment-timezone'),
+    moment = require('moment'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -17,7 +17,6 @@ const express = require("express"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
     reviewsController = require("./controllers/reviewsController"), // 리뷰
-    reviewReportController = require("./controllers/reviewReportController"), //리뷰 신고 (관리자용)
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
     layouts = require("express-ejs-layouts"),
@@ -48,6 +47,10 @@ db.sequelize.sync().then(() => {
     });
 }).catch(console.error);
 
+//문의
+const qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api");
+
+db.sequelize.sync(); // 모델동기화
 const Subscriber = db.subscriber;
 const Machine = db.machine;
 const Reservation = db.reservation;
@@ -119,9 +122,28 @@ app.post('/user/userReserve', reservationController.createReservation);
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 
+
+//문의 채팅
+app.post("/user/qnaChat/chatting", qnaChatController.send_message);
+app.get("/user/qnaChat/chatting", qnaChatController.recv_message);
+
+app.post("/manager/qnaChat/chatting", qnaChatController.send_message);
+app.get("/manager/qnaChat/chatting", qnaChatController.recv_message);
+
+app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
+app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
+
+app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
+
+app.get("/user/qnaChat", qnaChatController.renderChatPage);
+app.get("/manager/qnaChat", qnaChatController.renderChatPage);
+
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
+app.listen(app.get("port"), () => {
+    console.log(`Server running on port: ${app.get("port")}`);
+});
