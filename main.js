@@ -19,6 +19,7 @@ const express = require("express"),
     reviewsController = require("./controllers/reviewsController"), // 리뷰
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
+    reviewReportController = require("./controllers/reviewReportController"),
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),

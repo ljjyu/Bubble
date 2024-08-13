@@ -1,4 +1,4 @@
-const RabbitmqWrapper = require("./rabbitmq");
+const RabbitmqWrapper = require("./rabbitMQ");
 const db = require("../../models/index");
 const { Op } = require("sequelize");
 
