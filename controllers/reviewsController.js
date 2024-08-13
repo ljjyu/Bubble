@@ -16,7 +16,7 @@ exports.getAllReviews = async (req, res) => {
                     model: Branch,
                     as: 'branch'
                 },
-		{
+		        {
                     model: Report,
                     as: 'reports'
                 }
