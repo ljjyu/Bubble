@@ -41,3 +41,13 @@ exports.getReports = async (req, res) => {
     }
 };
 
+exports.deleteReport = async (req, res) => {
+    try {
+        const reportId = req.params.id;
+        await Report.destroy({ where: { id: reportId } });
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error deleting report:', error);
+        res.sendStatus(500);
+    }
+};

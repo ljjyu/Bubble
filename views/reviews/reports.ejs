@@ -1,5 +1,5 @@
 <head>
-    <title>리뷰 신고내역</title>
+    <title>리뷰 신고 내역</title>
     <style>
         .container {
             max-width: 1000px;
@@ -12,6 +12,7 @@
         .report {
             border-bottom: 1px solid #ddd;
             padding: 15px 0;
+	    position: relative;
         }
         .report:last-child {
             border-bottom: none;
@@ -23,27 +24,105 @@
             margin: 5px 0;
             color: #333;
         }
-        .category, .reason, .reportedAt {
+        .category, .reportedAt {
             color: #555;
         }
+	.reason {
+            color: #555;
+            display: inline-block;
+            margin-left: 35px; 
+        }
+	.review {
+	    background-color: #f2f2f2;
+	    padding: 10px;
+	    margin-top: 40px;
+	    margin-bottom: 20px;
+	    border-radius: 5px;
+    	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	.delete {
+            color: #aaa;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .delete:hover,
+        .delete:focus {
+            color: black;
+            text-decoration: none;
+        }
     </style>
+    <script>
+        async function deleteReport(reportId) {
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                try {
+                    const response = await fetch(`/reviews/deleteReport/${reportId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('리뷰 삭제 실패');
+                    }
+                } catch (error) {
+                    console.error('Error deleting report:', error);
+                    alert('An error occurred while deleting the report.');
+                }
+            }
+        }
+
+	function sortReportsBy(field, order) {
+            const container = document.getElementById('reportsContainer');
+            const reports = Array.from(container.getElementsByClassName('report'));
+            reports.sort((a, b) => {
+                const aValue = new Date(a.getAttribute(`data-${field}`));
+                const bValue = new Date(b.getAttribute(`data-${field}`));
+                return order === 'asc' ? aValue - bValue : bValue - aValue;
+            });
+            container.innerHTML = '';
+            reports.forEach(report => container.appendChild(report));
+        }
+
+        function handleSortChange() {
+            const sortBy = document.getElementById('sortBy').value;
+            const [field, order] = sortBy.split('-');
+            sortReportsBy(field, order);
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>리뷰 신고내역</h1>
-        <% if (reports.length > 0) { %>
-            <% reports.forEach(report => { %>
-                <div class="report">
-                    <p> 작성자: <%= report.review.name %> </h3>
-		    <p>리뷰 제목: <%= report.review.name %></p>	
-                    <p>리뷰 내용 <%= report.review.review %></p>
-                    <p class="category">Category: <%= report.category %></p>
-                    <p class="reason">Reason: <%= report.reason %></p>
-                    <p class="reportedAt">Reported At: <%= new Date(report.reported_at).toLocaleString() %></p>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <p>No reports available.</p>
-        <% } %>
+        <h1>리뷰 신고 내역</h1>
+	<div>
+            <select id="sortBy" onchange="handleSortChange()">
+                <option value="reportedat-desc">신고 최신순</option>
+                <option value="reportedat-asc">신고 과거순</option>
+                <option value="reviewcreatedat-desc">리뷰 작성 최신순</option>
+                <option value="reviewcreatedat-asc">리뷰 작성 과거순</option>
+            </select>
+        </div>
+	<div id="reportsContainer">
+            <% if (reports.length > 0) { %>
+                <% reports.forEach(report => { %>
+                    <div class="report" data-reportedat="<%= report.reported_at %>" data-reviewcreatedat="<%= report.review.createdAt %>">
+		        <span class="delete" onclick="deleteReport(<%= report.id %>)">×</span>
+		        <div class="review">		    
+                            <p><b><%= report.review.name %></b>     <%= report.review.subscriberName %></p>	
+                            <p><%= report.review.review %></p>
+		        </div>
+                        <p class="category"><b>사유</b> <%= report.category %>
+                        <% if (report.category === '기타') { %>
+		    	    - <%= report.reason %>
+		        <% } %> </p>
+                        <p class="reportedAt"><b> 신고 작성 시간</b> <%= new Date(report.reported_at).toLocaleString() %></p>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>신고 내역이 없습니다.</p>
+            <% } %>
+	</div>
     </div>
 </body>

@@ -38,10 +38,8 @@ const { consumeFromQueue } = require('./rabbitmqConsumer');
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
 
-    // Start consuming messages from RabbitMQ queue
     consumeFromQueue('reviewReports').catch(console.error);
 
-    // Start the server
     app.listen(app.get("port"), () => {
         console.log(`Server running on port: ${app.get("port")}`);
     });
@@ -110,6 +108,7 @@ app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
 app.get("/reviews/reports", reviewReportController.getReports);
 app.post('/reviews/reportReview', reviewsController.reportReview);
+app.delete('/reviews/deleteReport/:id', reviewReportController.deleteReport);
 app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
