@@ -125,6 +125,10 @@
                 document.getElementById('reason').value = '';
             }
         }
+        function filterMachines() {
+            const branchID = document.getElementById('branchSelect').value;
+            window.location.href = `/reviews/getReviews?branchID=${branchID}`;
+        }
     </script>
 </head>
 <body>
@@ -137,6 +141,14 @@
             <% if (user && user.role === 'admin') { %>
                 <a href="/reviews/reports" class="btn">신고 내역 열람</a>
             <% } %>
+        </div>
+        <div class="branch-selection">
+            <label for="branchSelect">지점</label>
+            <select id="branchSelect" name="branchSelect" onchange="filterMachines()">
+                <% branches.forEach(branch => { %>
+                    <option value="<%= branch.branchID %>" <%= selectedBranch == branch.branchID ? 'selected' : '' %>><%= branch.branchName %></option>
+                <% }); %>
+            </select>
         </div>
         <ul class="review-list">
             <% reviews.forEach(function(review) { %>
