@@ -20,6 +20,8 @@ const express = require("express"),
     userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
     reviewReportController = require("./controllers/reviewReportController"),
+    { consumeFromQueue } = require('./rabbitmqConsumer'),
+    qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -31,28 +33,16 @@ const express = require("express"),
     Sequelize = db.Sequelize,
     Op = Sequelize.Op;
 
-const { consumeFromQueue } = require('./rabbitmqConsumer');
 //consumeFromQueue('reviewReports').catch(console.error);
-
-//db.sequelize.sync(); // 모델동기화
 
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
 
     consumeFromQueue('reviewReports').catch(console.error);
-
-    app.listen(app.get("port"), () => {
-        console.log(`Server running on port: ${app.get("port")}`);
-    });
 }).catch(console.error);
 
-//문의
-const qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api");
 
 db.sequelize.sync(); // 모델동기화
-const Subscriber = db.subscriber;
-const Machine = db.machine;
-const Reservation = db.reservation;
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
