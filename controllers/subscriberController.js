@@ -70,18 +70,6 @@ exports.saveSubscriber = async (req, res) => {
             await Machine.bulkCreate(machines);
         }
 
-        // 임시 테이블에 사용자 정보 저장
-//        await TempSubscriber.create({
-//            name,
-//            email,
-//            password: hashedPassword,
-//            role,
-//            phoneNumber,
-//            cardNumber,
-//            branchName: role === 'admin' ? branchName : null,
-//            address: role === 'admin' ? address : null
-//        });
-
          await Subscriber.create({
              name: name,
              email: email,

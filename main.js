@@ -7,7 +7,6 @@ const express = require("express"),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
-    emailController = require("./controllers/emailController"), // 이메일 관련 컨트롤러
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
     userHomeController = require("./controllers/userHomeController"),
