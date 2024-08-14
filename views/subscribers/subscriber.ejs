@@ -25,40 +25,88 @@
         [type="radio"], span {
             vertical-align: middle;
         }
+        .email-auth-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .email-auth-group input[type="text"] {
+            flex-grow: 1;
+        }
+        .email-auth-group button {
+            margin-left: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #authCodeGroup {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
-</head>
-<body>
-    <div class="signup-form">
-        <h1>회원가입</h1>
-        <p>이름, 이메일, 비밀번호는 필수입니다.</p>
-        <form class="subscription-form" action="/subscribers/subscriber" method="post">
-            <div class="radio-group">
-                <input type="radio" id="roleUser" name="role" value="user" required>
-                <label for="roleUser">User</label>
-                <input type="radio" id="roleAdmin" name="role" value="admin" required>
-                <label for="roleAdmin">Admin</label>
-            </div>
-            <input type="text" name="name" placeholder="이름" required autocomplete="off">
-            <input type="text" name="email" placeholder="이메일" required autocomplete="off">
-            <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
-            <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
-            <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
-            <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
-            <input type="text" name="address" placeholder="지점주소" autocomplete="off">
-            <input type="submit" name="join" value="회원가입">
-        </form>
-    </div>
-</body>
+    <script>
+        function sendAuthCode() {
+            const email = document.getElementById('email').value;
+                if (!email) {
+                    alert("이메일을 입력하세요.");
+                    return;
+                }
+                // 이메일 인증 코드 전송 요청
+                fetch('/subscribers/send-auth-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                        // 인증 코드 입력 칸을 표시
+                        document.getElementById('authCodeGroup').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function validateForm(event) {
+                const authCodeInput = document.querySelector('input[name="authCode"]').value;
+                if (!authCodeInput) {
+                    event.preventDefault(); // 폼 제출을 막음
+                    alert("이메일 인증을 해야합니다.");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="signup-form">
+            <h1>회원가입</h1>
+            <p>이름, 이메일, 비밀번호는 필수입니다.</p>
+            <form class="subscription-form" action="/subscribers/subscriber" method="post" onsubmit="validateForm(event)">
+                <div class="radio-group">
+                    <input type="radio" id="roleUser" name="role" value="user" required>
+                    <label for="roleUser">User</label>
+                    <input type="radio" id="roleAdmin" name="role" value="admin" required>
+                    <label for="roleAdmin">Admin</label>
+                </div>
+                <input type="text" name="name" placeholder="이름" required autocomplete="off">
+                <div class="email-auth-group">
+                    <input type="text" name="email" id="email" placeholder="이메일" required autocomplete="off">
+                    <button type="button" onclick="sendAuthCode()">이메일 인증</button>
+                </div>
+
+                <div id="authCodeGroup">
+                    <input type="text" name="authCode" placeholder="인증 코드" autocomplete="off">
+                </div>
+                <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
+                <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
+                <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
+                <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
+                <input type="text" name="address" placeholder="지점주소" autocomplete="off">
+                <input type="submit" name="join" value="회원가입">
+            </form>
+        </div>
+    </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

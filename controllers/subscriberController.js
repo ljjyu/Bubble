@@ -1,7 +1,8 @@
 const db = require("../models/index"),
     bcrypt = require('bcrypt'),
+    nodemailer = require('nodemailer'),
+    crypto = require('crypto'),
     Subscriber = db.subscriber,
-    TempSubscriber = db.tempSubscriber,
     Branch = db.branch,
     Machine = db.machine,
     Op = db.Sequelize.Op,
@@ -21,12 +22,46 @@ exports.getAllSubscribers = async (req, res) => {
 exports.getSubscriptionPage = (req, res) => {
     res.render("subscribers/subscriber");
 };
+
+// 이메일 인증 코드 생성
+const generateAuthCode = () => {
+    return crypto.randomBytes(3).toString('hex');  // 6자리 인증 코드 생성
+};
+// 인증 코드를 담을 메모리 저장소
+let authCodes = {};
+// 이메일 인증 코드 전송
+exports.sendAuthCode = async (req, res) => {
+    const { email } = req.body;
+    const authCode = generateAuthCode();
+
+    authCodes[email] = authCode;
+
+    const mailOptions = {
+        from: EMAIL_USER,
+        to: email,
+        subject: '이메일 인증 코드',
+        text: `이메일 인증 코드: ${authCode}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return res.status(500).send({ message: '이메일 전송에 실패했습니다.' });
+        } else {
+            return res.status(200).send({ message: '인증 코드가 이메일로 전송되었습니다.' });
+        }
+    });
+};
 // 넘겨받은 POST 데이터 저장 및 처리
 exports.saveSubscriber = async (req, res) => {
     try {
-        const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
+        const { name, email, password, role, phoneNumber, cardNumber, branchName, address, authCode } = req.body;
         const existingSubscriber = await Subscriber.findOne({where: { email: email }});
-        let existingBranchName;
+        // 이메일 인증 코드 확인
+        if (!authCodes[email] || authCodes[email] !== authCode) {
+            return res.status(400).send({
+                message: "인증 코드가 올바르지 않습니다."
+            });
+        }
         if (existingSubscriber) {
             return res.status(400).send({
                 message: "이미 등록된 이메일 주소입니다."
@@ -80,6 +115,8 @@ exports.saveSubscriber = async (req, res) => {
              branchName: role === 'admin' ? branchName : null,
              address: role === 'admin' ? address : null
          });
+         // 이메일 인증 코드 제거
+         delete authCodes[email];
 
          res.redirect("/");
     } catch (err) {
