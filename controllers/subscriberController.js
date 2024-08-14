@@ -84,7 +84,6 @@ exports.saveSubscriber = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
         // 새로운 지점 생성
         let newBranch;
-        let existingBranch;
         // 새로운 지점 생성
         if (role === 'admin') {
             if (!branchName || !address) {
@@ -92,6 +91,7 @@ exports.saveSubscriber = async (req, res) => {
                     message: "지점명과 지점주소를 입력해 주세요."
                 });
             }
+            const existingBranch = await Branch.findOne({ where: { branchName: branchName } });
             if (existingBranch) {
                 return res.status(400).send({
                     message: "이미 등록된 지점명입니다."
