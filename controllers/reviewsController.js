@@ -2,9 +2,13 @@ const db = require("../models/index"),
     Review = db.Review,
     favorites = db.favorites,
     Branch = db.branch,
+    Report = db.Report,
     Op = db.Sequelize.Op;
 
+const { sendToQueue } = require('../rabbitmqProducer');
+
 exports.getAllReviews = async (req, res) => {
+    const branchID = req.query.branchID || 0;
     try {
         const user = req.session.user;
         const reviews = await Review.findAll({
@@ -12,13 +16,27 @@ exports.getAllReviews = async (req, res) => {
                 {
                     model: Branch,
                     as: 'branch'
+                },
+		        {
+                    model: Report,
+                    as: 'reports'
                 }
             ],
             order: [['created_at', 'DESC']]
         });
+        const branches = await Branch.findAll();
+        let branchReview;
+        if (branchID > 0) {
+            branchReview = await Review.findAll({ where: { branchID: branchID } });
+        } else {
+            branchReview = await Review.findAll();
+        }
         res.render("reviews/getReviews", {
             reviews,
-            user
+            user,
+            branchReview: branchReview,
+            branches: branches,
+            selectedBranch: branchID
         });
     } catch (err) {
         res.status(500).send({message: err.message});
@@ -28,7 +46,7 @@ exports.getAllReviews = async (req, res) => {
 exports.getReviewsPage = async (req, res) => {
     try {
         const branches = await Branch.findAll();
-        const user = req.session.user; // 세션에서 사용자 정보 가져오기
+        const user = req.session.user;
         res.render("reviews/writeReviews", {
             branches,
             user // 사용자 정보를 템플릿으로 전달
@@ -71,7 +89,7 @@ exports.deleteReview = async (req, res) => {
         const branch = await Branch.findOne({ where: { branchName: user.branchName } });
         const review = await Review.findOne({ where: { id: reviewId, branchID: branch.branchID } });
         if (!review) {
-            req.flash('error', 'Review not found or you do not have permission to delete this review.');
+            req.flash('error', 'You do not have permission to delete this review.');
             return res.redirect('/reviews/getReviews');
         }
         await Review.destroy({where: { id: reviewId }});
@@ -88,6 +106,7 @@ exports.addFavorites = async (req, res) => {
     // 로그인된 사용자의 정보를 가져옵니다.
     const user = req.session.user;
     const userName = user ? user.name : 'Unknown User';
+    const reviewID = req.body.reviewId;
     try {
         // favorites 테이블에서 해당 사용자와 리뷰 ID로 존재하는지 확인
         const favorite = await favorites.findOne({ where: { userName: userName, reviewID: reviewID } });
@@ -105,4 +124,49 @@ exports.addFavorites = async (req, res) => {
         req.flash('error', 'An error occurred while saving the review favorites.');
         res.redirect('/reviews/getReviews');
     }
+};
+
+//신고
+exports.reportReview = async (req, res) => {
+    try {
+        const { reviewID, category, reason } = req.body;
+        const user = req.session.user;
+
+        console.log('Received data:', { reviewID, category, reason });
+
+        if (!reviewID || !category || (category === '기타' && !reason)) {
+            req.flash('error', 'All fields are required.');
+            return res.redirect('/reviews/getReviews');
+        }
+
+        const review = await Review.findOne({ where: { id: reviewID } });
+
+        if (!review) {
+            req.flash('error', 'Review not found.');
+            return res.redirect('/reviews/getReviews');
+        }
+
+        const reportReason = category === '기타' ? reason : category;
+
+        const newReport = await Report.create({
+            reviewID,
+            category,
+            reason: reportReason,
+            reporterName: user.name,
+            reportedBy: user.email,
+            branchID: review.branchID,
+            reported_at: new Date()
+        });
+
+        console.log('New Report:', newReport);
+
+        req.flash('success', 'Review reported successfully.');
+        res.redirect('/reviews/getReviews');
+    } catch (err) {
+        console.error('Error reporting review:', err);
+        req.flash('error', 'An error occurred while reporting the review.');
+        res.redirect('/reviews/getReviews');
+    }
+};
+
 };

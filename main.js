@@ -4,9 +4,11 @@ const express = require("express"),
     app = express(),
     path = require('path'),
     moment = require('moment-timezone'),
+    moment = require('moment'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
+    emailController = require("./controllers/emailController"), // 이메일 관련 컨트롤러
     machineController = require("./controllers/machineController"),
     reservationController = require("./controllers/reservationController"),
     userHomeController = require("./controllers/userHomeController"),
@@ -17,12 +19,16 @@ const express = require("express"),
     showNoticeController = require("./controllers/showNoticeController"),
     usersController = require("./controllers/usersController"), // 로그인 인증 및 로그아웃
     reviewsController = require("./controllers/reviewsController"), // 리뷰
-    userUsingController = require("./controllers/userUsingController"), //잔여 시간 관련
+    userUsingController = require("./controllers/userUsingController"), // 잔여 시간 관련
     branchController = require("./controllers/branchController"), // 빨래방 지점
-    newsController = require("./controllers/newsController"), //news
+    newsController = require("./controllers/newsController"), // news
     myPageController = require("./controllers/myPageController"), // myPage
-    passwordController = require("./controllers/passwordController"), //password
-    passwordRoutes = require('./routes/passwordRoutes'), //password
+    passwordController = require("./controllers/passwordController"), // password
+    passwordRoutes = require('./routes/passwordRoutes'), // password
+    emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
+    reviewReportController = require("./controllers/reviewReportController"),
+    { consumeFromQueue } = require('./rabbitmqConsumer'),
+    qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -32,35 +38,38 @@ const express = require("express"),
     bcrypt = require('bcrypt'),
     db = require("./models/index"),
     Sequelize = db.Sequelize,
-    axios = require('axios'), //news
-    cheerio = require('cheerio'), //news
+    axios = require('axios'), // news
+    cheerio = require('cheerio'), // news
     Op = Sequelize.Op;
 
-//문의
-// const qnaController = require("./controllers/rabbitMQ/qnaController");
-const qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api");
+//consumeFromQueue('reviewReports').catch(console.error);
+
+db.sequelize.sync().then(() => {
+    console.log('Database synchronized');
+
+    consumeFromQueue('reviewReports').catch(console.error);
+}).catch(console.error);
+
 
 db.sequelize.sync(); // 모델동기화
-const Subscriber = db.subscriber;
-const Machine = db.machine;
-const Reservation = db.reservation;
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
+
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
 app.use(layouts);
 // 데이터 파싱
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 600000 }  // 세션 유지 시간 설정 (밀리초 단위)
- }));
+    cookie: { maxAge: 600000 } // 세션 유지 시간 설정 (밀리초 단위)
+}));
 app.use(flash());
 app.locals.moment = moment;
 
@@ -74,13 +83,19 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json()); //password
-app.use(bodyParser.urlencoded({ extended: false })); //password
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/email', emailRoutes); // 이메일인증 라우트
 
 // 라우트 등록
 app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
+
+app.post('/send-verification-code', emailController.sendVerificationCode); // 이메일 인증 코드 전송
+app.post('/verify-code', emailController.verifyCode); // 이메일 인증 코드 검증
+app.get('/verification', (req, res) => res.render('verification')); // 이메일 인증 페이지
+
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
 
@@ -89,7 +104,7 @@ app.post("/reservations", reservationController.createReservation);
 app.get("/user/userHome", userHomeController.getUserReservations);
 app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage);
-app.get("/user/userMachine",userMachineController.getUserMachines);
+app.get("/user/userMachine", userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
 app.post("/report-issue",machineController.reportIssue);
@@ -103,14 +118,18 @@ app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.post("/reviews/getReviews/favorites", reviewsController.addFavorites);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
+app.get("/reviews/reports", reviewReportController.getReports);
+app.post('/reviews/reportReview', reviewsController.reportReview);
+app.delete('/reviews/deleteReport/:id', reviewReportController.deleteReport);
 app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
 app.post('/showNotice/deleteNotice/:noticeNumber', showNoticeController.deleteNotice);
 app.use("/getWeather", weatherController);
-app.use("/getNews", newsController); //news
-app.use('/password', passwordRoutes); //password
+app.use("/getNews", newsController); // 뉴스 라우트
+app.use('/password', passwordRoutes); // 비밀번호 라우트
 app.get("/myPage", myPageController.getAllMyPage);
+app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
 app.get('/user/getBranches', branchController.getBranches);
 app.post('/user/userReserve', reservationController.createReservation);
@@ -118,16 +137,6 @@ app.post('/user/userReserve', reservationController.createReservation);
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
 
-//문의
-//app.get('/user/saveQuestion', qnaController.getUserInquiries);
-//app.get('/manager/createAnswer', qnaController.getAdminInquiries);
-//app.post("/user/saveQuestion", qnaController.saveQuestion);
-//app.get("/manager/qnaReply", qnaController.qnaReply);
-//app.post("/manager/qnaReply", qnaController.submitReply);
-
-//const consumer = require('./controllers/rabbitMQ/consumer');
-// 컨슈머 코드 실행
-//consumer.startConsumer();
 
 //문의 채팅
 app.post("/user/qnaChat/chatting", qnaChatController.send_message);

@@ -1,54 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <title>회원가입 페이지</title>
     <style>
-	.signup-form{
-	    max-width: 1000px;
-	    padding: 20px;
+        .signup-form {
+            max-width: 1000px;
+            padding: 20px;
             margin: auto;
-	}
-	.subscription-form{
-	    padding: 20px;
-	    max-width: 1000px;
-	}
-
+        }
+        .subscription-form {
+            padding: 20px;
+            max-width: 1000px;
+        }
         .radio-group {
             display: flex;
             justify-content: start;
-	    margin-bottom: 1rem;
+            margin-bottom: 1rem;
         }
-        .signup-form{
-            padding: 20px;
-        } 
-        .radio-group label{
+        .radio-group label {
             font-family: sans-serif;
-	    vertical-align: middle;
-	    margin-right: 0.5rem;
+            vertical-align: middle;
+            margin-right: 0.5rem;
         }
-	[type="radio"],
-        span {
+        [type="radio"], span {
             vertical-align: middle;
         }
-	</style>
+    </style>
+    <script>
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // 회원가입 요청
+            const response = await fetch('/subscribers/save-subscriber', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.text();
+
+            if (response.status === 200) {
+                alert(result);
+                window.location.href = '/'; // 회원가입 완료 후 리다이렉트
+            } else {
+                alert(`회원가입 오류: ${result}`);
+            }
+        }
+
+        async function handleVerify(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // 인증 코드 확인 요청
+            const response = await fetch('/email/verify-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.text();
+
+            if (response.status === 200) {
+                alert('인증이 성공적으로 완료되었습니다.');
+                document.getElementById('verification-section').style.display = 'none'; // 인증 완료 후 인증 섹션 숨기기
+            } else {
+                alert(`인증 오류: ${result}`);
+            }
+        }
+
+        async function sendVerificationCode(event) {
+            event.preventDefault();
+            const email = document.querySelector('input[name="email"]').value;
+
+            const response = await fetch('/email/send-verification-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await response.text();
+
+            if (response.status === 200) {
+                alert('인증 코드가 이메일로 전송되었습니다.');
+                document.getElementById('verification-section').style.display = 'block';
+            } else {
+                alert(`인증 코드 전송 오류: ${result}`);
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="signup-form">
         <h1>회원가입</h1>
-	<h>이름, 이메일, 비밀번호는 필수입니다.</h>
-        <form class="subscription-form" action="/subscribers/subscriber" method="post">
+        <p>이름, 이메일, 비밀번호는 필수입니다.</p>
+        <form class="subscription-form" onsubmit="handleSubmit(event)">
             <div class="radio-group">
-            <input type="radio" id="roleUser" name="role" value="user" required>
-            <label for="roleUser">User</label>
-            <input type="radio" id="roleAdmin" name="role" value="admin" required>
-            <label for="roleAdmin">Admin</label>
+                <input type="radio" id="roleUser" name="role" value="user" required>
+                <label for="roleUser">User</label>
+                <input type="radio" id="roleAdmin" name="role" value="admin" required>
+                <label for="roleAdmin">Admin</label>
             </div>
             <input type="text" name="name" placeholder="이름" required autocomplete="off">
             <input type="text" name="email" placeholder="이메일" required autocomplete="off">
             <input type="password" name="password" placeholder="비밀번호" required autocomplete="off">
-	        <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
+            <input type="text" name="phoneNumber" placeholder="전화번호" autocomplete="off">
             <input type="text" name="cardNumber" placeholder="카드번호 (0000-0000-0000-0000)" autocomplete="off">
             <input type="text" name="branchName" placeholder="지점명" autocomplete="off">
             <input type="text" name="address" placeholder="지점주소" autocomplete="off">
-            <input type="submit" name="join">
+            <input type="submit" name="join" value="회원가입">
         </form>
+
+        <!-- 인증 코드 요청 버튼 -->
+        <button onclick="sendVerificationCode(event)">인증 코드 요청</button>
+
+        <div id="verification-section" style="display: none;">
+            <h2>이메일 인증</h2>
+            <form id="verification-form" onsubmit="handleVerify(event)">
+                
+                <input type="text" name="verificationCode" placeholder="인증 코드" required autocomplete="off">
+                <input type="submit" value="인증하기">
+            </form>
+        </div>
     </div>
 </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

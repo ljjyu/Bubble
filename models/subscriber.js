@@ -1,3 +1,5 @@
+const { DataTypes } = require("sequelize");
+
 module.exports = (sequelize, Sequelize) => {
     const subscriber = sequelize.define("subscriber", { // 엔티티 생성
         name: {
@@ -35,6 +37,14 @@ module.exports = (sequelize, Sequelize) => {
         },
         resetPasswordExpires: {
             type: Sequelize.DATE
+        },
+        verificationCode: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        isVerified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false //기본값 : 인증되지않음
         }
     },
     {

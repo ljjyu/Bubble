@@ -22,7 +22,7 @@ exports.createNotice = async (req, res) => {
             subscriberName: branchName,
         });
 
-	res.redirect('/manager/getNotice');
+	res.redirect('/showNotice');
     } catch (error) {
         res.status(500).json({ message: '공지사항을 저장하는 중 오류가 발생했습니다.', error: error.message });
     }

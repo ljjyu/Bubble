@@ -1,18 +1,19 @@
 const db = require("../models/index"),
+    bcrypt = require('bcrypt'),
     Subscriber = db.subscriber,
+    TempSubscriber = db.tempSubscriber,
     Branch = db.branch,
     Machine = db.machine,
     Op = db.Sequelize.Op,
-    bcrypt = require('bcrypt'),
     saltRounds = 10;
 
 exports.getAllSubscribers = async (req, res) => {
     try {
-        data = await Subscriber.findAll();
+        const data = await Subscriber.findAll();
         res.render("subscribers/getSubscriber", {subscribers: data});
     } catch (err) {
         res.status(500).send({
-        message: err.message
+            message: err.message
         });
     }
 };
@@ -68,6 +69,18 @@ exports.saveSubscriber = async (req, res) => {
             }
             await Machine.bulkCreate(machines);
         }
+
+        // 임시 테이블에 사용자 정보 저장
+//        await TempSubscriber.create({
+//            name,
+//            email,
+//            password: hashedPassword,
+//            role,
+//            phoneNumber,
+//            cardNumber,
+//            branchName: role === 'admin' ? branchName : null,
+//            address: role === 'admin' ? address : null
+//        });
 
          await Subscriber.create({
              name: name,
