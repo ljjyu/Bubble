@@ -205,90 +205,86 @@
                 });
             }
 
-        if (wishlistButton) {
-            wishlistButton.addEventListener('click', function() {
-                window.location.href = '/myPage/getMyFavorites';
+            if (wishlistButton) {
+                wishlistButton.addEventListener('click', function() {
+                    window.location.href = '/myPage/getMyFavorites';
+                });
+            }
+
+            if (insertQnaButton) {
+                insertQnaButton.addEventListener('click', function() {
+                    window.location.href = '/user/qnaChat';
+                });
+            }
+
+            if (viewQnaButton) {
+                viewQnaButton.addEventListener('click', function() {
+                    window.location.href = '/manager/qnaChat';
+                });
+            }
+
+            if (articleButton) {
+                articleButton.addEventListener('click', function() {
+                    window.location.href = '/getNews';
+                });
+            }
+
+            if (changePasswordButton) {
+                changePasswordButton.addEventListener('click', function() {
+                    modal.style.display = "block";
+                });
+            }
+
+            if (closeModalButton) {
+                closeModalButton.addEventListener('click', function() {
+                    modal.style.display = "none";
+                });
+            }
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
             });
-        }
 
-        if (insertQnaButton) {
-            insertQnaButton.addEventListener('click', function() {
-                window.location.href = '/user/qnaChat';
-            });
-        }
+            if (changePasswordForm) {
+            // Handle password change form submission
+                changePasswordForm.addEventListener("submit", function(event) {
+                    event.preventDefault();
 
-        if (viewQnaButton) {
-            viewQnaButton.addEventListener('click', function() {
-                window.location.href = '/manager/qnaChat';
-            });
-        }
+                    const currentPw = document.getElementById("current-pw").value;
+                    const newPw = document.getElementById("new-pw").value;
+                    const confirmPw = document.getElementById("confirm-pw").value;
 
-        if (articleButton) {
-            articleButton.addEventListener('click', function() {
-                window.location.href = '/getNews';
-            });
-        }
+                    if (newPw !== confirmPw) {
+                        alert("새 비밀번호가 일치하지 않습니다.");
+                        return;
+                    }
 
-        // Password change modal functionality
-        var modal = document.getElementById("passwordModal");
-        var btn = document.getElementById("change-pw");
-        var span = document.getElementsByClassName("close")[0];
-
-        if (changePasswordButton) {
-            changePasswordButton.addEventListener('click', function() {
-                modal.style.display = "block";
-            });
-        }
-
-        if (closeModalButton) {
-            closeModalButton.addEventListener('click', function() {
-                modal.style.display = "none";
-            });
-        }
-
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
+                    fetch("/changePassword", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ currentPw, newPw })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("비밀번호가 변경되었습니다.");
+                            modal.style.display = "none";
+                            window.location.href = "/myPage";
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("비밀번호 변경 중 오류가 발생했습니다.");
+                    });
+                });
             }
         });
-
-        if (changePasswordForm) {
-        // Handle password change form submission
-            changePasswordForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-
-                const currentPw = document.getElementById("current-pw").value;
-                const newPw = document.getElementById("new-pw").value;
-                const confirmPw = document.getElementById("confirm-pw").value;
-
-                if (newPw !== confirmPw) {
-                    alert("새 비밀번호가 일치하지 않습니다.");
-                    return;
-                }
-
-                fetch("/changePassword", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ currentPw, newPw })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("비밀번호가 변경되었습니다.");
-                        modal.style.display = "none";
-                        window.location.href = "/myPage";
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert("비밀번호 변경 중 오류가 발생했습니다.");
-                });
-            });
-        }
     </script>
 </body>
 </html>
