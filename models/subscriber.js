@@ -37,14 +37,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         resetPasswordExpires: {
             type: Sequelize.DATE
-        },
-        verificationCode: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        isVerified: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false //기본값 : 인증되지않음
         }
     },
     {

@@ -22,7 +22,15 @@ exports.getAllSubscribers = async (req, res) => {
 exports.getSubscriptionPage = (req, res) => {
     res.render("subscribers/subscriber");
 };
-
+const EMAIL_USER = 'coin.bubblebubble@gmail.com';
+const EMAIL_PASS = 'oepq lqjc chdh hymn';
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS
+    }
+});
 // 이메일 인증 코드 생성
 const generateAuthCode = () => {
     return crypto.randomBytes(3).toString('hex');  // 6자리 인증 코드 생성
