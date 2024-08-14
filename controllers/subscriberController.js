@@ -91,12 +91,7 @@ exports.saveSubscriber = async (req, res) => {
                     message: "지점명과 지점주소를 입력해 주세요."
                 });
             }
-            const existingBranch = await Branch.findOne({ where: { branchName: branchName } });
-            if (existingBranch) {
-                return res.status(400).send({
-                    message: "이미 등록된 지점명입니다."
-                });
-            }
+
             const [existingBranch, createdBranch] = await Promise.all([
                 branchName ? Subscriber.findOne({ where: { branchName: branchName } }) : null,
                 Branch.create({
@@ -105,6 +100,11 @@ exports.saveSubscriber = async (req, res) => {
                     manager: email
                 })
             ]);
+            if (existingBranch) {
+                return res.status(400).send({
+                    message: "이미 등록된 지점명입니다."
+                });
+            }
 
             newBranch = createdBranch;
             // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
