@@ -25,7 +25,7 @@ const express = require("express"),
     passwordController = require("./controllers/passwordController"), // password
     passwordRoutes = require('./routes/passwordRoutes'), // password
     emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
-    reviewReportController = require("./controllers/reviewReportController"),
+    reviewReportController = require("./controllers/reviewReportController"), // 리뷰 신고 (관리자용)
     { consumeFromQueue } = require('./rabbitmqConsumer'),
     qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
@@ -40,8 +40,6 @@ const express = require("express"),
     axios = require('axios'), // news
     cheerio = require('cheerio'), // news
     Op = Sequelize.Op;
-
-//consumeFromQueue('reviewReports').catch(console.error);
 
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
