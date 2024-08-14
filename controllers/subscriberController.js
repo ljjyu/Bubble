@@ -5,8 +5,7 @@ const Subscriber = db.subscriber;
 const TempSubscriber = db.tempSubscriber;
 const Branch = db.branch;
 const Machine = db.machine;
-const TempSubscriber = require('./models/TempSubscriber'); // TempSubscriber 모델
-const Subscriber = require('./models/Subscriber'); // Subscriber 모델
+
 
 exports.getAllSubscribers = async (req, res) => {
     try {
