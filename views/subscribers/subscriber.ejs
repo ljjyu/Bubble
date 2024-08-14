@@ -26,29 +26,6 @@
             vertical-align: middle;
         }
     </style>
-    <script>
-        async function handleSubmit(event) {
-            const data = "회원가입이 되었습니다";
-
-            // 회원가입 요청
-            const response = await fetch('/subscribers/subscriber', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.text();
-
-            if (response.status === 200) {
-                alert(result);
-                window.location.href = '/'; // 회원가입 완료 후 리다이렉트
-            } else {
-                alert(`회원가입 오류: ${result}`);
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="signup-form">
