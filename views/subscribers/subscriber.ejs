@@ -31,7 +31,7 @@
     <div class="signup-form">
         <h1>회원가입</h1>
         <p>이름, 이메일, 비밀번호는 필수입니다.</p>
-        <form class="subscription-form" onsubmit="handleSubmit(event)">
+        <form class="subscription-form" action="/subscribers/subscriber" method="post">
             <div class="radio-group">
                 <input type="radio" id="roleUser" name="role" value="user" required>
                 <label for="roleUser">User</label>
