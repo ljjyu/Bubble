@@ -3,7 +3,7 @@
 const express = require("express"),
     app = express(),
     path = require('path'),
-    moment = require('moment'),
+    moment = require('moment-timezone'),
     homeController = require("./controllers/homeController"), // 메인 로그인
     errorController = require("./controllers/errorController"), // 에러 관련
     subscriberController = require("./controllers/subscriberController"), // 회원가입 및 회원 정보
@@ -88,6 +88,8 @@ app.get("/user/userUsing", userUsingController.getUserUsingPage);
 app.get("/user/userMachine",userMachineController.getUserMachines);
 
 app.get("/manager/getMachine",machineController.getAllMachines);
+app.post("/report-issue",machineController.reportIssue);
+app.post("/report-completed", machineController.reportCompleted);
 app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
@@ -97,8 +99,10 @@ app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.post("/reviews/getReviews/favorites", reviewsController.addFavorites);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
+app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
+app.post('/showNotice/deleteNotice/:noticeNumber', showNoticeController.deleteNotice);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); //news
 app.use('/password', passwordRoutes); //password

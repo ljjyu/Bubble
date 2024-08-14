@@ -49,12 +49,12 @@
 <body>
     <div class="main-content">
         <h1>공지사항 작성</h1>
-	<form id="announcement-form" action="/manager/getNotice" method="POST">
+	    <form id="announcement-form" action="/manager/getNotice" method="POST">
 	    <label for="subject">제목</label>
 	    <input type="text" id="subject" size="60" placeholder="제목을 입력하세요" name="subject"><br><br>
 	    <label for="contents">내용</label>
 	    <textarea id="contents" rows="25" cols="80" placeholder="내용을 입력하세요" name="contents"></textarea> <br><br>
-            <button type="submit" onclick="showAlert()">작성</button>
+        <button type="submit" onclick="showAlert()">작성</button>
 	</form>
     </div>
     <script>

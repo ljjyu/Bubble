@@ -4,22 +4,54 @@ const db = require("../models/index"),
     Op = db.Sequelize.Op;
 
 exports.getAllMachines = async (req, res) => {
-    const branchID = req.query.branchID || 0;
+    const subscriberBranchName = req.session.user.branchName;
     try {
-        const branches = await Branch.findAll();
-        let machines;
-        if (branchID > 0) {
-            machines = await Machine.findAll({ where: { branchID: branchID } });
-        } else {
-            machines = await Machine.findAll();
+        const branch = await Branch.findOne({ where: { branchName: subscriberBranchName } });
+        // branch가 존재하는지 확인합니다.
+        if (!branch) {
+            res.status(404).send({
+                 message: '해당 branch를 찾을 수 없습니다.'
+            });
         }
-        console.log(machines);
+        const machines = await Machine.findAll({ where: { branchID: branch.branchID } });
         res.render("manager/getMachine", {
             user: req.session.user,
             machines: machines,
-            branches: branches,
-            selectedBranch: branchID
+            selectedBranch: branch.branchID
         });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+// 기계 상태를 needs_repair로 업데이트하는 엔드포인트 추가
+exports.reportIssue = async (req, res) => {
+    const { machine_id } = req.body;
+    try {
+        await Machine.update(
+            { state: 'needs_repair' }, // 업데이트할 데이터
+            {
+                where: { machineID: machine_id } // 조건
+            }
+        );
+        res.send({ message: 'Machine status updated to needs_repair' });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+exports.reportCompleted = async (req, res) => {
+    const { machine_id } = req.body;
+    try {
+        await Machine.update(
+            { state: 'available' }, // 업데이트할 데이터
+            {
+                where: { machineID: machine_id } // 조건
+            }
+        );
+        res.send({ message: 'Machine status updated to available' });
     } catch (err) {
         res.status(500).send({
             message: err.message

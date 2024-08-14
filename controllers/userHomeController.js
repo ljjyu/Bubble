@@ -6,18 +6,29 @@ const db = require("../models/index"),
 
 exports.getUserReservations = async (req, res) => {
     try {
+         // 로그인된 사용자의 정보를 가져옵니다.
+         const user = req.session.user;
+         const subscriberName = user ? user.name : 'Unknown User';
+
         // createdAt을 기준으로 내림차순 정렬
         const data = await Reservation.findAll({
+            where: {
+                subscriberName: subscriberName
+            },
             order: [['created_at', 'DESC']],
-            include: {
+            include: [{
                 model: db.machine,
-                as: 'machine' // Machine 모델을 include
-            }
+                as: 'machine',
+                include: {
+                    model: db.branch,
+                    as: 'branch3'
+                }
+            }]
         });
         res.render("user/userHome", {reservations: data});
     } catch (err) {
         res.status(500).send({
-        message: err.message
+            message: err.message
         });
     }
 };
