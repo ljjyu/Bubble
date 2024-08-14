@@ -6,7 +6,7 @@ const TempSubscriber = db.tempSubscriber;
 const Branch = db.branch;
 const Machine = db.machine;
 
-async function saveSubscriber(req, res) {
+exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
 
@@ -56,11 +56,8 @@ async function saveSubscriber(req, res) {
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
-}
-
-module.exports = {
-    saveSubscriber
 };
+
 
 
 
