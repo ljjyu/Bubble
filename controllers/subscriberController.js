@@ -1,14 +1,17 @@
-const TempSubscriber = require('./models/TempSubscriber'); // TempSubscriber 모델
-const Subscriber = require('./models/Subscriber'); // Subscriber 모델
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const db = require('../models/index');
+const Subscriber = db.subscriber;
+const TempSubscriber = db.tempSubscriber;
+const Branch = db.branch;
+const Machine = db.machine;
 
-exports.saveSubscriber = async (req, res) => {
+export async function saveSubscriber(req, res) {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
 
         // TempSubscriber에서 사용자 정보 조회
-        const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
+        const tempSubscriber = await findOne({ where: { email } });
 
         if (!tempSubscriber) {
             return res.status(400).send({ message: "유효하지 않은 이메일 주소입니다." });
@@ -18,7 +21,7 @@ exports.saveSubscriber = async (req, res) => {
             return res.status(400).send({ message: "이메일 인증을 완료해야 합니다." });
         }
 
-        const existingSubscriber = await Subscriber.findOne({ where: { email } });
+        const existingSubscriber = await _findOne({ where: { email } });
 
         if (existingSubscriber) {
             return res.status(400).send({ message: "이미 등록된 이메일 주소입니다." });
@@ -32,10 +35,10 @@ exports.saveSubscriber = async (req, res) => {
             return res.status(400).send({ message: "관리자 역할을 선택하셨습니다. 지점명과 주소를 입력해 주세요." });
         }
 
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const hashedPassword = await hash(password, saltRounds);
 
         // TempSubscriber에서 사용자 정보 가져와 Subscriber로 저장
-        await Subscriber.create({
+        await create({
             name,
             email,
             password: hashedPassword,
@@ -47,13 +50,13 @@ exports.saveSubscriber = async (req, res) => {
         });
 
         // TempSubscriber에서 해당 사용자 정보 삭제
-        await TempSubscriber.destroy({ where: { email } });
+        await destroy({ where: { email } });
 
         res.status(200).send('회원가입이 완료되었습니다.');
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
-};
+}
 
 
 
