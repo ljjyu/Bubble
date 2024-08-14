@@ -1,26 +1,7 @@
+const TempSubscriber = require('./models/TempSubscriber'); // TempSubscriber 모델
+const Subscriber = require('./models/Subscriber'); // Subscriber 모델
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const db = require('../models/index');
-const Subscriber = db.subscriber;
-const TempSubscriber = db.tempSubscriber;
-const Branch = db.branch;
-const Machine = db.machine;
-
-
-exports.getAllSubscribers = async (req, res) => {
-    try {
-        const data = await Subscriber.findAll();
-        res.render("subscribers/getSubscriber", { subscribers: data });
-    } catch (err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
-};
-
-exports.getSubscriptionPage = (req, res) => {
-    res.render("subscribers/subscriber");
-};
 
 exports.saveSubscriber = async (req, res) => {
     try {
