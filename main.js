@@ -67,7 +67,6 @@ app.use(session({
 }));
 app.use(flash());
 app.locals.moment = moment;
-
 app.use((req, res, next) => {
     if (req.session.user) {
         res.locals.user = req.session.user;
