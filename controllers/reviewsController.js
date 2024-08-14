@@ -152,8 +152,7 @@ exports.reportReview = async (req, res) => {
             reviewID,
             category,
             reason: reportReason,
-            reporterName: user.name,
-            reportedBy: user.email,
+            reportedBy: user.name,
             branchID: review.branchID,
             reported_at: new Date()
         });

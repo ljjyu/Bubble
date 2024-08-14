@@ -22,11 +22,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
         reportedBy: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false,
             references: {
-                model: 'User',
-                key: 'id'
+                model: 'subscriber',
+                key: 'name'
             }
         },
         branchID: {
@@ -36,9 +36,6 @@ module.exports = (sequelize, Sequelize) => {
                 model: 'Branch',
                 key: 'id'
             }
-        },
-        reporterName: {
-            type: Sequelize.STRING
         },
         reported_at: {
             type: Sequelize.DATE,
