@@ -8,7 +8,7 @@ const Machine = db.machine; // Machine 모델 추가
 
 // 이메일 주소와 비밀번호를 코드에 직접 설정합니다.
 const EMAIL_USER = 'coin.bubblebubble@gmail.com';
-const EMAIL_PASS = 'your-email-password'; // 실제 비밀번호를 입력하세요.
+const EMAIL_PASS = 'your-app-password'; // 생성한 앱 비밀번호를 입력하세요.
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -98,6 +98,7 @@ exports.verifyCode = async (req, res) => {
         res.status(500).send({ message: '서버 오류가 발생했습니다.' });
     }
 };
+
 
 
 
