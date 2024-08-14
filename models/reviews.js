@@ -29,6 +29,14 @@ module.exports = (sequelize, Sequelize) => {
                 model: 'subscriber',
                 key: 'name'
             }
+        },
+        branchID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+             references: {
+                model: 'branch',
+                key: 'branchID'
+             }
         }
     },
     {

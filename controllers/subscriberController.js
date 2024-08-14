@@ -55,7 +55,7 @@ exports.saveSubscriber = async (req, res) => {
 
         res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
     } catch (err) {
-        res.status(500).send({
+        return res.status(500).send({
             message: err.message
         });
     }

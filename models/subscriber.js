@@ -27,8 +27,7 @@ module.exports = (sequelize, Sequelize) => {
              type: Sequelize.STRING
         },
         branchName: {
-            type: Sequelize.STRING,
-            unique: true
+            type: Sequelize.STRING
         },
         address: {
             type: Sequelize.STRING

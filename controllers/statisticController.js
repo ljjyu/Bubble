@@ -11,7 +11,6 @@ exports.getAllStatistics = async (req, res) => {
             Reservation.findAll(),
             Subscriber.findAll()
             ]);
-            console.log({ machines, reservations, subscribers });
             res.render("manager/getStatistic", { machines, reservations, subscribers });
     } catch (err) {
             res.status(500).send({

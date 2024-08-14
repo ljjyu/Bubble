@@ -48,7 +48,7 @@
                 <label for="branchSelect">지점</label>
                 <select id="branchSelect" name="branchSelect" onchange="filterMachines()">
                     <% branches.forEach(branch => { %>
-                        <option value="<%= branch.branchID %>"><%= branch.branchName %></option>
+                        <option value="<%= branch.branchID %>" <%= selectedBranch == branch.branchID ? 'selected' : '' %>><%= branch.branchName %></option>
                      <% }); %>
                 </select>
             </div>

@@ -28,8 +28,16 @@
     <div class="container">
         <h1>리뷰 작성</h1>
         <form action="/reviews/writeReviews" method="POST">
+            <div class="branch-selection">
+                <label for="branchSelect">지점</label>
+                <select id="branchSelect" name="branchSelect">
+                    <% branches.forEach(branch => { %>
+                        <option value="<%= branch.branchID %>"><%= branch.branchName %></option>
+                    <% }); %>
+                </select>
+            </div>
             <div class="form-group">
-                <label for="name">이름</label>
+                <label for="name">제목</label>
                 <input type="text" id="username" name="name" class="form-control" required autocomplete="off">
             </div>
             <div class="form-group">

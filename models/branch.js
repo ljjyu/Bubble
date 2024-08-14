@@ -6,12 +6,10 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         branchName: {
-            type: Sequelize.STRING,
-            allowNull: false
+            type: Sequelize.STRING
         },
         address: {
-            type: Sequelize.STRING,
-            allowNull: false
+            type: Sequelize.STRING
         },
         manager: {
             type: Sequelize.STRING,

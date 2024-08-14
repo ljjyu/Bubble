@@ -23,6 +23,9 @@ const express = require("express"),
     passwordController = require("./controllers/passwordController"), // password
     passwordRoutes = require('./routes/passwordRoutes'), // password
     emailRoutes = require('./routes/emailRoutes'), // 이메일 관련 라우터
+    reviewReportController = require("./controllers/reviewReportController"),
+    { consumeFromQueue } = require('./rabbitmqConsumer'),
+    qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -36,12 +39,16 @@ const express = require("express"),
     cheerio = require('cheerio'), // news
     Op = Sequelize.Op;
 
-db.sequelize.sync(); // 모델 동기화
+//consumeFromQueue('reviewReports').catch(console.error);
 
-const Subscriber = db.subscriber;
-const TempSubscriber = db.tempSubscriber; // TempSubscriber 모델 추가
-const Machine = db.machine;
-const Reservation = db.reservation;
+db.sequelize.sync().then(() => {
+    console.log('Database synchronized');
+
+    consumeFromQueue('reviewReports').catch(console.error);
+}).catch(console.error);
+
+
+db.sequelize.sync(); // 모델동기화
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
@@ -96,6 +103,10 @@ app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage);
 app.get("/user/userMachine", userMachineController.getUserMachines);
 
+app.get("/manager/getMachine",machineController.getAllMachines);
+app.post("/report-issue",machineController.reportIssue);
+app.post("/report-completed", machineController.reportCompleted);
+app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getMachine", machineController.getAllMachines);
 app.get("/manager/getReservation", reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
@@ -106,8 +117,13 @@ app.get("/reviews/getReviews", reviewsController.getAllReviews);
 app.post("/reviews/getReviews/favorites", reviewsController.addFavorites);
 app.get("/reviews/writeReviews", reviewsController.getReviewsPage);
 app.post("/reviews/writeReviews", reviewsController.saveReviews);
+app.get("/reviews/reports", reviewReportController.getReports);
+app.post('/reviews/reportReview', reviewsController.reportReview);
+app.delete('/reviews/deleteReport/:id', reviewReportController.deleteReport);
+app.get('/reviews/deleteReview/:id', reviewsController.deleteReview);
 
 app.get('/showNotice', showNoticeController.getAllNotices);
+app.post('/showNotice/deleteNotice/:noticeNumber', showNoticeController.deleteNotice);
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); // 뉴스 라우트
 app.use('/password', passwordRoutes); // 비밀번호 라우트
@@ -119,6 +135,22 @@ app.post('/user/userReserve', reservationController.createReservation);
 
 app.get("/", homeController.showIndex);
 app.post("/", usersController.authenticate, usersController.redirectView);
+
+
+//문의 채팅
+app.post("/user/qnaChat/chatting", qnaChatController.send_message);
+app.get("/user/qnaChat/chatting", qnaChatController.recv_message);
+
+app.post("/manager/qnaChat/chatting", qnaChatController.send_message);
+app.get("/manager/qnaChat/chatting", qnaChatController.recv_message);
+
+app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
+app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
+
+app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
+
+app.get("/user/qnaChat", qnaChatController.renderChatPage);
+app.get("/manager/qnaChat", qnaChatController.renderChatPage);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
