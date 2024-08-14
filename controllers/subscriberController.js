@@ -24,6 +24,18 @@ exports.getSubscriptionPage = (req, res) => {
 exports.saveSubscriber = async (req, res) => {
     try {
         const { name, email, password, role, phoneNumber, cardNumber, branchName, address } = req.body;
+
+        // TempSubscriber에서 사용자 정보 조회
+        const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
+
+        if (!tempSubscriber) {
+            return res.status(400).send({ message: "유효하지 않은 이메일 주소입니다." });
+        }
+
+        if (!tempSubscriber.isVerified) {
+            return res.status(400).send({ message: "이메일 인증을 완료해야 합니다." });
+        }
+
         const existingSubscriber = await Subscriber.findOne({ where: { email } });
 
         if (existingSubscriber) {
@@ -40,8 +52,8 @@ exports.saveSubscriber = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // 임시 테이블에 사용자 정보 저장
-        await TempSubscriber.create({
+        // TempSubscriber에서 사용자 정보 가져와 Subscriber로 저장
+        await Subscriber.create({
             name,
             email,
             password: hashedPassword,
@@ -52,18 +64,14 @@ exports.saveSubscriber = async (req, res) => {
             address: role === 'admin' ? address : null
         });
 
-        // 로그 추가: 데이터베이스에 저장된 내용을 확인
-        const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
-        console.log('Saved TempSubscriber:', tempSubscriber);
+        // TempSubscriber에서 해당 사용자 정보 삭제
+        await TempSubscriber.destroy({ where: { email } });
 
-        res.send("회원가입이 완료되었습니다. 인증 코드를 이메일로 전송하였습니다.");
+        res.status(200).send('회원가입이 완료되었습니다.');
     } catch (err) {
-        res.status(500).send({
-            message: err.message
-        });
+        res.status(500).send({ message: err.message });
     }
 };
-
 
 
 

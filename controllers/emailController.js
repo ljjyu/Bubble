@@ -1,44 +1,52 @@
+const TempSubscriber = require('./models/TempSubscriber'); // TempSubscriber 모델
+const Subscriber = require('./models/Subscriber'); // Subscriber 모델
 const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const db = require('../models/index');
-const Subscriber = db.subscriber;
-const TempSubscriber = db.tempSubscriber;
-
-const EMAIL_USER = 'coin.bubblebubble@gmail.com';
-const EMAIL_PASS = 'oepq lqjc chdh hymn'; // 실제 비밀번호를 입력하세요.
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS
-    }
-});
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.sendVerificationCode = async (req, res) => {
     try {
         const { email } = req.body;
-        const code = crypto.randomInt(100000, 999999); // 6자리 인증 코드
-        const expiresAt = Date.now() + 15 * 60 * 1000; // 15분 후 만료
 
-        // 임시 테이블에서 데이터베이스에 저장
-        await TempSubscriber.update(
-            { verificationCode: code, verificationExpires: expiresAt },
-            { where: { email } }
-        );
-
-        // 로그 추가: 업데이트된 내용을 확인
+        // 이메일 유효성 검사
         const tempSubscriber = await TempSubscriber.findOne({ where: { email } });
-        console.log('Updated TempSubscriber:', tempSubscriber);
 
-        await transporter.sendMail({
-            from: EMAIL_USER,
-            to: email,
-            subject: '이메일 인증 코드',
-            text: `인증 코드: ${code}`
+        if (!tempSubscriber) {
+            return res.status(400).send('유효하지 않은 이메일입니다.');
+        }
+
+        // 인증 코드 생성
+        const verificationCode = Math.floor(100000 + Math.random() * 900000); // 6자리 인증 코드
+        const verificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10분 유효
+
+        // 인증 코드 업데이트
+        await TempSubscriber.update({
+            verificationCode,
+            verificationExpires
+        }, { where: { email } });
+
+        // 이메일 발송 설정
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'your-email@gmail.com',
+                pass: 'your-email-password'
+            }
         });
 
-        res.status(200).send('인증 코드가 이메일로 전송되었습니다.');
+        const mailOptions = {
+            from: 'your-email@gmail.com',
+            to: email,
+            subject: '인증 코드',
+            text: `인증 코드: ${verificationCode}`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return res.status(500).send('이메일 전송 오류');
+            }
+            res.status(200).send('인증 코드가 이메일로 전송되었습니다.');
+        });
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
@@ -62,12 +70,18 @@ exports.verifyCode = async (req, res) => {
             return res.status(400).send('인증 코드가 만료되었습니다.');
         }
 
-        // 인증 완료 상태를 클라이언트 측으로 전달
-        res.status(200).json({ message: '이메일 인증이 완료되었습니다.', status: 'verified' });
+        // 인증 완료 후 TempSubscriber의 isVerified를 true로 설정
+        await TempSubscriber.update(
+            { isVerified: true },
+            { where: { email } }
+        );
+
+        res.status(200).send('인증이 성공적으로 완료되었습니다.');
     } catch (err) {
         res.status(500).send({ message: err.message });
     }
 };
+
 
 
 
