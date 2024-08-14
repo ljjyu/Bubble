@@ -84,6 +84,7 @@ exports.saveSubscriber = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds); // 비밀번호 해싱
         // 새로운 지점 생성
         let newBranch;
+        let existingBranch;
         // 새로운 지점 생성
         if (role === 'admin') {
             if (!branchName || !address) {
