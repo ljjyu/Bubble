@@ -9,7 +9,7 @@ exports.getAllMachines = async (req, res) => {
         const branch = await Branch.findOne({ where: { branchName: subscriberBranchName } });
         // branch가 존재하는지 확인합니다.
         if (!branch) {
-            res.status(404).send({
+            return res.status(404).send({
                  message: '해당 branch를 찾을 수 없습니다.'
             });
         }
