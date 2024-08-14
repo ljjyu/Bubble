@@ -33,6 +33,20 @@
             text-align: right;
             margin-bottom: 20px;
         }
+        .heart {
+            color: grey;
+            cursor: pointer;
+        }
+        .heart.liked {
+            color: red;
+        }
+        .heart:before {
+            content: '\2661';
+            font-size: 1.5em;
+        }
+        .heart.liked:before {
+            content: '\2665';
+        }
 
         .modal {
             display: none;
@@ -48,25 +62,25 @@
         }
 
         .modal-content {
-	    background-color: #fff;
+	        background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;
             border-radius: 5px;
-	}
+	    }
 
-	.modal-form {
-	    margin: 0px;
-	    box-shadow: 0 0 0;
-	}
+	    .modal-form {
+            margin: 0px;
+            box-shadow: 0 0 0;
+	    }
 
-	.form-group {
-	    margin-bottom: 15px;
-	}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-	.form-group label {
+	    .form-group label {
             display: block;
             margin-bottom: 5px;
         }
@@ -77,13 +91,13 @@
             box-sizing: border-box;
         }
 
-	#reasonContainer textarea {
+	    #reasonContainer textarea {
             resize: vertical;
         }
 
-	.submit-button {
-	    text-align: right;
-	}
+        .submit-button {
+            text-align: right;
+        }
 
         .close {
             color: #aaa;
@@ -129,6 +143,27 @@
             const branchID = document.getElementById('branchSelect').value;
             window.location.href = `/reviews/getReviews?branchID=${branchID}`;
         }
+        function toggleLike(element, reviewId) {
+            element.classList.toggle('liked');
+
+            fetch('/reviews/getReviews/favorites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reviewId: reviewId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Favorite added/removed successfully');
+                } else {
+                    console.error('Error adding/removing favorite');
+                }
+            })
+            .catch(error => {
+                console.error('Network error:', error);
+            });
+        }
     </script>
 </head>
 <body>
@@ -161,7 +196,6 @@
                         <a href="/reviews/deleteReview/<%= review.id %>">삭제</a>
                     <% } %>
 		            <% if (user && user.role === 'user') { %>
-		                <a href="/reviews/reportReview/<%= review.id %>" >신고</a>
 		                <span class="heart" onclick="toggleLike(this, <%= review.id %>)"></span>
                         <a href="#" onclick="openModal(<%= review.id %>)">신고</a>
                     <% } %>
@@ -169,27 +203,4 @@
             <% }); %>
         </ul>
     </div>
-     <script>
-     function toggleLike(element, reviewId) {
-         element.classList.toggle('liked');
-
-         fetch('/reviews/getReviews/favorites', {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json'
-             },
-             body: JSON.stringify({ reviewId: reviewId })
-         })
-         .then(response => {
-             if (response.ok) {
-                 console.log('Favorite added/removed successfully');
-             } else {
-                 console.error('Error adding/removing favorite');
-             }
-         })
-         .catch(error => {
-             console.error('Network error:', error);
-         });
-     }
-     </script>
 </body>
