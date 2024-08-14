@@ -86,10 +86,6 @@ app.get("/subscribers/getSubscriber", subscriberController.getAllSubscribers);
 app.get("/subscribers/subscriber", subscriberController.getSubscriptionPage); // 폼 입력이 가능한 웹 페이지 렌더링
 app.post("/subscribers/subscriber", subscriberController.saveSubscriber); // 넘겨받은 POST 데이터 저장 및 처리
 
-app.post('/send-verification-code', emailController.sendVerificationCode); // 이메일 인증 코드 전송
-app.post('/verify-code', emailController.verifyCode); // 이메일 인증 코드 검증
-app.get('/verification', (req, res) => res.render('verification')); // 이메일 인증 페이지
-
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
 
