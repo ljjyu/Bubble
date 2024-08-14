@@ -9,8 +9,7 @@
             color: #333;
             transition: background-color 0.3s, color 0.3s;
         }
-	input[type="submit"],
-        button {
+        input[type="submit"], button {
             background-color: #D8CEF6;
             color: #000000;
             padding: 10px 20px;
@@ -18,8 +17,7 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        input[type="submit"]:hover,
-        button:hover {
+        input[type="submit"]:hover, button:hover {
             background-color: #bfb2e6;
         }
         .main-content {
@@ -104,8 +102,7 @@
             font-size: 28px;
             font-weight: bold;
         }
-        .close:hover,
-        .close:focus {
+        .close:hover, .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -148,7 +145,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3>비밀번호 변경</h3>
-	    <h5>현재 비밀번호가 일치하는 경우 새 비밀번호로 변경할 수 있습니다.</h5>
+            <h5>현재 비밀번호가 일치하는 경우 새 비밀번호로 변경할 수 있습니다.</h5>
             <form id="changePasswordForm">
                 <label for="current-pw">현재 비밀번호</label>
                 <input type="password" id="current-pw" name="currentPw" required>
@@ -192,15 +189,19 @@
                 });
             }
         });
+
         document.getElementById('wishlist').addEventListener('click', function() {
             window.location.href = '/myPage/getMyFavorites';
         });
+
         document.getElementById('insert-qna').addEventListener('click', function() {
             window.location.href = '/user/qnaChat';
         });
+
         document.getElementById('view-qna').addEventListener('click', function() {
             window.location.href = '/manager/qnaChat';
         });
+
         document.getElementById('article').addEventListener('click', function() {
             window.location.href = '/getNews';
         });
@@ -249,18 +250,14 @@
                 if (data.success) {
                     alert("비밀번호가 변경되었습니다.");
                     modal.style.display = "none";
-            	    window.location.href = "/myPage";
+                    window.location.href = "/myPage";
                 } else {
                     alert(data.message);
                 }
             })
-	    .catch(error => {
+            .catch(error => {
                 console.error('Error:', error);
                 alert("비밀번호 변경 중 오류가 발생했습니다.");
-            });
-
-            document.getElementById('wishlist').addEventListener('click', function() {
-            	window.location.href = '/myPage/getMyFavorites';
             });
         });
     </script>
