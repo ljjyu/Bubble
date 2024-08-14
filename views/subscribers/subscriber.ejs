@@ -34,10 +34,20 @@
         .email-auth-group input[type="text"] {
             flex-grow: 1;
         }
-        .email-auth-group button {
-            margin-left: 10px;
-            padding: 10px;
+	.email-auth-group button {
+            background-color: #fae9a2;
+	    margin-left: 10px;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+	    text-align: center;
+            font-size: 13px;
+	    width: 80px;
+        }
+        .email-auth-group button:hover {
+            background-color: #e0d08d;
         }
         #authCodeGroup {
             display: none;
@@ -94,7 +104,7 @@
                 <input type="text" name="name" placeholder="이름" required autocomplete="off">
                 <div class="email-auth-group">
                     <input type="text" name="email" id="email" placeholder="이메일" required autocomplete="off">
-                    <button type="button" onclick="sendAuthCode()">이메일 인증</button>
+		    <button type="button" onclick="sendAuthCode()">이메일<br>인증</button>
                 </div>
 
                 <div id="authCodeGroup">
