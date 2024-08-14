@@ -168,5 +168,3 @@ exports.reportReview = async (req, res) => {
         res.redirect('/reviews/getReviews');
     }
 };
-
-};
