@@ -104,7 +104,7 @@ exports.saveSubscriber = async (req, res) => {
                     message: "이미 등록된 지점명입니다."
                 });
             }
-
+	    let newBranch;
             newBranch = createdBranch;
             // 세탁기와 건조기 생성 및 저장 (각각 4개씩)
             const machines = [];
@@ -120,7 +120,7 @@ exports.saveSubscriber = async (req, res) => {
              email: email,
              password: hashedPassword,
              role: role,
-		     phoneNumber: phoneNumber,
+	     phoneNumber: phoneNumber,
              cardNumber: cardNumber,
              branchName: role === 'admin' ? branchName : null,
              address: role === 'admin' ? address : null
