@@ -23,6 +23,7 @@ const express = require("express"),
     myPageController = require("./controllers/myPageController"), // myPage
     passwordController = require("./controllers/passwordController"), // password
     passwordRoutes = require('./routes/passwordRoutes'), // password
+    changepwController = require("./controllers/changepwController"), //mypagePw
     reviewReportController = require("./controllers/reviewReportController"), // 리뷰 신고 (관리자용)
     { consumeFromQueue } = require('./rabbitmqConsumer'),
     qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
@@ -118,6 +119,7 @@ app.post('/showNotice/deleteNotice/:noticeNumber', showNoticeController.deleteNo
 app.use("/getWeather", weatherController);
 app.use("/getNews", newsController); // 뉴스 라우트
 app.use('/password', passwordRoutes); // 비밀번호 라우트
+app.use('/changePassword', passwordRoutes); //mypagePw
 app.get("/myPage", myPageController.getAllMyPage);
 app.get("/myPage/getMyFavorites", myPageController.getALLMyFavorites);
 
