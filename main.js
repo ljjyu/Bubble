@@ -25,7 +25,7 @@ const express = require("express"),
     passwordRoutes = require('./routes/passwordRoutes'), // password
     changepwController = require("./controllers/changepwController"), //mypagePw
     reviewReportController = require("./controllers/reviewReportController"), // 리뷰 신고 (관리자용)
-    { consumeFromQueue } = require('./rabbitmqConsumer'),
+    { consumeFromQueue } = require('./controllers/rabbitMQ/rabbitmqConsumer'),
     qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
@@ -40,14 +40,13 @@ const express = require("express"),
     cheerio = require('cheerio'), // news
     Op = Sequelize.Op;
 
+// 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
-
-    consumeFromQueue('reviewReports').catch(console.error);
+    consumeFromQueue('reportsQueue')
+        .then(() => console.log('reportConsumer setup completed'))
+        .catch(err => console.error('Error setting up consumer:', err));
 }).catch(console.error);
-
-
-db.sequelize.sync(); // 모델동기화
 
 app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정

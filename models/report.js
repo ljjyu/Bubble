@@ -51,6 +51,7 @@ module.exports = (sequelize, Sequelize) => {
         Report.belongsTo(models.Review, {
             foreignKey: 'reviewID',
             as: 'review'
+	   
         });
         Report.belongsTo(models.Branch, {
             foreignKey: 'branchID',

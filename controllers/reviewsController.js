@@ -5,7 +5,7 @@ const db = require("../models/index"),
     Report = db.Report,
     Op = db.Sequelize.Op;
 
-const { sendToQueue } = require('../rabbitmqProducer');
+const { sendToQueue } = require('../controllers/rabbitMQ/rabbitmqProducer');
 
 exports.getAllReviews = async (req, res) => {
     const branchID = req.query.branchID || 0;
@@ -148,16 +148,18 @@ exports.reportReview = async (req, res) => {
 
         const reportReason = category === '기타' ? reason : category;
 
-        const newReport = await Report.create({
+        const report = {
             reviewID,
             category,
             reason: reportReason,
             reportedBy: user.name,
             branchID: review.branchID,
-            reported_at: new Date()
-        });
+            reported_at: new Date().toISOString()
+        };
 
-        console.log('New Report:', newReport);
+        // RabbitMQ 큐로 객체 전달
+        await sendToQueue('reportsQueue', JSON.stringify(report));
+
 
         req.flash('success', 'Review reported successfully.');
         res.redirect('/reviews/getReviews');
