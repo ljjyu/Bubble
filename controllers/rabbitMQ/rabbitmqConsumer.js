@@ -1,5 +1,5 @@
 const amqp = require('amqplib');
-const db = require('./models/index');
+const db = require('../../models/index');
 const Report = db.Report;
 
 const consumeFromQueue = async (queue) => {
