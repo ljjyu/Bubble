@@ -4,7 +4,7 @@
   "description": "### Convention #### Branch Strategy ``` main ├─hotfix └─ develop (default)     └─ DOMAIN/이슈번호 ```",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'test fork'",
     "start": "node main.js"
   },
   "author": "",
