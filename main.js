@@ -88,7 +88,6 @@ app.post('/subscribers/send-auth-code', subscriberController.sendAuthCode); // ì
 
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
-
 app.post("/reservations", reservationController.createReservation);
 
 app.get("/user/userHome", userHomeController.getUserReservations);
