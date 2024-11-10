@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>날씨</title>
+    <style>
+        .main-content {
+            align-items: center;
+        }
+        .weather-card {
+            align-items: center;
+            max-width: 1000px;
+            margin: auto;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 300px;
+            text-align: center;
+            background: #FFFFFF;
+        }
+        .weather-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .weather-card .location {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .weather-card .temp {
+            font-size: 24px;
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+	.weather-card .icon {
+            width: 80px;
+            height: 80px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+        .cta-message {
+            margin-top: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        h3{
+            font-size: 20px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="cta-message">
+            <h3>날씨를 확인하고 세탁하세요!</h3>
+        </div>
+        <h2>현재 날씨</h2>
+        <% if (weatherData) { %>
+            <div class="weather-card">
+                <div class="location"><%= weatherData.name %> / <%= weatherData.sys.country %></div>
+                <div class="temp"><%= weatherData.main.temp %> ℃</div>
+		<img class="icon" src="http://openweathermap.org/img/wn/<%= weatherData.weather[0].icon %>@2x.png" alt="Weather Icon">
+		<p><%= weatherData.weather[0].description %></p>
+            </div>
+        <% } else if (error) { %>
+            <p><%= error %></p>
+        <% } else { %>
+            <p>날씨 정보를 가져오는 중...</p>
+        <% } %>
+    </div>
+</body>

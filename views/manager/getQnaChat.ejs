@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin QnA Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+        }
+        .sidebar {
+            width: 300px;
+            border-right: 1px solid #ddd;
+            padding-right: 20px;
+            overflow-y: auto;
+        }
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .user-list {
+            margin-bottom: 20px;
+        }
+        .user-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+        .user-item:hover {
+            background-color: #f0f0f0;
+        }
+        .chat-box {
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        .message-input {
+            display: flex;
+            margin-top: 10px;
+        }
+        .message-input textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            resize: none;
+        }
+        .message-input button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .message-input button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <header>
+        <h1>QnA Chat - Manager</h1>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Users</h2>
+            <div id="user-list" class="user-list">
+                <!-- User items will be inserted here -->
+            </div>
+        </div>
+        <div class="chat-area">
+            <div id="chat-box" class="chat-box">
+                <!-- Chat messages will be inserted here -->
+            </div>
+            <div class="message-input">
+                <textarea id="message-input" placeholder="Type your message here"></textarea>
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let selectedUser = null;
+            const managerEmail = '<%= userEmail %>'; // 현재 관리자의 이메일
+
+            // Function to load users and populate the user list
+            async function loadUserList() {
+                try {
+                    const response = await $.ajax({
+                        url: '/manager/qnaChat/chatLogs',
+                        type: 'GET',
+                        data: { branchID: '<%= branchID %>' }
+                    });
+
+                    const users = new Set();
+                    response.chatLogs.forEach(log => {
+                        if (log.senderEmail !== managerEmail) {
+                            users.add(log.senderEmail);
+                        }
+                    });
+
+                    const userList = $('#user-list');
+                    userList.empty();
+                    users.forEach(user => {
+                        userList.append(`<div class="user-item" data-email="${user}">${user}</div>`);
+                    });
+                } catch (err) {
+                    console.error('Error loading user list:', err);
+                }
+            }
+
+            // Function to load chat logs based on selected user
+            async function loadChatLogs(email) {
+                try {
+                    const response = await $.ajax({
+                        url: '/manager/qnaChat/chatLogs',
+                        type: 'GET',
+                        data: {
+                            branchID: '<%= branchID %>',
+                            recipient: email
+                        }
+                    });
+
+                    const chatBox = $('#chat-box');
+                    chatBox.empty();
+                    response.chatLogs.forEach(log => {
+                        chatBox.append(`<p><strong>${log.senderEmail}</strong>: ${log.chatting}</p>`);
+                    });
+                } catch (err) {
+                    console.error('Error loading chat logs:', err);
+                }
+            }
+
+            // Handle user selection
+            $('#user-list').on('click', '.user-item', function() {
+                selectedUser = $(this).data('email');
+                loadChatLogs(selectedUser);
+            });
+
+            // Handle send button click
+            $('#send-button').click(async function() {
+                const message = $('#message-input').val();
+                if (selectedUser && message) {
+                    try {
+                        await $.ajax({
+                            url: '/manager/qnaChat/chatting',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                recipient: selectedUser,
+                                message: message,
+                                branchID: '<%= branchID %>'
+                            })
+                        });
+                        $('#message-input').val('');
+                        loadChatLogs(selectedUser); // Refresh chat log
+                    } catch (err) {
+                        console.error('Error sending message:', err);
+                    }
+                } else {
+                    alert("Please select a user and enter a message.");
+                }
+            });
+
+            // Initial load
+            loadUserList();
+        });
+    </script>
+</body>
+</html>

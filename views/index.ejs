@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <title>Bubble Bubble</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: stretch;
+            height: 100vh;
+        }
+        .left-side {
+            flex: 65%;
+            background-color: #D8CEF6;
+            color: #f2f2f2;
+            padding: 50px;
+        }
+        .right-side {
+            flex: 35%;
+            padding: 50px;
+        }
+        h1 {
+            font-family: 'Rubik Bubbles', sans-serif;
+            font-size: 56px;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+	    margin-top: -5px;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            text-align: left;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #E6E6E6;
+            box-sizing: border-box;
+            border: none;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        input[type="submit"],
+        button {
+            background-color: #D8CEF6;
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #bfb2e6;
+        }
+        .signup-btn,
+        .password-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .signup-btn a,
+        .password-btn a {
+            color: #BCA9F5;
+            text-decoration: none;
+        }
+        .usertype-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .usertype-label label {
+            margin-right: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+	    justify-content: center;
+	    align-items: center;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .modal p {
+            margin-bottom: 15px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h1>Bubble Bubble</h1>
+            <p>코인 빨래방 예약 서비스에 오신 것을 환영합니다. 로그인하여 예약하거나 회원가입하세요.</p>
+        </div>
+        <div class="right-side">
+            <form class="form-signin" action="/" method="POST">
+                <h2 class="form-signin-heading">Login:</h2>
+                <label for="inputEmail" class="sr-only">Email</label>
+                <input type="text" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus required autocomplete="off">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autocomplete="off">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+            </form>
+            <div class="signup-btn">
+                <p>계정이 없으신가요? <a href="subscribers/subscriber">회원가입</a></p>
+            </div>
+            <div class="password-btn">
+                <p>비밀번호를 잊으셨나요? <a href="#" id="resetPasswordBtn">비밀번호 재설정</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- 비밀번호 재설정 모달 -->
+    <div id="resetPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>비밀번호 재설정</h2>
+            <p>가입했던 이메일을 입력해주세요.<br>비밀번호 재설정 메일을 보내드립니다.</p>
+            <form id="resetPasswordForm" action="/password/send-reset-email" method="POST">
+                <label for="resetEmail">Email</label>
+                <input type="email" id="resetEmail" name="resetEmail" required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <!-- 비밀번호 성공적 재설정 모달 -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSuccessModal">&times;</span>
+            <h2>비밀번호 재설정 완료</h2>
+            <p>비밀번호가 성공적으로 재설정되었습니다.</p>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 모달 열기
+        document.getElementById('resetPasswordBtn').onclick = function() {
+            document.getElementById('resetPasswordModal').style.display = 'block';
+        }
+
+        // 모달 닫기
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('resetPasswordModal').style.display = 'none';
+        }
+        document.getElementById('closeSuccessModal').onclick = function() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('resetPasswordModal')) {
+                document.getElementById('resetPasswordModal').style.display = 'none';
+            }
+            if (event.target == document.getElementById('successModal')) {
+                document.getElementById('successModal').style.display = 'none';
+            }
+        }
+
+        // 비밀번호 재설정 이메일 요청 처리
+        document.getElementById('resetPasswordForm').onsubmit = async function(event) {
+            event.preventDefault(); // 기본 제출 이벤트를 방지합니다.
+
+            const email = document.getElementById('resetEmail').value;
+            const response = await fetch('/password/send-reset-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ resetEmail: email })
+            });
+
+            const result = await response.json(); // JSON 응답을 파싱합니다.
+
+            // 모달에 결과를 표시
+            const modalContent = document.querySelector('#resetPasswordModal .modal-content');
+            modalContent.innerHTML = `
+                <span class="close" id="closeModal">&times;</span>
+                <h2>비밀번호 재설정</h2>
+                <p>${result.message}</p> <!-- 응답 메시지 그대로 표시 -->
+            `;
+            
+            // 닫기 버튼 이벤트 다시 바인딩
+            document.getElementById('closeModal').onclick = function() {
+                document.getElementById('resetPasswordModal').style.display = 'none';
+            }
+        }
+	
+    });
+    </script>
+</body>
+</html>
+

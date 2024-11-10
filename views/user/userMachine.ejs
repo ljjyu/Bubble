@@ -1,0 +1,102 @@
+<head>
+    <title>사용자 페이지</title>
+    <style>
+        .status-section {
+            display: flex;
+            justify-content: space-around;
+	    width: 100%;
+	    align-items: flex-start;
+        }
+        .machine-section {
+            width: 48%;
+	    box-sizing: border-box;
+        }
+        .machine {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+	    margin-left: 10px;
+	    margin-right: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .machine.yellow {
+            background-color: #FAEC97;
+        }
+        .machine.purple {
+            background-color: #D8CEF6;
+        }
+        .machine span {
+            display: block;
+            margin: 10px 0;
+        }
+        .machine::after {
+            content: attr(data-id);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+	.branch-selection select {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #fff;
+        }
+        .branch-selection select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+            outline: none;
+        }
+	h2, h3 {
+	    font-size: 22px;
+	}
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>실시간 사용현황</h1>
+        <div class="status-section">
+            <div class="branch-selection">
+                <label for="branchSelect">지점</label>
+                <select id="branchSelect" name="branchSelect" onchange="filterMachines()">
+                    <% branches.forEach(branch => { %>
+                        <option value="<%= branch.branchID %>" <%= selectedBranch == branch.branchID ? 'selected' : '' %>><%= branch.branchName %></option>
+                     <% }); %>
+                </select>
+            </div>
+    	    <div class="machine-section">
+                <h2>세탁기</h2>
+                <% machines.filter(machine => machine.type === 'washer').forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+                    <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+                        <span>상태: <%= machine.state %></span>
+                    </div>
+	            <% }); %>
+            </div>
+
+            <div class="machine-section">
+                <h2>건조기</h2>
+                <% machines.filter(machine => machine.type === 'dryer').forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+		        <div class="machine <%= machine.state === 'available' ? 'purple' : 'yellow' %>" data-id="<%= dataId %>">
+                        <span>상태: <%= machine.state %></span>
+                    </div>
+                <% }); %>
+	        </div>
+	    </div>
+    </div>
+    <script>
+        function filterMachines() {
+            const branchID = document.getElementById('branchSelect').value;
+            window.location.href = `/user/userMachine?branchID=${branchID}`;
+        }
+    </script>
+</body>
+</html>

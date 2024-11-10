@@ -1,0 +1,129 @@
+<head>
+    <title>관리자 페이지</title>
+    <style>
+        .status-section {
+            display: flex;
+            justify-content: space-around;
+        }
+        .machine-section {
+            width: 45%;
+        }
+        .machine {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .machine.yellow {
+            background-color: #FAEC97;
+        }
+        .machine.purple {
+            background-color: #D8CEF6;
+        }
+        .machine span {
+            display: block;
+            margin: 10px 0;
+        }
+        .machine::after {
+            content: attr(data-id);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+	.report-issue, .report-completed {
+            background-color: #fff;
+            color: #515557; /* Primary color for text */
+            border: 2px solid #515557; /* Border color matching text */
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            margin: 5px;
+        }
+        .report-issue:hover, .report-completed:hover {
+            background-color: #515557;
+            color: #fff;
+            border-color: #515557;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>실시간 사용현황</h1>
+        <div class="status-section">
+    	    <div class="machine-section">
+                <h2>세탁기</h2>
+                <% machines.filter(machine => machine.type === 'washer').forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+                    <div class="machine <%= machine.state === 'available' ? 'purple' : machine.state === 'in_use' ? 'yellow': machine.state === 'needs_repair' ? 'darkslategray' : '' %>" data-id="<%= dataId %>">
+                        <span>상태: <%= machine.state %></span>
+                        <button class="report-issue" data-machine-id="<%= machine.machineID %>">고장</button>
+                        <button class="report-completed" data-machine-id="<%= machine.machineID %>">수리 완료</button>
+                    </div>
+	            <% }); %>
+            </div>
+            <div class="machine-section">
+                <h2>건조기</h2>
+                <% machines.filter(machine => machine.type === 'dryer').forEach((machine, index) => { %>
+                    <% let dataId = index + 1 < 10 ? '0' + (index + 1) : (index + 1); %>
+		            <div class="machine <%= machine.state === 'available' ? 'purple' : machine.state === 'in_use' ? 'yellow': machine.state === 'needs_repair' ? 'darkslategray' : '' %>" data-id="<%= dataId %>">
+                        <span>상태: <%= machine.state %></span>
+                        <button class="report-issue" data-machine-id="<%= machine.machineID %>">고장</button>
+                        <button class="report-completed" data-machine-id="<%= machine.machineID %>">수리 완료</button>
+                    </div>
+                <% }); %>
+	        </div>
+	    </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.report-issue').forEach(button => {
+                button.addEventListener('click', function() {
+                    const machineID = this.getAttribute('data-machine-id');
+                    fetch('/report-issue', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ machine_id: machineID })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('고장 신고 중 오류가 발생했습니다.');
+                    });
+                });
+            });
+
+            document.querySelectorAll('.report-completed').forEach(button => {
+                button.addEventListener('click', function() {
+                    const machineID = this.getAttribute('data-machine-id');
+                    fetch('/report-completed', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ machine_id: machineID })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('수리 완료 중 오류가 발생했습니다.');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
