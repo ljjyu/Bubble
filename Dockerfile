@@ -1,5 +1,5 @@
-FROM ubuntu:20.04
-RUN apt-get update && apt-get -y install build-essential && mkdir -p /app
+FROM node:10.19.0
+RUN apt-get update && apt-get -y install build-essential && mkdir -p /app && npm install
 COPY . /app/
 WORKDIR /app/
-CMD make
+CMD ["npm", "start", "make"]
