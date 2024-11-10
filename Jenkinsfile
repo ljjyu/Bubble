@@ -8,7 +8,8 @@ node {
 	}
 	stage('Test image') {
 		app.inside {
-			sh 'make test'
+			sh 'npm install'
+			sh 'npm test'
 		}
 	}
 	stage('Push image') {
