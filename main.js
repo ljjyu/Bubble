@@ -54,6 +54,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 정적 뷰 제공
 app.use(express.static("public"));
+
 // 레이아웃 설정
 app.use(layouts);
 // 데이터 파싱
