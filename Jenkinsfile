@@ -13,7 +13,9 @@ pipeline {
 			}
 		}
 		stage('Clone repository') {
-			git 'https://github.com/ddolly518/3team_fork.git'
+			steps {
+				git 'https://github.com/ddolly518/3team_fork.git'
+			}
 		}
 
 		stage('Build image') {
@@ -24,9 +26,13 @@ pipeline {
 			}
 		}
 		stage('Test image') {
-			app.inside {
-				sh 'npm install'
-				sh 'npm test'
+			steps {
+				script {
+					myapp.inside {
+						sh 'npm install'
+						sh 'npm test'
+					}
+				}
 			}
 		}
 		stage("Push image") {
@@ -34,7 +40,7 @@ pipeline {
 				script {
 					docker.withRegistry('https://registry.hub.docker.com', 'ddolly518') {
 						myapp.push("latest")
-						myapp.push("${env.BUILD_ID})")
+						myapp.push("${env.BUILD_ID}")
 					}
 				}
 			}
