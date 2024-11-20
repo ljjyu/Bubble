@@ -4,7 +4,7 @@ pipeline {
 		PROJECT_ID = 'sunny-airfoil-422515-f9'
 		CLUSTER_NAME = 'kube'
 		LOCATION = 'asia-northeast3-a'
-		CREDENTIALS_ID = 'gke'
+		CREDENTIALS_ID = '3b5a886a-96d6-4d8a-a5b5-7875838dcc2a'
 	}
 	stages {
 		stage("Checkout code") {
