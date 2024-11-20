@@ -34,7 +34,7 @@ pipeline {
 				script {
 					docker.withRegistry('https://registry.hub.docker.com', 'ddolly518') {
 						myapp.push("latest")
-						myapp.push("${env.BUILD_ID)")
+						myapp.push("${env.BUILD_ID})")
 					}
 				}
 			}
