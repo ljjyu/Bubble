@@ -39,7 +39,7 @@ const express = require("express"),
     axios = require('axios'), // news
     cheerio = require('cheerio'), // news
     Op = Sequelize.Op;
-// Test줄
+
 // 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
