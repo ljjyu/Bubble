@@ -139,7 +139,6 @@ app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
 app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
 
 app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
-
 app.get("/user/qnaChat", qnaChatController.renderChatPage);
 app.get("/manager/qnaChat", qnaChatController.renderChatPage);
 
