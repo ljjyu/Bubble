@@ -19,7 +19,7 @@ pipeline {
 		stage('Build image') {
 			steps {
 				script {	
-					myapp = docker.build("ddolly518/hello:$(env.BUILD_ID}")
+					myapp = docker.build("ddolly518/hello:${env.BUILD_ID}")
 				}
 			}
 		}
