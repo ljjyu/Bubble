@@ -1,4 +1,4 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: hello
-        image: ddolly518/hello:latest
+        image: ddolly518/test:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

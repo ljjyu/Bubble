@@ -5,6 +5,7 @@ pipeline {
 		CLUSTER_NAME = 'kube'
 		LOCATION = 'asia-northeast3-a'
 		CREDENTIALS_ID = '3b5a886a-96d6-4d8a-a5b5-7875838dcc2a'
+		REGISTRY = "ddolly518/test"
 	}
 	stages {
 		stage("Checkout code") {
@@ -21,7 +22,7 @@ pipeline {
 		stage('Build image') {
 			steps {
 				script {	
-					myapp = docker.build("ddolly518/hello:${env.BUILD_ID}")
+					myapp = docker.build("${REGISTRY}:${env.BUILD_ID}")
 				}
 			}
 		}
@@ -50,7 +51,7 @@ pipeline {
 				branch 'master'
 			}
 			steps {
-				sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+				sh "sed -i 's/hello:latest/${REGISTRY}:${env.BUILD_ID}/g' deployment.yaml"
 				step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
 			}
 		}
