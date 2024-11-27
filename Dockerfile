@@ -7,4 +7,4 @@ WORKDIR /Bubble
 COPY . /Bubble/
 ENV PORT 5000
 EXPOSE 5000
-CMD ["start"]
+CMD ["npm", "start"]
