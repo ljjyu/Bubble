@@ -1,10 +1,10 @@
 FROM node:18
-WORKDIR /3team
-COPY ./app/package*.json /3team/app/
-WORKDIR /3team/app
+WORKDIR /Bubble
+COPY ./app/package*.json /Bubble/app/
+WORKDIR /Bubble/app
 RUN npm install
-WORKDIR /3team
-COPY . /3team/
+WORKDIR /Bubble
+COPY . /Bubble/
 ENV PORT 5000
 EXPOSE 5000
 CMD ["start"]
