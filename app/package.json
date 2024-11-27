@@ -2,10 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "### Convention #### Branch Strategy ``` main ├─hotfix └─ develop (default)     └─ DOMAIN/이슈번호 ```",
-  "main": "index.js",
+  "main": "app.js",
+  "bin": { "bubble": "bin/www.js" },
   "scripts": {
-    "test": "echo 'test fork'",
-    "start": "node main.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www.js"
   },
   "author": "",
   "license": "ISC",

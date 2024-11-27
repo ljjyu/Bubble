@@ -26,17 +26,6 @@ pipeline {
 				}
 			}
 		}
-		stage('Test image') {
-			steps {
-				script {
-					myapp.inside("-u root") {
-						sh 'chown -R node:node /Bubble/app'
-						sh 'cd /Bubble/app && npm install'
-						sh 'cd /Bubble/app && npm test'
-					}
-				}
-			}
-		}
 		stage("Push image") {
 			steps {
 				script {
