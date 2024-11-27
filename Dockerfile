@@ -6,6 +6,7 @@ WORKDIR /Bubble
 COPY package*.json ./
 # Install dependencies
 RUN npm install
+# Copy the application code to the working directory
 COPY . .
 WORKDIR /Bubble/app
 ENV PORT 5000
