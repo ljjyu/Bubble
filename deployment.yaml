@@ -1,36 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 3team
+  name: bubble
   labels:
-    app: 3team
+    app: bubble
 spec:
   replicas: 2
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: 3team
+      app: bubble
   template:
     metadata:
       labels:
-        app: 3team
-        tier: 3team
+        app: bubble
+        tier: bubble
     spec:
       containers:
-      - name: 3team
-        image: ddolly518/3team:latest
+      - name: bubble
+        image: ddolly518/bubble:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
-          name: 3team
+          name: bubble
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: 3team
+  name: bubble
   labels:
-    app: 3team
+    app: bubble
 spec:
   ports:
   - port: 80
