@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo 'test fork'",
-    "start": "node main.js"
+    "start": "node app/main.js"
   },
   "author": "",
   "license": "ISC",
@@ -31,11 +31,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SSWU-ServerSystem/3team.git"
+    "url": "git+https://github.com/SSWU-ServerSystem/Bubble.git"
   },
   "bugs": {
-    "url": "https://github.com/SSWU-ServerSystem/3team/issues"
+    "url": "https://github.com/SSWU-ServerSystem/Bubble/issues"
   },
-  "homepage": "https://github.com/SSWU-ServerSystem/3team#readme",
+  "homepage": "https://github.com/SSWU-ServerSystem/Bubble#readme",
   "devDependencies": {}
 }
