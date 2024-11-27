@@ -5,7 +5,7 @@ pipeline {
 		CLUSTER_NAME = 'kube'
 		LOCATION = 'asia-northeast3-a'
 		CREDENTIALS_ID = '3b5a886a-96d6-4d8a-a5b5-7875838dcc2a'
-		REGISTRY = "ddolly518/test"
+		REGISTRY = "ddolly518/3team"
 	}
 	stages {
 		stage("Checkout code") {
@@ -30,8 +30,8 @@ pipeline {
 			steps {
 				script {
 					myapp.inside {
-						sh 'npm install'
-						sh 'npm test'
+						sh 'cd /3team/app && npm install'
+						sh 'cd /3team/app && npm test'
 					}
 				}
 			}
