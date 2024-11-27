@@ -3,7 +3,7 @@ name: Issue Template
 about: Feature Issue Template.
 title: ''
 labels: ''
-assignees: ''
+assignees: 'obongsik','dolly518','ljjyu','kmjm231','jiyuuuun'
 
 ---
 
