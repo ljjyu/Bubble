@@ -9,7 +9,7 @@ WORKDIR /Bubble/app
 RUN npm install
 # Copy the application code to the working directory
 WORKDIR /Bubble
-COPY / /Bubble
+COPY ./app /Bubble/app
 WORKDIR /Bubble/app
 ENV PORT 5000
 EXPOSE 5000
