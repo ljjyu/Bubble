@@ -29,8 +29,8 @@ pipeline {
 		stage('Test image') {
 			steps {
 				script {
-					myapp.inside {
-						sh 'sudo chown -R node:node /3team/app'
+					myapp.inside("-u root") {
+						sh 'chown -R node:node /3team/app'
 						sh 'cd /3team/app && npm install'
 						sh 'cd /3team/app && npm test'
 					}
