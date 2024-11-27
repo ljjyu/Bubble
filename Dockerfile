@@ -4,6 +4,7 @@ FROM node:18
 WORKDIR /Bubble
 # Copy package.json and package-lock.json to the working directory
 COPY app/package*.json /Bubble/app/
+# Change the working directory to /Bubble/app
 WORKDIR /Bubble/app
 # Install dependencies
 RUN npm install
