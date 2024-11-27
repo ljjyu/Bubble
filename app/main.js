@@ -1,3 +1,8 @@
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PW;
+const dbPort = process.env.DB_PORT;
+const dbName = process.env.DB_NAME;
 const express = require("express"),
     app = express(),
     path = require('path'),
