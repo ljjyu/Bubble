@@ -1,3 +1,4 @@
+# Use the official Node.js 18 image
 FROM node:18
 WORKDIR /Bubble/app
 COPY app/package*.json /Bubble/app/
