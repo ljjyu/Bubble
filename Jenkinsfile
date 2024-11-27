@@ -30,6 +30,7 @@ pipeline {
 			steps {
 				script {
 					myapp.inside {
+						sh 'chown -R node:node /3team/app'
 						sh 'cd /3team/app && npm install'
 						sh 'cd /3team/app && npm test'
 					}
