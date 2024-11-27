@@ -7,4 +7,4 @@ WORKDIR /3team
 COPY . /3team/
 ENV PORT 5000
 EXPOSE 5000
-CMD ["node", "./app/main.js"]
+CMD ["start"]
