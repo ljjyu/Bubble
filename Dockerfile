@@ -1,6 +1,6 @@
 FROM node:18
 WORKDIR /3team
-COPY /app/package*.json /3team/app
+COPY app/package*.json /3team/app
 WORKDIR /3team/app
 RUN npm install
 WORKDIR /3team
