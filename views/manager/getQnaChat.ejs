@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin QnA Chat</title>
+    <title>채팅형 문의</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -75,11 +75,11 @@
 </head>
 <body>
     <header>
-        <h1>QnA Chat - Manager</h1>
+        <h1>채팅형 문의</h1>
     </header>
     <div class="container">
         <div class="sidebar">
-            <h2>Users</h2>
+            <h2>유저 리스트</h2>
             <div id="user-list" class="user-list">
                 <!-- User items will be inserted here -->
             </div>
@@ -90,7 +90,7 @@
             </div>
             <div class="message-input">
                 <textarea id="message-input" placeholder="Type your message here"></textarea>
-                <button id="send-button">Send</button>
+                <button id="send-button">보내기</button>
             </div>
         </div>
     </div>
@@ -175,7 +175,7 @@
                         console.error('Error sending message:', err);
                     }
                 } else {
-                    alert("Please select a user and enter a message.");
+                    alert("유저를 선택한 뒤에 메시지를 입력해 주세요.");
                 }
             });
 
