@@ -36,6 +36,6 @@ spec:
   - port: 80
     targetPort: 5000
   selector:
-    app: 3team
-    tier: 3team
+    app: bubble
+    tier: bubble
   type: LoadBalancer
