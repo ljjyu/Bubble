@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require("express"),
     app = express(),
     path = require('path'),
@@ -48,7 +46,6 @@ db.sequelize.sync().then(() => {
         .catch(err => console.error('Error setting up consumer:', err));
 }).catch(console.error);
 
-app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
 
@@ -149,6 +146,4 @@ app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-app.listen(app.get("port"), () => {
-    console.log(`Server running on port: ${app.get("port")}`);
-});
+module.exports = app;
