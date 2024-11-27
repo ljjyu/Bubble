@@ -15,7 +15,7 @@ pipeline {
 		}
 		stage('Clone repository') {
 			steps {
-				git 'https://github.com/ddolly518/3team_fork.git'
+				git 'https://github.com/ddolly518/Bubble.git'
 			}
 		}
 
@@ -30,9 +30,9 @@ pipeline {
 			steps {
 				script {
 					myapp.inside("-u root") {
-						sh 'chown -R node:node /3team/app'
-						sh 'cd /3team/app && npm install'
-						sh 'cd /3team/app && npm test'
+						sh 'chown -R node:node /Bubble/app'
+						sh 'cd /Bubble/app && npm install'
+						sh 'cd /Bubble/app && npm test'
 					}
 				}
 			}
