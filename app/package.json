@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo 'test fork'",
-    "start": "node /Bubble/app/main.js"
+    "start": "node ./app/main.js"
   },
   "author": "",
   "license": "ISC",
