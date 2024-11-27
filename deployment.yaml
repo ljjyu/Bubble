@@ -1,40 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello
+  name: 3team
   labels:
-    app: hello
+    app: 3team
 spec:
+  replicas: 2
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: hello
+      app: 3team
   template:
     metadata:
       labels:
-        app: hello
-        tier: hello
+        app: 3team
+        tier: 3team
     spec:
       containers:
-      - name: hello
-        image: ddolly518/test:latest
+      - name: 3team
+        image: ddolly518/3team:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
-          name: hello
+          name: 3team
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello
+  name: 3team
   labels:
-    app: hello
+    app: 3team
 spec:
   ports:
   - port: 80
     targetPort: 5000
   selector:
-    app: hello
-    tier: hello
+    app: 3team
+    tier: 3team
   type: LoadBalancer
