@@ -7,7 +7,7 @@ COPY app/package*.json /Bubble/app/
 WORKDIR /Bubble/app
 # Install dependencies
 RUN npm install
-# Copy the application code to the working directory
+# Change the working directory back to /Bubble
 WORKDIR /Bubble
 COPY ./app /Bubble/app
 WORKDIR /Bubble/app
