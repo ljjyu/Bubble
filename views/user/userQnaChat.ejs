@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application - User</title>
+    <title>채팅형 문의</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -91,17 +91,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Chat Application - User</h1>
+        <h1>채팅형 문의</h1>
         <select id="branch-select">
             <% branches.forEach(branch => { %>
                 <option value="<%= branch.branchID %>"><%= branch.branchName %></option>
             <% }) %>
         </select>
-        <div id="loading">Loading...</div>
+        <div id="loading">로딩 중...</div>
         <div id="chat-box"></div>
         <div style="display: flex; align-items: center;">
             <input type="text" id="message-input" placeholder="Enter your message">
-            <button id="send-button">Send</button>
+	    <button id="send-button">보내기</button>
         </div>
         <div id="message-status"></div>
     </div>
@@ -160,7 +160,7 @@
                         if (response.result === 'both') {
                             $('#chat-box').append(`<p><strong>You:</strong> ${message}</p>`);
                         } else {
-                            $('#message-status').text("Message not sent");
+                            $('#message-status').text("메시지 보내기 실패");
                         }
 
                         $('#message-input').val('');

@@ -141,12 +141,12 @@
         </div>
         <div class="right-side">
             <form class="form-signin" action="/" method="POST">
-                <h2 class="form-signin-heading">Login:</h2>
-                <label for="inputEmail" class="sr-only">Email</label>
+                <h2 class="form-signin-heading">로그인</h2>
+                <label for="inputEmail" class="sr-only">이메일</label>
                 <input type="text" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus required autocomplete="off">
-                <label for="inputPassword" class="sr-only">Password</label>
+                <label for="inputPassword" class="sr-only">비밀번호</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autocomplete="off">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
             </form>
             <div class="signup-btn">
                 <p>계정이 없으신가요? <a href="subscribers/subscriber">회원가입</a></p>
@@ -163,9 +163,9 @@
             <h2>비밀번호 재설정</h2>
             <p>가입했던 이메일을 입력해주세요.<br>비밀번호 재설정 메일을 보내드립니다.</p>
             <form id="resetPasswordForm" action="/password/send-reset-email" method="POST">
-                <label for="resetEmail">Email</label>
+                <label for="resetEmail">이메일</label>
                 <input type="email" id="resetEmail" name="resetEmail" required>
-                <button type="submit">Send</button>
+                <button type="submit">확인</button>
             </form>
         </div>
     </div>

@@ -85,7 +85,7 @@
                 const authCodeInput = document.querySelector('input[name="authCode"]').value;
                 if (!authCodeInput) {
                     event.preventDefault(); // 폼 제출을 막음
-                    alert("이메일 인증을 해야합니다.");
+                    alert("이메일 인증이 필요합니다.");
                 }
             }
         </script>
@@ -97,9 +97,9 @@
             <form class="subscription-form" action="/subscribers/subscriber" method="post" onsubmit="validateForm(event)">
                 <div class="radio-group">
                     <input type="radio" id="roleUser" name="role" value="user" required>
-                    <label for="roleUser">User</label>
+                    <label for="roleUser">일반 회원</label>
                     <input type="radio" id="roleAdmin" name="role" value="admin" required>
-                    <label for="roleAdmin">Admin</label>
+                    <label for="roleAdmin">관리자</label>
                 </div>
                 <input type="text" name="name" placeholder="이름" required autocomplete="off">
                 <div class="email-auth-group">
