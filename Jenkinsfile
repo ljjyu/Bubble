@@ -5,7 +5,7 @@ pipeline {
 		CLUSTER_NAME = 'kube'
 		LOCATION = 'asia-northeast3-a'
 		CREDENTIALS_ID = '3b5a886a-96d6-4d8a-a5b5-7875838dcc2a'
-		REGISTRY = "ddolly518/3team"
+		REGISTRY = "ddolly518/bubble"
 	}
 	stages {
 		stage("Checkout code") {
