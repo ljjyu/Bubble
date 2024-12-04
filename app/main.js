@@ -50,6 +50,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
 // 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
