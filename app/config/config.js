@@ -1,5 +1,5 @@
 require('dotenv').config();
-/*module.exports = {
+const dbConfig = {
     development: {
         username: process.env.DB_USER,
         password: process.env.DB_PW,
@@ -15,12 +15,5 @@ require('dotenv').config();
         dialect: "mysql",
         logging: false
     }
-};*/
-const dbConfig = {
-	username: process.env.DB_USER,
-	password: process.env.DB_PW,
-	database: process.env.DB_NAME,
-	host: process.env.DB_HOST,
-	dialect: "mysql",
 };
 module.exports = dbConfig;
