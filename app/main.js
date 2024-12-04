@@ -37,22 +37,18 @@ const express = require("express"),
     db = require("./models/index"),
     //Sequelize = db.Sequelize,
     Sequelize = require('sequelize'),
-    dotenv = require('dotenv'),
+    dbConfig = require('./config/config'),
     Op = Sequelize.Op;
 
-dotenv.config();
-const dbHost = process.env.DB_HOST;
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PW;
-const dbPort = process.env.DB_PORT;
-const dbName = process.env.DB_NAME;
-
-const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-    host: dbHost,
-    port: dbPort,
-    dialect: 'mysql',
-    logging: false,
-});
+const sequelize = new Sequelize(
+    dbConfig.database,
+    dbConfig.username,
+    dbConfig.password,
+    {
+        host: dbConfig.host,
+	dialect: dbConfig.dialect,
+    }
+);
 
 // 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
