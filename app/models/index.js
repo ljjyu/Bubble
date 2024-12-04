@@ -38,4 +38,4 @@ db.Review.hasMany(db.Report, { foreignKey: 'reviewID', as: 'reports' });
 db.qnaChat.belongsTo(db.branch, { foreignKey: 'branchID', targetKey: 'branchID' });
 
 db.favorites.belongsTo(db.Review, { foreignKey: 'reviewID', as: 'review1' });
-module.exports = sequelize;
+module.exports = db;
