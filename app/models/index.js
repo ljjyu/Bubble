@@ -4,8 +4,8 @@ const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
 // 데이터베이스 연결을 위한 sequelize 인스턴스 생성
-let sequelize = new Sequelize(config.database, config.username, config.password, config);
-
+//let sequelize = new Sequelize(config.database, config.username, config.password, config);
+const sequelize = new Sequelize(config);
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
@@ -38,4 +38,4 @@ db.Review.hasMany(db.Report, { foreignKey: 'reviewID', as: 'reports' });
 db.qnaChat.belongsTo(db.branch, { foreignKey: 'branchID', targetKey: 'branchID' });
 
 db.favorites.belongsTo(db.Review, { foreignKey: 'reviewID', as: 'review1' });
-module.exports = db;
+module.exports = sequelize;
