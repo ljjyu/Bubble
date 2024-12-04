@@ -20,7 +20,7 @@ spec:
       containers:
       - name: bubble
         image: ddolly518/bubble:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
           name: bubble
