@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const dbConfig = {
     development: {
         username: process.env.DB_USER,
