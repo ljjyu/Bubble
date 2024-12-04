@@ -38,19 +38,18 @@ const express = require("express"),
     //Sequelize = db.Sequelize,
     Sequelize = require('sequelize'),
     dbConfig = require('./config/config'),
+    env = process.env.NOE_ENV || 'development',
+    config = dbConfig[env],
     Op = Sequelize.Op;
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PW,
-    {
-        host: process.env.DB_HOST,
-        dialect: 'mysql',
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+        host: config.host,
+        dialect: config.dialect,
         logging: false,
-    }
-);
+});
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 // 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
     console.log('Database synchronized');
