@@ -64,7 +64,6 @@ db.sequelize.sync().then(() => {
 
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
-
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
