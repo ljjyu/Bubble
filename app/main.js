@@ -41,12 +41,13 @@ const express = require("express"),
     Op = Sequelize.Op;
 
 const sequelize = new Sequelize(
-    dbConfig[process.env.NODE_ENV || 'development'].database,
-    dbConfig[process.env.NODE_ENV || 'development'].username, 
-    dbConfig[process.env.NODE_ENV || 'development'].password, 
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PW,
     {
-        host: dbConfig[process.env.NODE_ENV || 'development'].host,
-        dialect: dbConfig[process.env.NODE_ENV || 'development'].dialect,
+        host: process.env.DB_HOST,
+        dialect: 'mysql',
+        logging: false,
     }
 );
 
