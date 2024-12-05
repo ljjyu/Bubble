@@ -58,7 +58,7 @@ spec:
         - name: RABBITMQ_USER
           valueFrom:
             secretKeyRef:
-              name: rabbitmq-secrest
+              name: rabbitmq-secret
               key: RABBITMQ_USER
         - name: RABBITMQ_PW
           valueFrom:
