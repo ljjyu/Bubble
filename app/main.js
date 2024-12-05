@@ -23,8 +23,8 @@ const express = require("express"),
     passwordRoutes = require('./routes/passwordRoutes'), // password
     changepwController = require("./controllers/changepwController"), //mypagePw
     reviewReportController = require("./controllers/reviewReportController"), // 리뷰 신고 (관리자용)
-    //{ consumeFromQueue } = require('./controllers/rabbitMQ/rabbitmqConsumer'),
-    //qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
+    { consumeFromQueue } = require('./controllers/rabbitMQ/rabbitmqConsumer'),
+    qnaChatController = require("./controllers/rabbitMQ/rabbitMQ-api"), //문의
     layouts = require("express-ejs-layouts"),
     bodyParser = require('body-parser'),
     session = require('express-session'),
@@ -36,17 +36,43 @@ const express = require("express"),
     bcrypt = require('bcrypt'),
     db = require("./models/index"),
     //Sequelize = db.Sequelize,
+    amqp = require('amqplib'),
     Sequelize = require('sequelize'),
     dbConfig = require('./config/config'),
     env = process.env.NOE_ENV || 'development',
     config = dbConfig[env],
     Op = Sequelize.Op;
 
+const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "my-rabbitmq.default.svc.cluster.local";
+const RABBITMQ_PORT = process.env.RABBITMQ_PORT || 5672;
+const RABBITMQ_USER = process.env.RABBITMQ_USER || "user";
+const RABBITMQ_PW = process.env.RABBITMQ_PW || "password";
+
 const sequelize = new Sequelize(config.database, config.username, config.password, {
         host: config.host,
         dialect: config.dialect,
         logging: false,
 });
+
+async function consumeFromQueue(queueName) {
+	try {
+		const connection = await amqp.connect({
+			hostname: RABBITMQ_HOST,
+			port: RABBITMQ_PORT,
+			username: RABBITMQ_USER,
+			password: RABBITMQ_PW
+		});
+		const channel = await connection.createChannel();
+		await channel.assertQueue(queueNAme, { durable:true });
+		channel.consume(queueName, (msg) => {
+			if (msg!==null) {
+				channel.ack(msg);
+			}
+		});
+	} catch (error) {
+		console.error(`Failed to consume messages: ${error.message}`);
+	}
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

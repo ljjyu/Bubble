@@ -1,16 +1,20 @@
 const amqp = require('amqplib');
 const db = require('../../models/index');
 const Report = db.Report;
+const RabbitmqWrapper = require("./rabbitMQ");
 
 const consumeFromQueue = async (queue) => {
     try {
-        const connection = await amqp.connect('amqp://localhost');
-        const channel = await connection.createChannel();
-        await channel.assertQueue(queue, { durable: true });
+        //const connection = await amqp.connect('amqp://localhost');
+        //const channel = await connection.createChannel();
+        //await channel.assertQueue(queue, { durable: true });
 
-        console.log(`Waiting for messages in ${queue}. To exit press CTRL+C`);
+        //console.log(`Waiting for messages in ${queue}. To exit press CTRL+C`);
 
-        channel.consume(queue, async (msg) => {
+	const rabbitmq = new RabbitmqWrapper(process.env.RABBITMQ_URL, queue);
+	await rabbitmq.setup();
+
+        rabbitmq.recvFromQueue(async (msg) => {
             if (msg !== null) {
                 try {
                     const report = JSON.parse(msg.content.toString());

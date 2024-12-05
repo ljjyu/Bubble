@@ -50,6 +50,23 @@ spec:
             secretKeyRef:
               name: db-secret
               key: DB_NAME
+        - name: RABBITMQ_HOST
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: RABBITMQ_HOST
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secrest
+              key: RABBITMQ_USER
+        - name: RABBITMQ_PW
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: RABBITMQ_PW
+        - name: RABBITMQ_PORT
+          value: "5672"
 ---
 apiVersion: v1
 kind: Service
@@ -65,3 +82,52 @@ spec:
     app: bubble
     tier: bubble
   type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+    template:
+      metadata:
+        labels:
+          app: rabbitmq
+      spec:
+        containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management
+          ports:
+          - containerPort: 5672
+          - containerPort: 15672
+          env:
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: RABBITMQ_USER
+          - name: RABBITMQ_DEFAULT_PW
+            valueFrom:
+              secretKeyRef:
+                name: rabbitmq-secret
+                key: RABBITMQ_PW
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:
+  ports:
+  - port: 5672
+    targetPort: 5672
+    name: amqp
+  - port: 15672
+    name: http
+  selector:
+    app: rabbitmq
+  type: ClusterIP
