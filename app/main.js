@@ -43,10 +43,10 @@ const express = require("express"),
     config = dbConfig[env],
     Op = Sequelize.Op;
 
-const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "my-rabbitmq.default.svc.cluster.local";
+const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "localhost";
 const RABBITMQ_PORT = process.env.RABBITMQ_PORT || 5672;
-const RABBITMQ_USER = process.env.RABBITMQ_USER || "user";
-const RABBITMQ_PW = process.env.RABBITMQ_PW || "password";
+const RABBITMQ_USER = process.env.RABBITMQ_USER || "guest";
+const RABBITMQ_PW = process.env.RABBITMQ_PW || "guest";
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
         host: config.host,
@@ -54,7 +54,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
         logging: false,
 });
 
-async function consumeFromQueue(queueName) {
+async function connectToRabbitMQ() {
 	try {
 		const connection = await amqp.connect({
 			hostname: RABBITMQ_HOST,
@@ -62,18 +62,13 @@ async function consumeFromQueue(queueName) {
 			username: RABBITMQ_USER,
 			password: RABBITMQ_PW
 		});
-		const channel = await connection.createChannel();
-		await channel.assertQueue(queueNAme, { durable:true });
-		channel.consume(queueName, (msg) => {
-			if (msg!==null) {
-				channel.ack(msg);
-			}
-		});
+		console.log('Connected to RabbitMQ');
+		await connection.close();
 	} catch (error) {
-		console.error(`Failed to consume messages: ${error.message}`);
+		console.error('Failed to connect to RabbitMQ:', error.message);
 	}
 }
-
+connectToRabbitMQ();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
