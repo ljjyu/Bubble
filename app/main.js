@@ -69,6 +69,7 @@ async function connectToRabbitMQ() {
 	}
 }
 connectToRabbitMQ();
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
