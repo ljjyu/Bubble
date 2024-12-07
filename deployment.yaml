@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: bubble
-        image: ddolly518/bubble:latest
+        image: docker.io/ddolly518/bubble:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
