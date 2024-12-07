@@ -15,7 +15,7 @@ pipeline {
 		}
 		stage('Clone repository') {
 			steps {
-				git 'https://github.com/ddolly518/Bubble.git'
+				git 'https://github.com/SSWU-ServerSystem/Bubble.git'
 			}
 		}
 
