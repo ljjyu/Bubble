@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require("express"),
     app = express(),
     path = require('path'),
@@ -33,12 +31,46 @@ const express = require("express"),
     flash = require('connect-flash'),
     cookieParser = require("cookie-parser"),
     passport = require("passport"),
-    bcrypt = require('bcrypt'),
-    db = require("./models/index"),
-    Sequelize = db.Sequelize,
     axios = require('axios'), // news
     cheerio = require('cheerio'), // news
+    bcrypt = require('bcrypt'),
+    db = require("./models/index"),
+    //Sequelize = db.Sequelize,
+    amqp = require('amqplib'),
+    Sequelize = require('sequelize'),
+    dbConfig = require('./config/config'),
+    env = process.env.NOE_ENV || 'development',
+    config = dbConfig[env],
     Op = Sequelize.Op;
+
+const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "rabbitmq";
+const RABBITMQ_PORT = process.env.RABBITMQ_PORT || 5672;
+const RABBITMQ_USER = process.env.RABBITMQ_USER || "guest";
+const RABBITMQ_PW = process.env.RABBITMQ_PW || "guest";
+
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+        host: config.host,
+        dialect: config.dialect,
+        logging: false,
+});
+
+async function connectToRabbitMQ() {
+	try {
+		const connection = await amqp.connect({
+			hostname: RABBITMQ_HOST,
+			port: RABBITMQ_PORT,
+			username: RABBITMQ_USER,
+			password: RABBITMQ_PW
+		});
+		console.log('Connected to RabbitMQ');
+		await connection.close();
+	} catch (error) {
+		console.error('Failed to connect to RabbitMQ:', error.message);
+	}
+}
+connectToRabbitMQ();
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 // 모델 동기화 -> 신고 consumer 세팅
 db.sequelize.sync().then(() => {
@@ -48,10 +80,8 @@ db.sequelize.sync().then(() => {
         .catch(err => console.error('Error setting up consumer:', err));
 }).catch(console.error);
 
-app.set("port", process.env.PORT || 80);
 app.set("view engine", "ejs"); // 애플리케이션 뷰 엔진을 ejs로 설정
 app.set('views', path.join(__dirname, 'views'));
-
 // 정적 뷰 제공
 app.use(express.static("public"));
 // 레이아웃 설정
@@ -76,7 +106,6 @@ app.use((req, res, next) => {
     res.locals.messages = req.flash();
     next();
 });
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -88,7 +117,6 @@ app.post('/subscribers/send-auth-code', subscriberController.sendAuthCode); // �
 
 app.post('/logout', usersController.logout);
 app.post('/deleteAccount', usersController.deleteAccount);
-
 app.post("/reservations", reservationController.createReservation);
 
 app.get("/user/userHome", userHomeController.getUserReservations);
@@ -96,9 +124,9 @@ app.get("/user/userReserve", reservationController.getAllReservations);
 app.get("/user/userUsing", userUsingController.getUserUsingPage);
 app.get("/user/userMachine", userMachineController.getUserMachines);
 
-app.get("/manager/getMachine",machineController.getAllMachines);
 app.post("/report-issue",machineController.reportIssue);
 app.post("/report-completed", machineController.reportCompleted);
+app.get("/manager/getMachine",machineController.getAllMachines);
 app.get("/manager/getReservation",reservationController.getAllReservations);
 app.get("/manager/getStatistic", statisticController.getAllStatistics);
 app.get('/manager/getNotice', noticeController.getNoticePage);
@@ -140,7 +168,6 @@ app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
 app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
 
 app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
-
 app.get("/user/qnaChat", qnaChatController.renderChatPage);
 app.get("/manager/qnaChat", qnaChatController.renderChatPage);
 
@@ -150,6 +177,4 @@ app.use(errorController.respondInternalError);
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-app.listen(app.get("port"), () => {
-    console.log(`Server running on port: ${app.get("port")}`);
-});
+module.exports = app;
