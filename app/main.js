@@ -158,18 +158,18 @@ app.post("/", usersController.authenticate, usersController.redirectView);
 
 
 //문의 채팅
-//app.post("/user/qnaChat/chatting", qnaChatController.send_message);
-//app.get("/user/qnaChat/chatting", qnaChatController.recv_message);
+app.post("/user/qnaChat/chatting", qnaChatController.send_message);
+app.get("/user/qnaChat/chatting", qnaChatController.recv_message);
 
-//app.post("/manager/qnaChat/chatting", qnaChatController.send_message);
-//app.get("/manager/qnaChat/chatting", qnaChatController.recv_message);
+app.post("/manager/qnaChat/chatting", qnaChatController.send_message);
+app.get("/manager/qnaChat/chatting", qnaChatController.recv_message);
 
-//app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
-//app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
+app.get("/manager/qnaChat/chatLogs", qnaChatController.getChatLogs);
+app.get("/user/qnaChat/chatLogs", qnaChatController.getChatLogs);
 
-//app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
-//app.get("/user/qnaChat", qnaChatController.renderChatPage);
-//app.get("/manager/qnaChat", qnaChatController.renderChatPage);
+app.get("/user/qnaChat/getManagerEmail", qnaChatController.getManagerEmail);
+app.get("/user/qnaChat", qnaChatController.renderChatPage);
+app.get("/manager/qnaChat", qnaChatController.renderChatPage);
 
 app.use(errorController.logErrors);
 app.use(errorController.respondNoResourceFound);
