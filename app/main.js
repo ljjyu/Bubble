@@ -43,7 +43,7 @@ const express = require("express"),
     config = dbConfig[env],
     Op = Sequelize.Op;
 
-const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "localhost";
+const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "rabbitmq";
 const RABBITMQ_PORT = process.env.RABBITMQ_PORT || 5672;
 const RABBITMQ_USER = process.env.RABBITMQ_USER || "guest";
 const RABBITMQ_PW = process.env.RABBITMQ_PW || "guest";
