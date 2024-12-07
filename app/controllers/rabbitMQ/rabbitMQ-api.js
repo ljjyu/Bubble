@@ -2,7 +2,7 @@ const RabbitmqWrapper = require("./rabbitMQ");
 const db = require("../../models/index");
 const { Op } = require("sequelize");
 
-const url = "amqp://localhost";
+const url = "amqp://rabbitmq:5672";
 const queue = "qna_chat";
 const conn = new RabbitmqWrapper(url, queue);
 

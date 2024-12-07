@@ -1,3 +1,2 @@
 .env
 secret.yaml
-rabbitmq-secret.yaml
