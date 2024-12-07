@@ -30,7 +30,7 @@ const consumeFromQueue = async (queue) => {
                 console.error('Error processing message:', error);
                 channel.nack(msg);
             }
-        });
+        };
     } catch (error) {
         console.error('Error in RabbitMQ consumer:', error);
     }
