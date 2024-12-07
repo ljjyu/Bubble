@@ -68,6 +68,7 @@ async function connectToRabbitMQ() {
 		console.error('Failed to connect to RabbitMQ:', error.message);
 	}
 }
+
 connectToRabbitMQ();
 
 db.sequelize = sequelize;
